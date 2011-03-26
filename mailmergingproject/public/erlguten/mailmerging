@@ -1,0 +1,3 @@
+#!/bin/sh
+erl -pa `pwd` -pa "public/erlguten" -s mail_merge merge_and_transform $1 $2 -s erlang halt
+
