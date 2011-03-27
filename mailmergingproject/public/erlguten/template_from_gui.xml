@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <paper>
-  <frame name = "FrameA" x = "100" y = "20" width = "150" height = "80" grid="false" font = "Times-Roman" fontsize = "32/32" maxlines = "10">Hello   #name!</frame>
+  <frame name = "FrameA" x = "100" y = "20" width = "150" height = "80" grid="false" font = "Times-Roman" fontsize = "32/32" maxlines = "10">Hello #name!</frame>
   <frame name = "FrameB" x = "100" y = "120" width = "150" height = "80" grid="true" font = "Times-Italic" fontsize = "15/32" maxlines = "10">Hello #name, This is your invoice from Klarna, the total amount to pay is #price</frame>
 
-  <frame name = "FrameD" x = "100" y = "400" width = "150" height = "120" gird = "true" font = "Times-Roman" fontsize = "24/32" maxlines = "10">This line contains no params.</frame>
+  <frame name = "FrameD" x = "100" y = "400" width = "150" height = "120" gird = "true" font = "Times-Roman" fontsize = "24/32" maxlines = "10">This line contains no params. \ \#namedoesn'texist</frame>
 
 </paper>

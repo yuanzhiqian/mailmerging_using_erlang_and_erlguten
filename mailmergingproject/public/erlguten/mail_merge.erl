@@ -1,7 +1,8 @@
 %%===============================================================================================================================================================
 %% mail merge
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------
-%% The output ommits redundant spaces, however, this is not my aim, it is the erlguten that does this on purpose. So I'm afraid I can not retain redundant spaces
+%% Notice: 1. The output ommits redundant spaces, however, this is not my aim, it is the erlguten that does this on purpose. So I'm afraid I can not retain redundant spaces
+%%         2. #name means the param "name", and the \#name means the string "#name", if you mean \ itself, write "\ #name" instead
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------
 %% Author: Yuan Zhiqian
 %%
@@ -53,6 +54,7 @@ merge_aux(_, [], Acc) ->
   %io:format("~p~n", [Acc]),  %%debug
   Acc;
 merge_aux(UserData, [H|T], Acc) ->
+  %io:format("~p~n", [H]),  %%debug
   case insertData(UserData, H) of
     error -> 
       io:format("The template doesn't fit the user data table, please check if you are using the proper template!~n", []),
@@ -68,26 +70,31 @@ merge(UserData, Template) ->
 
 %%%%%%%%%%%%%%%%%%%%%Successful!!!!!!!!!!!!!!!!
 test_insert_data()->
-  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello       #name, you need to pay #price"}]}) of
-    {frame, _, Content} -> io:format("~p~n", [Content])
+  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello #name, you need to pay #price, test \\#name, test \\#price, test \\"}]}) of
+    {frame, _, Content} -> io:format("~p~n", [Content]);
+    error -> error
   end.
 
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
-  case re:run(Content, "#[a-zA-Z0-9_]*", [global]) of
+  case re:run(Content, "[^\\\\]#[a-zA-Z0-9_]*", [global]) of
     {match, MatchList} ->
       case replaceData(UserData, lists:flatten(MatchList), Content) of
         error -> error;
-        ReplacedString -> {frame, Arg, [{raw, ReplacedString}]}
+        ReplacedString -> 
+          %%remove slashes if strings like \\#name exist in the content
+          {frame, Arg, [{raw, re:replace(ReplacedString, "\\\\#", "#", [global, {return, list}])}]}
       end;
-    nomatch ->
-      {frame, Arg, [{raw, Content}]}
+    nomatch ->     
+      %%remove slashes if strings like \\#name exist in the content
+      {frame, Arg, [{raw, re:replace(Content, "\\\\#", "#", [global, {return, list}])}]}
   end.
 
 replaceData_aux(_, [], _, NewContent) ->
-  NewContent;
+  %io:format("~p~n", [NewContent]),  %%debug
+  NewContent;  
 replaceData_aux(UserData, [{Start, Len}|T], Content, NewContent) ->
   %% +1 because re module counts from 0 and lists module counts from 1; +1 again to skip # mark
-  Param = list_to_atom(lists:sublist(Content, Start + 1 + 1, Len - 1)),  
+  Param = list_to_atom(lists:sublist(Content, Start + 1 + 1 + 1, Len - 2)),  
   case lists:keysearch(Param, 1, UserData) of
     {value, {_, Value}} -> 
       replaceData_aux(UserData, T, Content, re:replace(NewContent, "#[a-zA-Z0-9_]*", Value, [{return, list}]));        

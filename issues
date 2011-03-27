@@ -1,0 +1,5 @@
+1. table and list;
+2. the mailmerging try to retain redundant spaces, but they are fixed later by erlguten. Ask Erik if we need to retain spaces;
+3. can not deal with # mark yet, try to find a way to make it possible.
+4. how about the \ mark issue?
+
