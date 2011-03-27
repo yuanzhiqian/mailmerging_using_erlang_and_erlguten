@@ -1,3 +1,10 @@
+%%================================================
+%% Deparse the erlang tokens into xml file
+%%------------------------------------------------
+%% Author: Yuan Zhiqian
+%%
+%%================================================
+
 -module(deparse_xml).
 -compile(export_all).
 
