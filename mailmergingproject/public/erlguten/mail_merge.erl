@@ -1,9 +1,11 @@
-%%================================================
+%%===============================================================================================================================================================
 %% mail merge
-%%------------------------------------------------
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------
+%% The output ommits redundant spaces, however, this is not my aim, it is the erlguten that does this on purpose. So I'm afraid I can not retain redundant spaces
+%%---------------------------------------------------------------------------------------------------------------------------------------------------------------
 %% Author: Yuan Zhiqian
 %%
-%%================================================
+%%===============================================================================================================================================================
 
 -module(mail_merge).
 -compile(export_all).
@@ -15,27 +17,21 @@ test2() ->
   io:format("~p~n", [os:cmd("pwd")]).
 
 merge_and_transform(ArgList) ->
-  io:format("Begin merg_and_transform~n"),
-  [Template, UserData] =  ArgList,
-  io:format("~p~n~p~n",[Template, UserData]),
+  [Template, UserData] =  ArgList, 
   F1 = erlguten_xml_lite:parse_file(Template),
   F2 = erlguten_xml_lite:parse_file(UserData),
-  %io:format("~p~n", [F1]),
   Template_Data = deShell(F1),
-  %io:format("~p~n", [Template_Data]),
   case F2 of 
     {error, W} ->
 	    io:format("Error in source:~p~p~n",[F2, W]),
 	    exit(1);
 	[{pi,_},{xml,{user,_, Data}}] ->
-            %io:format("~p~n",[Data]),
             UserDataMap = parse_user_data(Data, []),
             Merged = merge(UserDataMap, Template_Data),
-            io:format("~p~n", [Merged]),
+            %io:format("~p~n", [Merged]),
             Galley_name = "my_test_galley.gal",
             {Literal, Galley} = extract_and_transform(Merged, Galley_name),
-            %io:format("~p~n", [Literal]),
-            %io:format("~p~n", [Galley]),
+            %io:format("~p~n", [Literal]), %%debug
             Data_name = "my_test.xml",
             deparse_xml:main(Literal, Data_name),
             deparse_xml:main(Galley, Galley_name),
@@ -47,7 +43,6 @@ merge_and_transform(ArgList) ->
 deShell([{pi,_},{xml,{paper,_, Data}}]) -> Data.
 
 parse_user_data([], Acc) ->
-  %io:format("~p~n", [lists:reverse(Acc)]),
   lists:reverse(Acc);
 parse_user_data([H|T], Acc) ->
   case H of
@@ -55,12 +50,16 @@ parse_user_data([H|T], Acc) ->
   end.
 
 merge_aux(_, [], Acc) ->
+  %io:format("~p~n", [Acc]),  %%debug
   Acc;
 merge_aux(UserData, [H|T], Acc) ->
-  io:format("~p~n",[H]),
   case insertData(UserData, H) of
-    error -> io:format("The template doesn't fit the user data table, please check if you are using the proper template!");
-    Inserted -> merge_aux(UserData, T, Acc ++ [Inserted])    
+    error -> 
+      io:format("The template doesn't fit the user data table, please check if you are using the proper template!~n", []),
+      erlang:halt();
+    Inserted -> 
+      %io:format("~p~n", [Inserted]),  %%debug
+      merge_aux(UserData, T, Acc ++ [Inserted])    
   end.
 merge(UserData, Template) ->
   merge_aux(UserData, Template, []).
@@ -69,17 +68,19 @@ merge(UserData, Template) ->
 
 %%%%%%%%%%%%%%%%%%%%%Successful!!!!!!!!!!!!!!!!
 test_insert_data()->
-  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, "Hello #name, you need to pay #price"}) of
+  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello       #name, you need to pay #price"}]}) of
     {frame, _, Content} -> io:format("~p~n", [Content])
   end.
 
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
   case re:run(Content, "#[a-zA-Z0-9_]*", [global]) of
     {match, MatchList} ->
-      io:format("~p~n",[MatchList]),
-      {frame, Arg, [{raw, replaceData(UserData, lists:flatten(MatchList), Content)}]};
-    {error, _} ->
-      io:format("There is an error in the regular expression! ~n", [])
+      case replaceData(UserData, lists:flatten(MatchList), Content) of
+        error -> error;
+        ReplacedString -> {frame, Arg, [{raw, ReplacedString}]}
+      end;
+    nomatch ->
+      {frame, Arg, [{raw, Content}]}
   end.
 
 replaceData_aux(_, [], _, NewContent) ->
@@ -87,7 +88,6 @@ replaceData_aux(_, [], _, NewContent) ->
 replaceData_aux(UserData, [{Start, Len}|T], Content, NewContent) ->
   %% +1 because re module counts from 0 and lists module counts from 1; +1 again to skip # mark
   Param = list_to_atom(lists:sublist(Content, Start + 1 + 1, Len - 1)),  
-  io:format("~p~n", [Param]), 
   case lists:keysearch(Param, 1, UserData) of
     {value, {_, Value}} -> 
       replaceData_aux(UserData, T, Content, re:replace(NewContent, "#[a-zA-Z0-9_]*", Value, [{return, list}]));        
@@ -102,6 +102,7 @@ replaceData(UserData, MatchList, Content) ->
 extract_and_transform(Merged, Galley_name) ->
   {Boxes, Galley} = first_parse(Merged, []),
   Literal = second_parse(Merged, Galley_name, Boxes, []),
+  %io:format("~p~n", [Literal]), %%debug
   {Literal, Galley}.
 
 first_parse([], Acc) -> 
@@ -115,7 +116,6 @@ first_parse([H|T], Acc) ->
 pack_box({frame, Attr, _}) ->
   BG = "default",
   Continue = "none",
-  %io:format("~p~n", [Attr]),
   Fontsize = extract_from_attr(fontsize, Attr),
   Grid = "false",
   Lines = extract_from_attr(maxlines, Attr),
@@ -157,6 +157,7 @@ second_parse([], _, _, Acc) ->
                          lists:reverse(Acc) }}],
   Literal;
 second_parse([H|T], Galley_name, [Hbox|Tbox], Acc) ->
+  %io:format("~p~n", [H]), %%debug
   second_parse(T, Galley_name, Tbox, [pack_flow(H, Galley_name, Hbox)|Acc]).
 
 pack_flow({frame, _, Content}, Galley_name, 
@@ -164,6 +165,7 @@ pack_flow({frame, _, Content}, Galley_name,
              [{obj, [{"name", Obj_name},_], 
                     [{tag, [_,_,{"name", Tag_name}],
                    []}]}]} ) ->
+  %io:format("~p~n", [Content]), %%debug
   Flow = {flow, [{"galley", Galley_name}, {"name", Name}], [{list_to_atom(Obj_name), [], [{list_to_atom(Tag_name), [], Content}]}]},
   Flow.
   

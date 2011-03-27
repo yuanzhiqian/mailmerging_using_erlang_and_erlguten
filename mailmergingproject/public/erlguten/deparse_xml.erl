@@ -18,6 +18,7 @@ test() ->
 
 main(E, File_name) ->
   Xml = parse(E),
+  %io:format("~p~n", [Xml]), %%debug
   file:write_file(File_name, [Xml]),
   ok.
 
@@ -27,8 +28,10 @@ parse([{pi,"xml version=\"1.0\" "}, {xml, Tag}]) ->
   
 parseTag({Name, Attr, Content}) ->
   AttrStr = parseAttr(Attr, ""),
-  %io:format("~p~n", [AttrStr]),
+  %io:format("~p~n", [AttrStr]), %%debug
+  %io:format("~p~n", [Content]), %%debug
   ContentStr = parseContent(Content, ""),
+  %io:format("~p~n", [ContentStr]), %%debug
   XmlStr = "<" ++ atom_to_list(Name) ++ AttrStr ++">" ++ ContentStr ++ "</" ++ atom_to_list(Name) ++ ">",
   XmlStr.
 
@@ -40,6 +43,7 @@ parseAttr([{Key, Value}|T], Acc) ->
   parseAttr(T, Acc++" "++AttrStr).
 
 parseContent([], Acc) ->
+  %io:format("~p~n", [Acc]), %%debug
   Acc;
 parseContent([H|T], Acc) ->
   case H of
