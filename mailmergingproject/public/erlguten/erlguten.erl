@@ -88,7 +88,7 @@ format_flow(PDF, Chunks, Box) ->
 	    void;
 	{yes,{R,G,B}} ->
 	    pdf:save_state(PDF),
-	    pdf:set_fill_color_RGB(PDF,0.9,0.8,0.6),
+	    pdf:set_fill_color_RGB(PDF,R,G,B),         %% Modified by Yuan Zhiqian, the oringinal bg data was hard coded
 	    pdf:rectangle(PDF, X-5,Y-Leading-5,10+Measure*12,10+Leading, fill),
 	    pdf:restore_state(PDF)
     end,
@@ -255,6 +255,7 @@ parse_fontSize(S) ->
 parse_paraIndent(S) ->
     case string:tokens(S, ",") of
 	Toks ->
+            %%io:format("~p~n", [Toks]),  %%debug
 	    map(fun(I) -> parse_int("paraIndent",  I) end, Toks);
 	_ ->
 	    io:format("paraIndent must be of the form <int>,<int>, was:~s",

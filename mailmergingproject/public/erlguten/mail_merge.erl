@@ -107,6 +107,7 @@ replaceData(UserData, MatchList, Content) ->
 
 %%%%%%%%%%%%%%%%%%%Functions below deal with the pdf generating part%%%%%%%%%%%%%%%
 extract_and_transform(Merged, Galley_name) ->
+  %io:format("~p~n", [Merged]),  %%debug
   {Boxes, Galley} = first_parse(Merged, []),
   Literal = second_parse(Merged, Galley_name, Boxes, []),
   %io:format("~p~n", [Literal]), %%debug
@@ -121,10 +122,10 @@ first_parse([H|T], Acc) ->
   first_parse(T, [pack_box(H)|Acc]).
 
 pack_box({frame, Attr, _}) ->
-  BG = "default",
+  BG = extract_from_attr(bg, Attr),
   Continue = "none",
   Fontsize = extract_from_attr(fontsize, Attr),
-  Grid = "false",
+  Grid = extract_from_attr(grid, Attr),
   Lines = extract_from_attr(maxlines, Attr),
   Measure = "30",
   Name = extract_from_attr(name, Attr),
@@ -149,13 +150,20 @@ pack_box({frame, Attr, _}) ->
               {"x", X},
               {"y", Y}],
              [{obj, [{"name", Obj_name},{"paraIndent", Obj_para_ind}], 
-                    [{tag, [{"break", Tag_break},{"font", Tag_font},{"name", Tag_name}],
-                   []}]}]},
+                    [{tag, [{"break", Tag_break},{"font", Tag_font},{"name", Tag_name}],[]
+                     }
+                    ]
+              }
+             ]
+         },
   Box.
   
 extract_from_attr(Atom, Attr) ->
   case lists:keysearch(atom_to_list(Atom), 1, Attr) of
-    {value, {_, Value}} -> Value
+    {value, {_, Value}} -> Value;
+    false -> 
+      io:format("Sorry, your template is incomplete, please check again. The \"~p\" field is missing.~n", [Atom]),
+      erlang:halt()
   end.
 
 second_parse([], _, _, Acc) -> 
