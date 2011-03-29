@@ -123,20 +123,22 @@ first_parse([H|T], Acc) ->
 
 pack_box({frame, Attr, _}) ->
   BG = extract_from_attr(bg, Attr),
-  Continue = "none",
+  Continue = extract_from_attr(continue, Attr),
   Fontsize = extract_from_attr(fontsize, Attr),
   Grid = extract_from_attr(grid, Attr),
   Lines = extract_from_attr(maxlines, Attr),
-  Measure = "30",
+  Width = extract_from_attr(width, Attr),
+  Measure =  integer_to_list(round(list_to_integer(Width) / 12)),   
+  %%Measure = extract_from_attr(measure, Attr),
   Name = extract_from_attr(name, Attr),
   X = extract_from_attr(x, Attr),
   YLiteral = extract_from_attr(y, Attr),
   Y = integer_to_list(842-list_to_integer(YLiteral)),
 
   Obj_name = "p",
-  Obj_para_ind = "0",
+  Obj_para_ind = extract_from_attr(paraIndent, Attr),
   
-  Tag_break = "true",
+  Tag_break = extract_from_attr(break, Attr),
   Tag_font = extract_from_attr(font, Attr),
   Tag_name = "raw",
 
@@ -145,11 +147,11 @@ pack_box({frame, Attr, _}) ->
               {"fontSize", Fontsize}, 
               {"grid", Grid}, 
               {"lines", Lines},
-              {"measure", Measure},
+              {"measure", Measure},                      % int()  = width of box in picos (1 pico=12 points)
               {"name", Name},
               {"x", X},
               {"y", Y}],
-             [{obj, [{"name", Obj_name},{"paraIndent", Obj_para_ind}], 
+             [{obj, [{"name", Obj_name},{"paraIndent", Obj_para_ind}],         % {int,int} = {first,line,...} the first line and every other lines ...
                     [{tag, [{"break", Tag_break},{"font", Tag_font},{"name", Tag_name}],[]
                      }
                     ]
