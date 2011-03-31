@@ -1,4 +1,7 @@
 <?xml version="1.0" ?>
 <user>
-  <First_Frame>John</First_Frame>
+  <name>John</name>
+  <price>150.00Kr</price>
+  <term>This is a dynamic text, the following is the static text, note the difference between #term and \#term.</term>
+  <unused>it is ok for the program to accept a template which doesn't use up the data fields in userdata xml file</unused>
 </user>

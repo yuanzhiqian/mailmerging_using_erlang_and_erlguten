@@ -3,7 +3,8 @@
  * Modified from the template
  *
  * YuanZhiqian
- * 
+ * --------------------------
+ * Note!!! The frames can't be too small, otherwise it will arouse undetectable error when processed in erlguten
  */
 
 @import <Foundation/CPObject.j>
@@ -12,6 +13,72 @@
 @import "MMGDocument.j"
 @import "MMGToolPaletteController.j"
 
+//The xml packing function
+function packXml(xmlDoc, graphic)
+{ 
+  //Set attributes
+  var attr_name = xmlDoc.createAttribute("name");
+  var attr_x = xmlDoc.createAttribute("x");
+  var attr_y = xmlDoc.createAttribute("y");
+  var attr_width = xmlDoc.createAttribute("width");
+  var attr_height = xmlDoc.createAttribute("height");
+  var attr_grid = xmlDoc.createAttribute("grid");
+  var attr_bg = xmlDoc.createAttribute("bg");
+  var attr_font = xmlDoc.createAttribute("font");
+  var attr_fontsize = xmlDoc.createAttribute("fontsize");
+  var attr_paraIndent = xmlDoc.createAttribute("paraIndent");
+  var attr_maxlines = xmlDoc.createAttribute("maxlines");
+  var attr_continue = xmlDoc.createAttribute("continue");
+  var attr_break = xmlDoc.createAttribute("break");
+
+  attr_name.nodeValue = [graphic name];
+  var bounds = [graphic bounds];
+  attr_x.nodeValue = CGRectGetMinX(bounds);
+  attr_y.nodeValue = CGRectGetMinY(bounds);
+  attr_width.nodeValue = CGRectGetWidth(bounds);
+  attr_height.nodeValue = CGRectGetHeight(bounds);
+  attr_grid.nodeValue = [graphic hasGrid]?"true":"false";
+  attr_bg.nodeValue = [graphic bg];
+  attr_font.nodeValue = [graphic textFont];
+  attr_fontsize.nodeValue = [graphic fontSize];
+  attr_paraIndent.nodeValue = [graphic paraIndent];
+  attr_maxlines.nodeValue = [graphic maxLines];
+  attr_continue.nodeValue = [graphic hasContinue];
+  attr_break.nodeValue = [graphic ifBreak];
+ 
+  //Create the frame node
+  var frameNode = xmlDoc.createElement("frame");  
+
+  //Add Attributes to frame
+  frameNode.setAttributeNode(attr_name);
+  frameNode.setAttributeNode(attr_x);
+  frameNode.setAttributeNode(attr_y);
+  frameNode.setAttributeNode(attr_width);
+  frameNode.setAttributeNode(attr_height);
+  frameNode.setAttributeNode(attr_grid);
+  frameNode.setAttributeNode(attr_bg);
+  frameNode.setAttributeNode(attr_font);
+  frameNode.setAttributeNode(attr_fontsize);
+  frameNode.setAttributeNode(attr_paraIndent);
+  frameNode.setAttributeNode(attr_maxlines);
+  frameNode.setAttributeNode(attr_continue);
+  frameNode.setAttributeNode(attr_break);
+  frameNode.setAttributeNode(attr_name);
+  frameNode.setAttributeNode(attr_name);
+
+  //Add text nodes to frame  
+  var content = [graphic content];
+  var textNode = xmlDoc.createTextNode(content);
+  frameNode.appendChild(textNode);
+
+  //Add frame nodes
+  var x = xmlDoc.getElementsByTagName("paper")[0];
+  x.appendChild(frameNode);
+
+  return xmlDoc;
+}
+
+//The objective-j part
 @implementation AppController : CPObject
 {
 }
@@ -94,25 +161,33 @@
     var graphics = [theDocument graphics];
     //console.log([graphics count]);
     var graphicCount = [graphics count];
-    var xmlString = '<?xml version="1.0" ?><paper>';
+    var xmlString = '<?xml version="1.0" ?><paper></paper>';
+    // Create DOM
+    if (window.DOMParser)
+    {
+      var parser = new DOMParser();
+      var xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    }
+    else //Internet Explorer
+    {
+      var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      xmlDoc.async = "false";
+      xmlDoc.loadXML(txt);
+    }
+    //Modify the DOM
     for (var index = 0; index<graphicCount; index++) 
     {
         var graphic = [graphics objectAtIndex:index]
-        var name = [graphic name];
-        var bounds = [graphic bounds];
-        var x = CGRectGetMinX(bounds);
-        var y = CGRectGetMinY(bounds);
-        var width = CGRectGetWidth(bounds);
-        var height = CGRectGetHeight(bounds);
-        var grid = [graphic hasGrid]?"true":"false";
-        var font = "Times-Roman";  //hard code
-        var fontsize = "32/32";    //hard code
-        var maxlines = [graphic maxLines];
-        var content = [graphic content];
-        xmlString += '<frame'+ ' name = ' + '"' + name + '"' + ' x = ' + '"' + x + '"' + ' y = ' + '"' + y + '"' + ' width = ' + '"' + width + '"' + ' height = ' + '"' + height + '"' + ' grid= ' + '"' + grid + '"' + ' font = ' + '"' + font + '"' + ' fontsize = ' + '"' + fontsize + '"' + ' maxlines = ' + '"' + maxlines + '"' +'>'+ content +'</frame>'; 
-        
-    }    
-    xmlString += '</paper>';
+        xmlDoc = packXml(xmlDoc, graphic);
+        //console.log(xmlDoc);        
+    }
+
+    xmlString = (new XMLSerializer()).serializeToString(xmlDoc);
+
+    //Add header
+    xmlString = '<?xml version="1.0" ?>' + xmlString;
+    console.log(xmlString); 
+    //Sending xml back to the server
     var httpBody = xmlString;
     var urlString = @"http://localhost:3000/template";
     var request = [CPURLRequest requestWithURL: urlString];
@@ -128,6 +203,7 @@
     //This method is called when a connection receives a response. in a
     //multi-part request, this method will (eventually) be called multiple times,
     //once for each part in the response.
+    alert("Success!");
 }
 
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error
