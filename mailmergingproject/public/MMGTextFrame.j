@@ -30,7 +30,7 @@
 {
     [self setName: "Frame"];
     [self setHasGrid: YES];
-    [self setBg: "default"];
+    [self setBg: "0.9,0,0"];
     [self setTextFont: "Times-Roman"];
     [self setFontSize: "32/32"];
     [self setParaIndent: "0"];        

@@ -2,7 +2,7 @@
 %% mail merge
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------
 %% Notice: 1. The output ommits redundant spaces, however, this is not my aim, it is the erlguten that does this on purpose. So I'm afraid I can not retain redundant spaces
-%%         2. #name means the param "name", and the \#name means the string "#name", if you mean \ itself, write "\ #name" instead
+%%         2. #name means the param "name", and the ##name means the string "#name", we don't allow parameters with the name beginning with #
 %%---------------------------------------------------------------------------------------------------------------------------------------------------------------
 %% Author: Yuan Zhiqian
 %%
@@ -70,15 +70,15 @@ merge(UserData, Template) ->
 
 %%%%%%%%%%%%%%%%%%%%%Successful!!!!!!!!!!!!!!!!
 test_insert_data()->
-  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello #name, you need to pay #price, test \\#name, test \\#price, test \\"}]}) of
+  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello #name, you need to pay #price, test ##name, test ##price."}]}) of
     {frame, _, Content} -> io:format("~p~n", [Content]);
     error -> error
   end.
 
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
-  case re:run(Content, "#[a-zA-Z0-9_]*", [global]) of
+  case re:run(Content, "#[a-zA-Z0-9_]+", [global]) of
     {match, MatchList} ->
-      case re:run(Content, "[\\\\]#[a-zA-Z0-9_]*", [global]) of
+      case re:run(Content, "##[a-zA-Z0-9_]+", [global]) of
         {match, MatchList_filter} ->
           M1 = lists:flatten(MatchList),
           M2 = lists:flatten(MatchList_filter),
@@ -91,12 +91,12 @@ insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
       case replaceData(UserData, MatchList_final, Content) of
         error -> error;
         ReplacedString -> 
-          %%remove slashes if strings like \\#name exist in the content
-          {frame, Arg, [{raw, re:replace(ReplacedString, "\\\\#", "#", [global, {return, list}])}]}
+          %%remove slashes if strings like ##name exist in the content
+          {frame, Arg, [{raw, re:replace(ReplacedString, "##", "#", [global, {return, list}])}]}
       end;
     nomatch ->     
-      %%remove slashes if strings like \\#name exist in the content
-      {frame, Arg, [{raw, re:replace(Content, "\\\\#", "#", [global, {return, list}])}]}
+      %%remove slashes if strings like ##name exist in the content
+      {frame, Arg, [{raw, re:replace(Content, "##", "#", [global, {return, list}])}]}
   end.
 
 replaceData(_, [], Content) ->
@@ -108,7 +108,7 @@ replaceData(UserData, [{Start, Len}|T], Content) ->
     {value, {_, Value}} -> 
       %%Update the position of matches in the match list
       T_mod = lists:map(fun({S, L})-> {S + length(Value) - Len, L} end, T),      
-      replaceData(UserData, T_mod, re:replace(Content, "#[a-zA-Z0-9_]*", Value, [{return, list}, {offset, Start}]));  %% offset indicates the right token to be replaced 
+      replaceData(UserData, T_mod, re:replace(Content, "#[a-zA-Z0-9_]+", Value, [{return, list}, {offset, Start}]));  %% offset indicates the right token to be replaced 
     false -> error
   end.
 

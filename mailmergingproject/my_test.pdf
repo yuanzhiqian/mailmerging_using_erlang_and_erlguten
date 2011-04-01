@@ -27,17 +27,16 @@ endobj
 >>
 endobj
 4 0 obj
-<</Length 411>>
+<</Length 403>>
 stream
 BT
-1 0 0 1 180 725 Tm  /F1 32 Tf
-0 Tw [ (Hello)0 ] TJ
-0 -32 Td  [ (John,)0 ] TJ
-0 -32 Td  [ (you)0 ] TJ
-0 -32 Td  -1.76 Tw [ (need to pay)0 ] TJ
+1 0 0 1 214 661 Tm  20.45 Tw /F1 32 Tf
+20.45 Tw [ (Hello John,)0 ] TJ
+0 -32 Td  9.34 Tw [ (you need to)0 ] TJ
+0 -32 Td  [ (pay)0 ] TJ
 0 -32 Td  0 Tw [ (150.00Kr)55 (.)0 ] TJ
 ET
-  q  0.4 g 0.4 G 0 w 180 757 m 180 565 l S 324 757 m 324 565 l S 180 757 m 324 757 l S 180 725 m 324 725 l S 180 693 m 324 693 l S 180 661 m 324 661 l S 180 629 m 324 629 l S 180 597 m 324 597 l S 180 565 m 324 565 l S  Q  
+  q  0.4 g 0.4 G 0 w 214 693 m 214 501 l S 382 693 m 382 501 l S 214 693 m 382 693 l S 214 661 m 382 661 l S 214 629 m 382 629 l S 214 597 m 382 597 l S 214 565 m 382 565 l S 214 533 m 382 533 l S 214 501 m 382 501 l S  Q  
 endstream
 endobj
 5 0 obj
@@ -71,9 +70,9 @@ xref
 0000000129 00000 n 
 0000000162 00000 n 
 0000000323 00000 n 
-0000000783 00000 n 
-0000000852 00000 n 
-0000000905 00000 n 
+0000000775 00000 n 
+0000000844 00000 n 
+0000000897 00000 n 
 trailer
 <<
 /Size 8
@@ -81,5 +80,5 @@ trailer
 /Info 7 0 R
 >>
 startxref
-1075
+1067
 %%EOF

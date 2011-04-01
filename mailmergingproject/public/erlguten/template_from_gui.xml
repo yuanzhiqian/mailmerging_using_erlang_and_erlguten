@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <paper>
-  <frame name = "FrameA" x = "100" y = "20" width = "400" height = "20" grid="true" bg="default" font = "Times-Roman" fontsize = "32/32" paraIndent="0" maxlines = "1" continue="none" break="true">Hello \#name! #name</frame>
+  <frame name = "FrameA" x = "100" y = "20" width = "400" height = "20" grid="true" bg="default" font = "Times-Roman" fontsize = "32/32" paraIndent="0" maxlines = "1" continue="none" break="true">Hello ##name! #name</frame>
   <frame name = "FrameB" x = "100" y = "120" width = "400" height = "80" grid="false" bg="1.0,0.0,0.0" font = "Times-Italic" fontsize = "15/32" paraIndent="0" maxlines = "2" continue="none" break="true">Hello #name, This is your invoice from Klarna, the total amount to pay is #price</frame>
-  <frame name = "FrameC" x = "100" y = "220" width = "400" height = "100" grid="false" bg="default" font = "Times-Roman" fontsize = "12/32" paraIndent="0" maxlines = "10" continue="none" break="true">This is a test. We suppose the following text should not be wrongfully passed, and the spaces should also be maintained rightly:        #term        (8 spaces)\\\#term\\</frame>
+  <frame name = "FrameC" x = "100" y = "220" width = "400" height = "100" grid="false" bg="default" font = "Times-Roman" fontsize = "12/32" paraIndent="0" maxlines = "10" continue="none" break="true">This is a test. We suppose the following text should not be wrongfully passed, and the spaces should also be maintained rightly:#term ##term</frame>
   <frame name = "FrameD" x = "100" y = "400" width = "400" height = "120" grid = "false" bg="default" font = "Times-Roman" fontsize = "24/32" paraIndent="0" maxlines = "10" continue="none" break="true">#shoppinglist </frame>
   <frame name = "FrameE" x = "100" y = "500" width = "500" height = "300" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/32" paraIndent="0" maxlines = "30" continue="none" break="true">#shopplingtable</frame>
 
