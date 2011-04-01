@@ -37,11 +37,11 @@ endobj
 >>
 endobj
 5 0 obj
-<</Length 1588>>
+<</Length 1087>>
 stream
 BT
 1 0 0 1 100 790 Tm  0 Tw /F1 32 Tf
-0 Tw [ (Hello John!)0 ] TJ
+0 Tw [ (Hello #name! John)0 ] TJ
 ET
   q  0.4 g 0.4 G 0 w 100 822 m 100 790 l S 496 822 m 496 790 l S 100 822 m 496 822 l S 100 790 m 496 790 l S  Q  
 q
@@ -62,22 +62,13 @@ ET
 ET
  BT
 1 0 0 1 100 410 Tm  0 Tw /F1 24 Tf
-0 Tw [ (This line contains no params.)0 ] TJ
+0 Tw [ ({ul}{li}cof)25 (fee{/li}{li}milk{/li}{/ul})0 ] TJ
 ET
- 
-q
- 1.00 0.00 0.00  rg
- 95 305 406 42  re f
- 
-Q
  BT
-1 0 0 1 100 310 Tm  -0.76 Tw /F1 24 Tf
--0.76 Tw [ (This line contains no params. Later it will)0 ] TJ
-0 -32 Td  -2.28 Tw [ (be used as a "improper" template too mak)10 (e)0 ] TJ
-0 -32 Td  -1.77 Tw [ (sure that the program will discard improp-)0 ] TJ
-0 -32 Td  0 Tw [ (er template, using #none)15 (xistP)15 (aram)0 ] TJ
+1 0 0 1 100 310 Tm  0 Tw /F1 12 Tf
+0 Tw [ ({table}{tr}{td}cof)25 (fee{/td}{td}100.00Kr{/td}{/tr}{tr}{td}milk{/td}{td}50.00Kr{/td}{/tr}{/table})0 ] TJ
 ET
-  q  0.4 g 0.4 G 0 w 100 342 m 100 22 l S 496 342 m 496 22 l S 100 342 m 496 342 l S 100 310 m 496 310 l S 100 278 m 496 278 l S 100 246 m 496 246 l S 100 214 m 496 214 l S 100 182 m 496 182 l S 100 150 m 496 150 l S 100 118 m 496 118 l S 100 86 m 496 86 l S 100 54 m 496 54 l S 100 22 m 496 22 l S  Q  
+ 
 endstream
 endobj
 6 0 obj
@@ -112,9 +103,9 @@ xref
 0000000250 00000 n 
 0000000295 00000 n 
 0000000456 00000 n 
-0000002094 00000 n 
-0000002163 00000 n 
-0000002216 00000 n 
+0000001593 00000 n 
+0000001662 00000 n 
+0000001715 00000 n 
 trailer
 <<
 /Size 9
@@ -122,5 +113,5 @@ trailer
 /Info 8 0 R
 >>
 startxref
-2386
+1885
 %%EOF

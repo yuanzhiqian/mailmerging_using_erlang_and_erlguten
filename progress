@@ -35,8 +35,8 @@ Mar 27. 19:57
 
   Next: Combine with GUI
      
-        Goal: 1. Hard code from GUI to make the whole process go on well;
-              2. Try to add dynamic fields from GUI;
+        Goal: 1. Hard code from GUI to make the whole process go on well;           Done
+              2. Try to add dynamic fields from GUI;                                Done
               3. Add more properties' typing from GUI;
               4. Do research on editing view;
               5. (optional) Deal with the # mark problem.                           Done
@@ -44,6 +44,19 @@ Mar 27. 19:57
 Mar 29. 22:28
 
   Modified some orginally hard coded fields including bg field. Modified one bug in erlguten module.
+
+Mar 31. 15:36
+  
+  Combined with GUI, modified some hard coded fields in GUI. Now the whole process is nearly done. What's left?
+  
+       1. Table and list. (Would be small amount of work.)
+       2. The editing view. (Would be huge.)
+
+  Next: Finish the things left
+    
+        Goal: 1. Table and list. (Small amount of work)
+              2. The editing view. (Huge)
+
 
 
 

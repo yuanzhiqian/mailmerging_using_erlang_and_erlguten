@@ -203,7 +203,7 @@ function packXml(xmlDoc, graphic)
     //This method is called when a connection receives a response. in a
     //multi-part request, this method will (eventually) be called multiple times,
     //once for each part in the response.
-    alert("Success!");
+    alert("Success!\n"+data);
 }
 
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error

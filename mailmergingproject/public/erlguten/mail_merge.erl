@@ -76,9 +76,19 @@ test_insert_data()->
   end.
 
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
-  case re:run(Content, "[^\\\\]#[a-zA-Z0-9_]*", [global]) of
+  case re:run(Content, "#[a-zA-Z0-9_]*", [global]) of
     {match, MatchList} ->
-      case replaceData(UserData, lists:flatten(MatchList), Content) of
+      case re:run(Content, "[\\\\]#[a-zA-Z0-9_]*", [global]) of
+        {match, MatchList_filter} ->
+          M1 = lists:flatten(MatchList),
+          M2 = lists:flatten(MatchList_filter),
+          M2_mod = lists:map(fun({S, L})-> {S + 1, L - 1} end, M2),
+          MatchList_final = lists:subtract(M1, M2_mod);
+        nomatch ->
+          MatchList_final = lists:flatten(MatchList)
+      end,
+      io:format("~p~n", [MatchList_final]),  %%debug
+      case replaceData(UserData, MatchList_final, Content) of
         error -> error;
         ReplacedString -> 
           %%remove slashes if strings like \\#name exist in the content
@@ -89,19 +99,18 @@ insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
       {frame, Arg, [{raw, re:replace(Content, "\\\\#", "#", [global, {return, list}])}]}
   end.
 
-replaceData_aux(_, [], _, NewContent) ->
-  %io:format("~p~n", [NewContent]),  %%debug
-  NewContent;  
-replaceData_aux(UserData, [{Start, Len}|T], Content, NewContent) ->
+replaceData(_, [], Content) ->
+  Content;  
+replaceData(UserData, [{Start, Len}|T], Content) ->
   %% +1 because re module counts from 0 and lists module counts from 1; +1 again to skip # mark
-  Param = list_to_atom(lists:sublist(Content, Start + 1 + 1 + 1, Len - 2)),  
+  Param = list_to_atom(lists:sublist(Content, Start + 1 + 1, Len - 1)),  
   case lists:keysearch(Param, 1, UserData) of
     {value, {_, Value}} -> 
-      replaceData_aux(UserData, T, Content, re:replace(NewContent, "#[a-zA-Z0-9_]*", Value, [{return, list}]));        
+      %%Update the position of matches in the match list
+      T_mod = lists:map(fun({S, L})-> {S + length(Value) - Len, L} end, T),      
+      replaceData(UserData, T_mod, re:replace(Content, "#[a-zA-Z0-9_]*", Value, [{return, list}, {offset, Start}]));  %% offset indicates the right token to be replaced 
     false -> error
   end.
-replaceData(UserData, MatchList, Content) ->
-  replaceData_aux(UserData, MatchList, Content, Content).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%Above is the merge part%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
