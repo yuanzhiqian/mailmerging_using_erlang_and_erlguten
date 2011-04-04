@@ -32,24 +32,7 @@
 -import(lists, [foreach/2, map/2]).
 -import(pdf, [flatten/1]).
 
--record(box, {continue,  % str()  = name of the continuation frame 
-	      free=1,    % int()  = first free line in the box
-	      grid,      % bool   = show a grid
-	      bg,        % no | {yes,R,G,B} background color
-	      pointSize, % int()  = size in points of the main text in
-	                 %          the box
-	      leading,   % int()  = gap between lines in points
-	      maxLines,  % int()  = max lines in the box
-	      measure,   % int()  = width of box in picos (1 pico=12 points)
-	      name,      % str()  = name of box
-	      objs,      % [#obj] = objects
-	      x,         % int()  = X coord of top left hand corner of box
-	      y}).       % int()  = Y coord of top left hand corner of box
-
--record(obj,{
-	  name,          % atom() = tag name
-	  paraIndent,    % {int,int} = {first,line,...}
-	  tags}).        % [#tag]
+-include("erlguten.hrl").
 
 batch([X]) ->
     format(atom_to_list(X)).
@@ -63,11 +46,12 @@ format(File) ->
     Out = filename:rootname(File) ++ ".pdf",
     case V of
 	{error, W} ->
-	    io:format("Error in source:~p~n",[V]),
+	    io:format("Error in source:~p~n~p~n",[W, V]),
 	    exit(1);
 	[{pi,_},{xml,{document,_, Flows}}] ->
 	    PDF  = pdf:new(),
 	    foreach(fun({flow,Args,Data}) ->
+                            %io:format("~p~n", [Data]), %%debug
 			    Box = parse_flow(Args),
 			    format_flow(PDF, Data, Box)
 		    end, Flows),
@@ -101,36 +85,63 @@ format_flow(PDF, Chunks, Box) ->
 	    void
     end.
 
-format_flow1([Xml={Tag,Args,Data}|T], Box1, PDF) ->
+%%%%%%For table and list
+pre_parse(Xml, Box1, PDF) ->
+  %%io:format("~p~n~p~n", [Xml, Box1]), %%debug
+  case Box1#box.class of
+    "text" -> Xml;
+    "table" -> 
+      table_and_list:parse_table(Xml, Box1, PDF);
+    "list" -> 
+      table_and_list:parse_list(Xml, Box1, PDF)
+  end.
+%%%%%%
+
+format_flow1([Xml_to_parse={Tag,_,_}|T], Box1, PDF) ->
     %% io:format("Flow Chunk:~n~p~n into box:~n~p~n", [Xml, Box1]),
-    CurrentObj = get_tag_schema(atom_to_list(Tag), Box1#box.objs),
-    TagMap = CurrentObj#obj.tags,
-    %% io:format("Tag schema=~p~n", [CurrentObj]),
-    %% io:format("Tag map=~p~n", [TagMap]),
-    %% make a font_map
-    %% Something like ..
-    %% [{raw,1,true,"Times-Roman"},{em,2,true,"Times-Italic"},..]
-    FontMap = map(fun({Tg,Name,Bool}) ->
+    %io:format("~p~n", [Xml]), %%debug
+
+    %Xml = Xml_to_parse, %%debug
+    Xml = pre_parse(Xml_to_parse, Box1, PDF),
+    %io:format("~p~n", [Xml]), %%debug
+
+    case Xml of
+    {_,_,[{_,[],[{raw,""}]}]} ->
+      format_flow1(T, Box1, PDF);
+    _ -> 
+      CurrentObj = get_tag_schema(atom_to_list(Tag), Box1#box.objs),
+      TagMap = CurrentObj#obj.tags,
+      %% io:format("Tag schema=~p~n", [CurrentObj]),
+      %% io:format("Tag map=~p~n", [TagMap]), %%debug
+      %% make a font_map
+      %% Something like ..
+      %% [{raw,1,true,"Times-Roman"},{em,2,true,"Times-Italic"},..]
+      FontMap = map(fun({Tg,Name,Bool}) ->
 			  {Tg,pdf:get_font_alias(PDF, Name),Bool,Name}
-		  end, TagMap),
-    %% io:format("FontMap=~p~n", [FontMap]),
-    P1 = CurrentObj#obj.paraIndent,
-    Measure = Box1#box.measure, 
-    %% io:format("ParaIndent=~p Measure=~p~n", [P1, Measure]),
-    ParaShape = map(fun(I) -> Measure-I end, P1),
-    %% io:format("ParaShape=~p~n", [ParaShape]),
-    PointSize = Box1#box.pointSize,
-    %% io:format("PointSize=~p~n", [PointSize]),
-    Toks  = erlguten_normalise_xml:normalise_xml(Xml, FontMap),
-    Lines = erlguten_para_break:break_para(Toks, PointSize, ParaShape, FontMap),
-    PdfLines = erlguten_lines2pdf:lines2pdf(Lines, PointSize, ParaShape, FontMap),
-    %% Now figure out if we can fit the paragraph in this page
-    Need = length(Lines),
-    Free = Box1#box.free,
-    Max  = Box1#box.maxLines,
-    Available = Max - Free + 1,
-    %% io:format("I need ~p lines there are ~p~n", [Need, Available]),
-    case Need =< Available of 
+		    end, TagMap),
+      %% io:format("FontMap=~p~n", [FontMap]),
+      P1 = CurrentObj#obj.paraIndent,
+      Measure = Box1#box.measure, 
+      %% io:format("ParaIndent=~p Measure=~p~n", [P1, Measure]),
+      ParaShape = map(fun(I) -> Measure-I end, P1),
+      %% io:format("ParaShape=~p~n", [ParaShape]),
+      PointSize = Box1#box.pointSize,
+      %% io:format("PointSize=~p~n", [PointSize]),
+      %io:format("~p~n", [Xml]), %%debug
+      Toks  = erlguten_normalise_xml:normalise_xml(Xml, FontMap),
+      %io:format("~p~n", [Toks]), %%debug
+      Lines = erlguten_para_break:break_para(Toks, PointSize, ParaShape, FontMap),
+      %io:format("~p~n", [Lines]), %%debug
+      PdfLines = erlguten_lines2pdf:lines2pdf(Lines, PointSize, ParaShape, FontMap),
+      %io:format("~p~n", [PdfLines]), %%debug
+      %% Now figure out if we can fit the paragraph in this page
+      Need = length(Lines),
+      Free = Box1#box.free,
+      Max  = Box1#box.maxLines,
+      Available = Max - Free + 1,
+      %%io:format("~p~n", [Need]), %%debug
+      %% io:format("I need ~p lines there are ~p~n", [Need, Available]),
+      case Need =< Available of 
 	true ->
 	    %% io:format("Good no worries~n"),
 	    #box{x=X,y=Y,leading=Leading,measure=Measure} = Box1,
@@ -145,6 +156,7 @@ format_flow1([Xml={Tag,Args,Data}|T], Box1, PDF) ->
 	false ->
 	    %% io:format("Oh dear~n")
 	    void
+      end
     end;
 format_flow1([H|T], Box, Pdf) ->
     io:format("wot is this:~p~n",[H]),
@@ -166,6 +178,7 @@ parse_flow([{"galley",F},{"name",Tag}]) ->
 	    io:format("Error in galley(~p):~p~n",[F, E]),
 	    exit(1);
 	L ->
+            %%io:format("~p~n",[L]),  %%debug
 	    G = parse_galley(F, L),
 	    get_box(Tag, G)
     end.
@@ -183,9 +196,11 @@ get_box1(Tag, []) ->
     exit({missing,box,Tag}).
 
 parse_galley(F, [{pi,_},{xml, {galley,[],Boxes}}]) ->
+    %%io:format("~p~n",[Boxes]),  %%debug
     {galley, F, map(fun parse_box/1, Boxes)}.
 
-parse_box({box, [{"bg", Col},
+parse_box({box, [{"bg", Col},                               %%Attention!!! The fields are alphabetical orded
+                 {"class",Class},
 		 {"continue",C},
 		 {"fontSize",F},
 		 {"grid", Grid},
@@ -205,13 +220,15 @@ parse_box({box, [{"bg", Col},
 	       grid=to_bool(Grid),
 	       bg=Bg,
 	       pointSize=Pt,
+               fontSize = F,
 	       leading=Leading,
 	       maxLines=Lines,
 	       measure=Measure,
 	       name=Name,
 	       objs=Os,
 	       x=XX,
-	       y=YY},
+	       y=YY,
+               class=Class},
     %% io:format("Box=~p~n",[Box]),
     Box;
 parse_box(B) ->
@@ -255,7 +272,7 @@ parse_fontSize(S) ->
 parse_paraIndent(S) ->
     case string:tokens(S, ",") of
 	Toks ->
-            %%io:format("~p~n", [Toks]),  %%debug
+            %io:format("~p~n", [Toks]),  %%debug
 	    map(fun(I) -> parse_int("paraIndent",  I) end, Toks);
 	_ ->
 	    io:format("paraIndent must be of the form <int>,<int>, was:~s",

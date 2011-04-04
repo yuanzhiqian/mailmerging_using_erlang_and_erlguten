@@ -87,7 +87,7 @@ insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
         nomatch ->
           MatchList_final = lists:flatten(MatchList)
       end,
-      io:format("~p~n", [MatchList_final]),  %%debug
+      %io:format("~p~n", [MatchList_final]),  %%debug
       case replaceData(UserData, MatchList_final, Content) of
         error -> error;
         ReplacedString -> 
@@ -143,6 +143,7 @@ pack_box({frame, Attr, _}) ->
   X = extract_from_attr(x, Attr),
   YLiteral = extract_from_attr(y, Attr),
   Y = integer_to_list(842-list_to_integer(YLiteral)),
+  Class = extract_from_attr(class, Attr),
 
   Obj_name = "p",
   Obj_para_ind = extract_from_attr(paraIndent, Attr),
@@ -159,7 +160,8 @@ pack_box({frame, Attr, _}) ->
               {"measure", Measure},                      % int()  = width of box in picos (1 pico=12 points)
               {"name", Name},
               {"x", X},
-              {"y", Y}],
+              {"y", Y},
+              {"class", Class}],
              [{obj, [{"name", Obj_name},{"paraIndent", Obj_para_ind}],         % {int,int} = {first,line,...} the first line and every other lines ...
                     [{tag, [{"break", Tag_break},{"font", Tag_font},{"name", Tag_name}],[]
                      }
@@ -187,7 +189,7 @@ second_parse([H|T], Galley_name, [Hbox|Tbox], Acc) ->
   second_parse(T, Galley_name, Tbox, [pack_flow(H, Galley_name, Hbox)|Acc]).
 
 pack_flow({frame, _, Content}, Galley_name, 
-          {box,[_,_,_,_,_,_,{"name", Name},_,_],
+          {box,[_,_,_,_,_,_,{"name", Name},_,_,_],
              [{obj, [{"name", Obj_name},_], 
                     [{tag, [_,_,{"name", Tag_name}],
                    []}]}]} ) ->

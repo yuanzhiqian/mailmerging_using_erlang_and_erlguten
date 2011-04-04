@@ -37,7 +37,7 @@ endobj
 >>
 endobj
 5 0 obj
-<</Length 1378>>
+<</Length 1066>>
 stream
 BT
 1 0 0 1 20 790 Tm  0 Tw /F1 32 Tf
@@ -60,78 +60,10 @@ ET
 0 -32 Td  -0.47 Tw [ (the spaces should also be maintained rightly:This is a dynamic te)15 (xt, the follo)25 (wing is)0 ] TJ
 0 -32 Td  0 Tw [ (the static te)15 (xt, note the dif)25 (ference between #term and #term. #term)0 ] TJ
 ET
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 442 Td  /Im1 Do
-(milk) Tj
-  T*
- 
+ BT
+1 0 0 1 20 410 Tm  0 Tw /F1 24 Tf
+0 Tw [ ({ul}{li}milk{/li}{li}apple{/li}{li}orange{/li}{/ul})0 ] TJ
 ET
- 
-Q
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 422 Td  /Im1 Do
-(apple) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 402 Td  /Im1 Do
-(orange) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 382 Td  /Im1 Do
-(milk) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 362 Td  /Im1 Do
-(apple) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 14 Tf 0 Tr
- 20 342 Td  /Im1 Do
-(orange) Tj
-  T*
- 
-ET
- 
-Q
  BT
 1 0 0 1 20 310 Tm  0 Tw /F1 12 Tf
 0 Tw [ ({table columns = {goods, count, price}}{tr}{th}goods{/th}{th}count{/th}{th}price{/th}{/tr}{/table})0 ] TJ
@@ -171,9 +103,9 @@ xref
 0000000250 00000 n 
 0000000295 00000 n 
 0000000456 00000 n 
-0000001884 00000 n 
-0000001953 00000 n 
-0000002006 00000 n 
+0000001572 00000 n 
+0000001641 00000 n 
+0000001694 00000 n 
 trailer
 <<
 /Size 9
@@ -181,5 +113,5 @@ trailer
 /Info 8 0 R
 >>
 startxref
-2176
+1864
 %%EOF
