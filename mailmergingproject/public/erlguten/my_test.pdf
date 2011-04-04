@@ -37,7 +37,7 @@ endobj
 >>
 endobj
 5 0 obj
-<</Length 1378>>
+<</Length 2731>>
 stream
 BT
 1 0 0 1 20 790 Tm  0 Tw /F1 32 Tf
@@ -65,8 +65,7 @@ q
  
 BT
  /F1 14 Tf 0 Tr
- 20 442 Td  /Im1 Do
-(milk) Tj
+ 20 442 Td  (milk) Tj
   T*
  
 ET
@@ -77,8 +76,7 @@ q
  
 BT
  /F1 14 Tf 0 Tr
- 20 422 Td  /Im1 Do
-(apple) Tj
+ 20 422 Td  (apple) Tj
   T*
  
 ET
@@ -89,8 +87,7 @@ q
  
 BT
  /F1 14 Tf 0 Tr
- 20 402 Td  /Im1 Do
-(orange) Tj
+ 20 402 Td  (orange) Tj
   T*
  
 ET
@@ -100,9 +97,8 @@ Q
 q
  
 BT
- /F1 14 Tf 0 Tr
- 20 382 Td  /Im1 Do
-(milk) Tj
+ /F1 12 Tf 0 Tr
+ 20 342 Td  (#goods) Tj
   T*
  
 ET
@@ -112,9 +108,8 @@ Q
 q
  
 BT
- /F1 14 Tf 0 Tr
- 20 362 Td  /Im1 Do
-(apple) Tj
+ /F1 12 Tf 0 Tr
+ 80 342 Td  (count_col?) Tj
   T*
  
 ET
@@ -124,18 +119,288 @@ Q
 q
  
 BT
- /F1 14 Tf 0 Tr
- 20 342 Td  /Im1 Do
-(orange) Tj
+ /F1 12 Tf 0 Tr
+ 140 342 Td  ($price?) Tj
   T*
  
 ET
  
 Q
- BT
-1 0 0 1 20 310 Tm  0 Tw /F1 12 Tf
-0 Tw [ ({table columns = {goods, count, price}}{tr}{th}goods{/th}{th}count{/th}{th}price{/th}{/tr}{/table})0 ] TJ
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 342 Td  (place) Tj
+  T*
+ 
 ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 318 Td  (milk) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 318 Td  (1) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 318 Td  (40.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 318 Td  (ICA) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 294 Td  (coffee) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 294 Td  (2) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 294 Td  (90.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 294 Td  (IKEA) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 270 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 270 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 270 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 270 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 246 Td  (pen) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 246 Td  (2) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 246 Td  (20.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 246 Td  (Hemkop) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 222 Td  (mp3) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 222 Td  (3) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 222 Td  (100.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 222 Td  (coop) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 20 198 Td  (xbox) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 80 198 Td  (5) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 140 198 Td  (9.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F1 12 Tf 0 Tr
+ 200 198 Td  (7Eleven) Tj
+  T*
+ 
+ET
+ 
+Q
  
 endstream
 endobj
@@ -171,9 +436,9 @@ xref
 0000000250 00000 n 
 0000000295 00000 n 
 0000000456 00000 n 
-0000001884 00000 n 
-0000001953 00000 n 
-0000002006 00000 n 
+0000003237 00000 n 
+0000003306 00000 n 
+0000003359 00000 n 
 trailer
 <<
 /Size 9
@@ -181,5 +446,5 @@ trailer
 /Info 8 0 R
 >>
 startxref
-2176
+3529
 %%EOF

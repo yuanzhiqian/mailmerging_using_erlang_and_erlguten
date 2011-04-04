@@ -76,27 +76,52 @@ test_insert_data()->
   end.
 
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
-  case re:run(Content, "#[a-zA-Z0-9_]+", [global]) of
-    {match, MatchList} ->
-      case re:run(Content, "##[a-zA-Z0-9_]+", [global]) of
-        {match, MatchList_filter} ->
-          M1 = lists:flatten(MatchList),
-          M2 = lists:flatten(MatchList_filter),
-          M2_mod = lists:map(fun({S, L})-> {S + 1, L - 1} end, M2),
-          MatchList_final = lists:subtract(M1, M2_mod);
-        nomatch ->
-          MatchList_final = lists:flatten(MatchList)
-      end,
-      %io:format("~p~n", [MatchList_final]),  %%debug
-      case replaceData(UserData, MatchList_final, Content) of
-        error -> error;
-        ReplacedString -> 
-          %%remove slashes if strings like ##name exist in the content
-          {frame, Arg, [{raw, re:replace(ReplacedString, "##", "#", [global, {return, list}])}]}
-      end;
-    nomatch ->     
-      %%remove slashes if strings like ##name exist in the content
-      {frame, Arg, [{raw, re:replace(Content, "##", "#", [global, {return, list}])}]}
+  %%io:format("~p~n", [Arg]), %% debug
+  case lists:keysearch("class", 1, Arg) of
+    {value, {"class", "table"}} ->
+       TagName = case lists:keysearch("name", 1, Arg) of
+         {value, {"name", Name}} -> Name;
+         false -> 
+           io:format("Unknow internal error in insertData function, search class~n"),
+           erlang:halt()      
+       end,
+       %%io:format("~p~n~p~n", [TagName, UserData]), %% debug
+       TableData = case lists:keysearch(list_to_atom(TagName), 1, UserData) of
+         {value, {_, TData}} -> TData;
+         false ->
+           io:format("Unknow internal error in insertData function, search TagName~n"),
+           erlang:halt()  
+       end,
+       %%io:format("~p~n", [TableData]),  %%debug
+       MergedTableFormatAndData = Content ++ "@" ++ TableData,
+       %%io:format("~p~n",[MergedTableFormatAndData]),  %% debug
+       {frame, Arg, [{raw, MergedTableFormatAndData}]};
+    {value, {"class", _}} ->
+	  case re:run(Content, "#[a-zA-Z0-9_]+", [global]) of
+	    {match, MatchList} ->
+	      case re:run(Content, "##[a-zA-Z0-9_]+", [global]) of
+		{match, MatchList_filter} ->
+		  M1 = lists:flatten(MatchList),
+		  M2 = lists:flatten(MatchList_filter),
+		  M2_mod = lists:map(fun({S, L})-> {S + 1, L - 1} end, M2),
+		  MatchList_final = lists:subtract(M1, M2_mod);
+		nomatch ->
+		  MatchList_final = lists:flatten(MatchList)
+	      end,
+	      %io:format("~p~n", [MatchList_final]),  %%debug
+	      case replaceData(UserData, MatchList_final, Content) of
+		error -> error;
+		ReplacedString -> 
+		  %%remove slashes if strings like ##name exist in the content
+		  {frame, Arg, [{raw, re:replace(ReplacedString, "##", "#", [global, {return, list}])}]}
+	      end;
+	    nomatch ->     
+	      %%remove slashes if strings like ##name exist in the content
+	      {frame, Arg, [{raw, re:replace(Content, "##", "#", [global, {return, list}])}]}
+	  end;    
+    false ->
+      io:format("Unknow internal error in insertData function~n"),
+      erlang:halt()
   end.
 
 replaceData(_, [], Content) ->
