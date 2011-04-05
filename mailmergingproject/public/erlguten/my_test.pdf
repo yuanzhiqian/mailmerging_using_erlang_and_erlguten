@@ -3,7 +3,7 @@
 <<
 /Type  /Font 
 /Subtype  /Type1 
-/Name  /F2 
+/Name  /F1 
 /BaseFont  /Times-Italic 
 /Encoding  /MacRomanEncoding 
 >>
@@ -12,23 +12,23 @@ endobj
 <<
 /Type  /Font 
 /Subtype  /Type1 
-/Name  /F1 
+/Name  /F2 
 /BaseFont  /Times-Roman 
 /Encoding  /MacRomanEncoding 
 >>
 endobj
 3 0 obj
 <<
-/F2  1 0 R 
-/F1  2 0 R 
+/F1  1 0 R 
+/F2  2 0 R 
 >>
 endobj
 4 0 obj
 <<
 /Type  /Pages 
-/Count  1 
+/Count  2 
 /MediaBox  [  0  0  595  842  ] 
-/Kids  [  6 0 R  ] 
+/Kids  [  6 0 R  8 0 R  ] 
 /Resources <<
 /Font  3 0 R 
 /ProcSet  [  /PDF  /Text  ] 
@@ -37,25 +37,21 @@ endobj
 >>
 endobj
 5 0 obj
-<</Length 2731>>
+<</Length 1239>>
 stream
-BT
-1 0 0 1 20 790 Tm  0 Tw /F1 32 Tf
-0 Tw [ (Hello #name! John)0 ] TJ
-ET
-  q  0.4 g 0.4 G 0 w 20 822 m 20 790 l S 416 822 m 416 790 l S 20 822 m 416 822 l S 20 790 m 416 790 l S  Q  
+
 q
  1.00 0.00 0.00  rg
  15 685 406 42  re f
  
 Q
  BT
-1 0 0 1 20 690 Tm  0.58 Tw /F2 15 Tf
+1 0 0 1 20 690 Tm  0.58 Tw /F1 15 Tf
 0.58 Tw [ (Hello J)25 (ohn, This is your in)40 (voice fr)45 (om Klarna, the total amount to)0 ] TJ
 0 -32 Td  0 Tw [ (pay is 150.00Kr)0 ] TJ
 ET
  BT
-1 0 0 1 20 590 Tm  0.15 Tw /F1 12 Tf
+1 0 0 1 20 590 Tm  0.15 Tw /F2 12 Tf
 0.15 Tw [ (This is a test. W)80 (e suppose the follo)25 (wing te)15 (xt should not be wrongfully passed, and)0 ] TJ
 0 -32 Td  -0.47 Tw [ (the spaces should also be maintained rightly:This is a dynamic te)15 (xt, the follo)25 (wing is)0 ] TJ
 0 -32 Td  0 Tw [ (the static te)15 (xt, note the dif)25 (ference between #term and #term. #term)0 ] TJ
@@ -64,7 +60,7 @@ ET
 q
  
 BT
- /F1 14 Tf 0 Tr
+ /F2 14 Tf 0 Tr
  20 442 Td  (milk) Tj
   T*
  
@@ -75,7 +71,7 @@ Q
 q
  
 BT
- /F1 14 Tf 0 Tr
+ /F2 14 Tf 0 Tr
  20 422 Td  (apple) Tj
   T*
  
@@ -86,7 +82,7 @@ Q
 q
  
 BT
- /F1 14 Tf 0 Tr
+ /F2 14 Tf 0 Tr
  20 402 Td  (orange) Tj
   T*
  
@@ -97,8 +93,8 @@ Q
 q
  
 BT
- /F1 12 Tf 0 Tr
- 20 342 Td  (#goods) Tj
+ /F2 12 Tf 0 Tr
+ 20 2 Td  (#goods) Tj
   T*
  
 ET
@@ -108,8 +104,8 @@ Q
 q
  
 BT
- /F1 12 Tf 0 Tr
- 80 342 Td  (count_col?) Tj
+ /F2 12 Tf 0 Tr
+ 80 2 Td  (count_col?) Tj
   T*
  
 ET
@@ -119,8 +115,8 @@ Q
 q
  
 BT
- /F1 12 Tf 0 Tr
- 140 342 Td  ($price?) Tj
+ /F2 12 Tf 0 Tr
+ 140 2 Td  ($price?) Tj
   T*
  
 ET
@@ -130,278 +126,18 @@ Q
 q
  
 BT
- /F1 12 Tf 0 Tr
- 200 342 Td  (place) Tj
+ /F2 12 Tf 0 Tr
+ 200 2 Td  (place) Tj
   T*
  
 ET
  
 Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 318 Td  (milk) Tj
-  T*
- 
+ BT
+1 0 0 1 20 790 Tm  0 Tw /F2 32 Tf
+0 Tw [ (Hello #name! John)0 ] TJ
 ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 318 Td  (1) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 318 Td  (40.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 318 Td  (ICA) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 294 Td  (coffee) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 294 Td  (2) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 294 Td  (90.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 294 Td  (IKEA) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 270 Td  (apple) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 270 Td  (4) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 270 Td  (60.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 270 Td  (Willy:s) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 246 Td  (pen) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 246 Td  (2) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 246 Td  (20.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 246 Td  (Hemkop) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 222 Td  (mp3) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 222 Td  (3) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 222 Td  (100.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 222 Td  (coop) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 20 198 Td  (xbox) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 80 198 Td  (5) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 140 198 Td  (9.00Kr) Tj
-  T*
- 
-ET
- 
-Q
- 
-q
- 
-BT
- /F1 12 Tf 0 Tr
- 200 198 Td  (7Eleven) Tj
-  T*
- 
-ET
- 
-Q
- 
+  q  0.4 g 0.4 G 0 w 20 822 m 20 790 l S 416 822 m 416 790 l S 20 822 m 416 822 l S 20 790 m 416 790 l S  Q  
 endstream
 endobj
 6 0 obj
@@ -412,12 +148,729 @@ endobj
 >>
 endobj
 7 0 obj
+<</Length 3984>>
+stream
+
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 820 Td  (milk) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 820 Td  (1) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 820 Td  (40.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 820 Td  (ICA) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 796 Td  (coffee) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 796 Td  (2) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 796 Td  (90.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 796 Td  (IKEA) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 772 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 772 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 772 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 772 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 748 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 748 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 748 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 748 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 724 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 724 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 724 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 724 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 700 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 700 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 700 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 700 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 676 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 676 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 676 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 676 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 652 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 652 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 652 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 652 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 628 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 628 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 628 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 628 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 604 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 604 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 604 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 604 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 580 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 580 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 580 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 580 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 556 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 556 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 556 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 556 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 532 Td  (apple) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 532 Td  (4) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 532 Td  (60.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 532 Td  (Willy:s) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 508 Td  (pen) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 508 Td  (2) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 508 Td  (20.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 508 Td  (Hemkop) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 484 Td  (mp3) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 484 Td  (3) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 484 Td  (100.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 484 Td  (coop) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 20 460 Td  (xbox) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 80 460 Td  (5) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 140 460 Td  (9.00Kr) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+q
+ 
+BT
+ /F2 12 Tf 0 Tr
+ 200 460 Td  (7Eleven) Tj
+  T*
+ 
+ET
+ 
+Q
+ 
+endstream
+endobj
+8 0 obj
+<<
+/Type  /Page 
+/Parent  4 0 R 
+/Contents  7 0 R 
+>>
+endobj
+9 0 obj
 <<
 /Type  /Catalog 
 /Pages  4 0 R 
 >>
 endobj
-8 0 obj
+10 0 obj
 <<
 /Creator  (Erlang) 
 /CreationDate  (D:20030215152011) 
@@ -429,22 +882,24 @@ endobj
 >>
 endobj
 xref
-0 9
+0 11
 0000000000 65535 f 
 0000000009 00000 n 
 0000000130 00000 n 
 0000000250 00000 n 
 0000000295 00000 n 
-0000000456 00000 n 
-0000003237 00000 n 
-0000003306 00000 n 
-0000003359 00000 n 
+0000000463 00000 n 
+0000001752 00000 n 
+0000001821 00000 n 
+0000005855 00000 n 
+0000005924 00000 n 
+0000005977 00000 n 
 trailer
 <<
-/Size 9
-/Root 7 0 R
-/Info 8 0 R
+/Size 11
+/Root 9 0 R
+/Info 10 0 R
 >>
 startxref
-3529
+6148
 %%EOF

@@ -8,8 +8,12 @@
 
 %% Something about table: currently the format info are either hard coded or ignored. But they can all be easily added into the template and later parsed with the functions in this module, so we don't need to worry that we might have to modify the erlguten module.
 
+
+%%Table
 parse_table({Tag,[],[{SubTag,[],[{raw,Data}]}]}, Box1, PDF) ->
+  Page_No = pdf:get_page_no(PDF),                            %%save the current page number
   parse_and_print_table(Tag, SubTag, Data, Box1, PDF),
+  pdf:set_page(PDF, Page_No),                                %%restore the former page number
   {Tag,[],[{SubTag,[],[{raw,""}]}]}.              %% Temporarily use a placeholder -- Placeholder Removed
 
 parse_and_print_table(Tag, SubTag, Data, Box1, PDF) ->
@@ -105,14 +109,37 @@ printTable_aux(Tag, SubTag, Box1, PDF, {Columns, [H|T]}) ->
   Y = Box1#box.y,
   Col_Width = 60, %% hard coded field, the unit is points (pixel?)
   printRowInLine(X, Y, Col_Width, Font, FontSize, Pt, Columns, H, PDF),
-  printTable_aux(Tag, SubTag, Box1#box{y = Box1#box.y - Leading}, PDF, {Columns, T}).
+
+  Y1 = Box1#box.y - Leading,  
+  if 
+    Y1 > Leading -> printTable_aux(Tag, SubTag, Box1#box{y = Y1}, PDF, {Columns, T});
+    Y1 =< Leading andalso Y1 >= 0 ->                   %% If the last line in the page has a larger height than the space left, then move it to the next page
+      pdf:new_page(PDF),
+      printTable_aux(Tag, SubTag, Box1#box{y = Y1 - Leading + 842}, PDF, {Columns, T});
+    Y1 < 0 ->                                          %% If Y1<0, it definitely belong to the next page
+      pdf:new_page(PDF),
+      printTable_aux(Tag, SubTag, Box1#box{y = Y1 + 842}, PDF, {Columns, T})
+  end.
+
 printTable(Tag, SubTag, Box1, PDF, {Columns, [], RowsInList}) ->
   printTable_aux(Tag, SubTag, Box1, PDF, {Columns, RowsInList});
 printTable(Tag, SubTag, Box1, PDF, {Columns, Headers, RowsInList}) ->
   printHeaders(Tag, SubTag, Box1, PDF, Headers),
   FontSize = Box1#box.fontSize,
   {_,Leading} = parse_fontSize(FontSize),
-  printTable_aux(Tag, SubTag, Box1#box{y = Box1#box.y - Leading}, PDF, {Columns, RowsInList}).
+
+  Y1 = Box1#box.y - Leading,  
+  if 
+    Y1 > Leading -> printTable_aux(Tag, SubTag, Box1#box{y = Y1}, PDF, {Columns, RowsInList});
+    Y1 =< Leading andalso Y1 >= 0 ->                   %% If the last line in the page has a larger height than the space left, then move it to the next page
+      pdf:new_page(PDF),
+      %% Note that you need to move down TWO lines, why? it is a simple maths, just because move down one line will cause the text printed between pages
+      printTable_aux(Tag, SubTag, Box1#box{y = Y1 - 2*Leading + 842}, PDF, {Columns, RowsInList});       
+    Y1 < 0 ->                                          %% If Y1<0, it definitely belong to the next page
+      %%io:format("y1<0~n"), %%debug
+      pdf:new_page(PDF),
+      printTable_aux(Tag, SubTag, Box1#box{y = Y1 + 842}, PDF, {Columns, RowsInList})
+  end.
 
 parseFormat(Format) ->
   Columns = case re:run(Format, "columns[ ]+=[ ]+{[a-zA-Z0-9_, ]+}", []) of
@@ -148,8 +175,11 @@ parseTableContent(TableContent) ->
   {ok, Term} = erl_parse:parse_term(Tokens),
   Term.
 
+%%List
 parse_list({Tag,[],[{SubTag,[],[{raw,Data}]}]}, Box1, PDF) ->
+  Page_No = pdf:get_page_no(PDF),                            %%save the current page number
   parse_and_print_list(Tag, SubTag, Data, Box1, PDF),
+  pdf:set_page(PDF, Page_No),                                %%restore the former page number
   {Tag,[],[{SubTag,[],[{raw,""}]}]}.               %% Temporarily use a placeholder -- Placeholder Removed
 
 parse_and_print_list(Tag, SubTag, Data, Box1, PDF) ->
@@ -193,8 +223,16 @@ printList(Tag, SubTag, [H|T], Box1, PDF) ->
       %%pdf:image(PDF, "img/bullet_dot.gif"),           %%deal with this later
       pdf:textbr(PDF, Str),
       pdf:end_text(PDF),
-      pdf:restore_state(PDF),
- 
-      NewBox = Box1#box{y = Y - Leading},
-      printList(Tag, SubTag, T, NewBox, PDF)
+      pdf:restore_state(PDF), 
+      
+      Y1 = Box1#box.y - Leading,  
+      if 
+        Y1 > Leading -> printList(Tag, SubTag, T, Box1#box{y = Y1}, PDF);
+        Y1 =< Leading andalso Y1 >= 0 ->                   %% If the last line in the page has a larger height than the space left, then move it to the next page
+          pdf:new_page(PDF),
+          printList(Tag, SubTag, T, Box1#box{y = Y1 - Leading + 842}, PDF);
+        Y1 < 0 ->                                          %% If Y1<0, it definitely belong to the next page
+          pdf:new_page(PDF),
+          printList(Tag, SubTag, T, Box1#box{y = Y1 + 842}, PDF)
+      end
   end.
