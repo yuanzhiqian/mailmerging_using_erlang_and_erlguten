@@ -11,117 +11,241 @@
 -module(mail_merge).
 -compile(export_all).
 
-test() ->
-  merge_and_transform(["template.xml", "userdata.xml"]).  
+-include("mail_merge.hrl").
 
-test2() ->
-  io:format("~p~n", [os:cmd("pwd")]).
+-import(erlguten, [parse_fontSize/1]).
 
-merge_and_transform(ArgList) ->
+main(ArgList) ->
   [Template, UserData] =  ArgList, 
-  F1 = erlguten_xml_lite:parse_file(Template),
-  F2 = erlguten_xml_lite:parse_file(UserData),
-  Template_Data = deShell(F1),
-  case F2 of 
-    {error, W} ->
-	    io:format("Error in source:~p~p~n",[F2, W]),
-	    exit(1);
-	[{pi,_},{xml,{user,_, Data}}] ->
-            UserDataMap = parse_user_data(Data, []),
-            Merged = merge(UserDataMap, Template_Data),
-            %io:format("~p~n", [Merged]),
-            Galley_name = "my_test_galley.gal",
-            {Literal, Galley} = extract_and_transform(Merged, Galley_name),
-            %io:format("~p~n", [Literal]), %%debug
-            Data_name = "my_test.xml",
-            deparse_xml:main(Literal, Data_name),
-            deparse_xml:main(Galley, Galley_name),
-            erlguten:batch([list_to_atom(Data_name)])
-            %os:cmd("./erlguten " ++ Data_name)                      
-  end,  
-  ok.
+  T = erlguten_xml_lite:parse_file(Template),
+  U = erlguten_xml_lite:parse_file(UserData),
+  
+  T_Data = deShell(T),  
+  U_Data = deShell(U),
+  
+  %% The count indicates the number of papers defined, i.e. whether all front, middle and end are defined or only some of them are defined. And the alt2 ,alt3 
+  %%     shows the template to use if current template can't hold all the contents
+  {template, [{"alt2",Alt2}, {"alt3",Alt3},{"count",Count}], T_Papers} = T_Data, 
+  
+  Pages = pages_needed(T_Papers, U_Data),    
 
-deShell([{pi,_},{xml,{paper,_, Data}}]) -> Data.
+  Template_chosen = 
+  if Pages > 2 ->
+       case Count of
+         "3" ->
+           T_Papers;
+         _ ->
+           case Alt3 of
+             "N/A" -> 
+               io:format("No proper templates!~n"),
+               halt();
+             _ ->
+               T_alt3 = erlguten_xml_lite:parse_file(Alt3),
+               {template, [{"alt2",_}, {"alt3",_},{"count",_}], T3_Papers} = deShell(T_alt3),           
+               T3_Papers
+           end           
+       end;       
+     Pages == 2 ->
+       case Count of
+         "1" ->
+           case Alt2 of
+             "N/A" -> 
+               io:format("No proper templates!~n"),
+               halt();
+             _ ->
+               T_alt2 = erlguten_xml_lite:parse_file(Alt2),
+               {template, [{"alt2",_}, {"alt3",_},{"count",_}], T2_Papers} = deShell(T_alt2),
+               T2_Papers
+           end;
+         "2" ->
+           T_Papers;
+         "3" ->
+           T_Papers
+       end;       
+     Pages == 1 ->
+       T_Papers  
+  end,      
 
-parse_user_data([], Acc) ->
-  lists:reverse(Acc);
-parse_user_data([H|T], Acc) ->
-  case H of
-    {Key, _, [{_, Value}]} -> parse_user_data(T, [{Key, Value}|Acc])
+  [F|FT] = Template_chosen,
+  [M|MT] = FT,
+  [E|[]] = MT,
+  
+  Template_info = #template_info{ counts = length(Template_chosen),
+                                  page_amount_needed = Pages, 
+                                  front_paper = if F == [] -> undefined; F =/= [] -> F end,
+                                  middle_paper = if M == [] -> undefined; M =/= [] -> M end,
+                                  end_paper = if E == [] -> undefined; E =/= [] -> E end
+                                },
+  
+  Merged = merge_init(Template_info, U_Data),
+  
+  ParsedMergedData = parseMergedData(Merged),
+  
+  %%io:format("~p~n", [ParsedMergedData]).
+  generatePDF(ParsedMergedData).
+ 
+
+merge_init(Template_info, U_Data) ->
+  case Template_info#template_info.counts of
+    1 ->
+      Template_info#template_info{front_paper = merge_init_aux(Template_info#template_info.front_paper, U_Data)};
+    2 ->
+      Template_info#template_info{front_paper = merge_init_aux(Template_info#template_info.front_paper, U_Data),
+                                  end_paper = merge_init_aux(Template_info#template_info.end_paper, U_Data)};
+    3 ->
+      Template_info#template_info{front_paper = merge_init_aux(Template_info#template_info.front_paper, U_Data),
+                                  middle_paper = merge_init_aux(Template_info#template_info.middle_paper, U_Data),
+                                  end_paper = merge_init_aux(Template_info#template_info.end_paper, U_Data)}
   end.
 
-merge_aux(_, [], Acc) ->
-  %io:format("~p~n", [Acc]),  %%debug
+merge_init_aux({paper, Attr, Paper}, U_Data) ->
+  {paper, Attr, merge(Paper, U_Data)}.
+
+%%%%%%%%%%%%%% Auxiliary functions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+deShell([{pi,_},{xml,Data}]) -> 
+  case Data of
+    {user, [], U_Data} ->
+      parse_user_data(U_Data);
+    _ ->
+      Data
+  end.
+
+pages_needed(_Papers, _UserData) ->            %% modify later
+  5.
+  
+
+parse_user_data_aux([], Acc) ->
+  lists:reverse(Acc);
+parse_user_data_aux([H|T], Acc) ->
+  case H of
+    {Key, _, [{_, Value}]} -> parse_user_data_aux(T, [{Key, Value}|Acc])
+  end.
+parse_user_data(Data) ->
+  parse_user_data_aux(Data, []).
+
+parseMergedData_for_each_frame({frame,  [{"bg",Bg},
+					  {"break",Break},
+					  {"class",Class},
+					  {"continue",Continue},
+					  {"font",Font},
+					  {"fontsize",FontSize},
+					  {"grid",Grid},
+					  {"height",Height},
+					  {"maxlines",MaxLines},
+					  {"name",Name},
+					  {"paraIndent",ParaIndent},
+					  {"width",Width},
+					  {"x",X},
+					  {"y",Y}], [{raw, Content}]}) ->  
+  Frame_info =   #frame_info{name = Name, 
+		             class = Class,
+		             x = list_to_integer(X),
+		             y = 842 - list_to_integer(Y),
+		             width = list_to_integer(Width),
+		             height = list_to_integer(Height),
+		             grid = Grid,
+		             bg = Bg,
+		             font = Font,
+		             fontsize = FontSize,
+		             paraIndent = ParaIndent,
+		             maxlines = MaxLines,
+		             continue = [Continue],
+		             break = Break},
+  %%io:format("~p~n", [Frame_info#frame_info.font]),
+  {Frame_info, Content}.
+
+parseMergedData_for_each_paper([], Acc) ->
+  lists:reverse(Acc);
+parseMergedData_for_each_paper([H|T], Acc) ->
+  parseMergedData_for_each_paper(T, [parseMergedData_for_each_frame(H)|Acc]).
+
+parseMergedData(Merged) ->
+  case Merged#template_info.counts of
+    1 ->
+      Merged#template_info{front_paper = parse_aux(Merged#template_info.front_paper)};
+    2 ->
+      Merged#template_info{front_paper = parse_aux(Merged#template_info.front_paper),
+                                  end_paper = parse_aux(Merged#template_info.end_paper)};
+    3 ->
+      Merged#template_info{front_paper = parse_aux(Merged#template_info.front_paper),
+                                  middle_paper = parse_aux(Merged#template_info.middle_paper),
+                                  end_paper = parse_aux(Merged#template_info.end_paper)}
+  end.
+
+parse_aux({paper, Attr, Paper}) ->
+  {paper, Attr, parseMergedData_for_each_paper(Paper, [])}.
+  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+merge_aux([], _, Acc) ->
   Acc;
-merge_aux(UserData, [H|T], Acc) ->
-  %io:format("~p~n", [H]),  %%debug
+merge_aux([H|T], UserData, Acc) ->
   case insertData(UserData, H) of
     error -> 
       io:format("The template doesn't fit the user data table, please check if you are using the proper template!~n", []),
       erlang:halt();
     Inserted -> 
-      %io:format("~p~n", [Inserted]),  %%debug
-      merge_aux(UserData, T, Acc ++ [Inserted])    
+      merge_aux(T, UserData, Acc ++ [Inserted])    
   end.
-merge(UserData, Template) ->
-  merge_aux(UserData, Template, []).
+merge(Template, UserData) ->
+  merge_aux(Template, UserData, []).
 
 %%%%%%%%%%%%%%%%%%%%%insertData function mainly use regular expression to perform the substitution of dynamic fields, test it before you run the whole system
 
 %%%%%%%%%%%%%%%%%%%%%Successful!!!!!!!!!!!!!!!!
-test_insert_data()->
-  case insertData([{name, "John"},{price, "150.00Kr"}, {nonexistfield, "N/A"}], {frame, arg, [{raw, "Hello #name, you need to pay #price, test ##name, test ##price."}]}) of
-    {frame, _, Content} -> io:format("~p~n", [Content]);
-    error -> error
-  end.
-
 insertData(UserData, {frame, Arg, [{raw, Content}]}) ->
-  %%io:format("~p~n", [Arg]), %% debug
-  case lists:keysearch("class", 1, Arg) of
-    {value, {"class", "table"}} ->
-       TagName = case lists:keysearch("name", 1, Arg) of
-         {value, {"name", Name}} -> Name;
-         false -> 
-           io:format("Unknow internal error in insertData function, search class~n"),
-           erlang:halt()      
-       end,
-       %%io:format("~p~n~p~n", [TagName, UserData]), %% debug
-       TableData = case lists:keysearch(list_to_atom(TagName), 1, UserData) of
-         {value, {_, TData}} -> TData;
-         false ->
-           io:format("Unknow internal error in insertData function, search TagName~n"),
-           erlang:halt()  
-       end,
-       %%io:format("~p~n", [TableData]),  %%debug
-       MergedTableFormatAndData = Content ++ "@" ++ TableData,
-       %%io:format("~p~n",[MergedTableFormatAndData]),  %% debug
-       {frame, Arg, [{raw, MergedTableFormatAndData}]};
-    {value, {"class", _}} ->
-	  case re:run(Content, "#[a-zA-Z0-9_]+", [global]) of
-	    {match, MatchList} ->
-	      case re:run(Content, "##[a-zA-Z0-9_]+", [global]) of
-		{match, MatchList_filter} ->
-		  M1 = lists:flatten(MatchList),
-		  M2 = lists:flatten(MatchList_filter),
-		  M2_mod = lists:map(fun({S, L})-> {S + 1, L - 1} end, M2),
-		  MatchList_final = lists:subtract(M1, M2_mod);
-		nomatch ->
-		  MatchList_final = lists:flatten(MatchList)
-	      end,
-	      %io:format("~p~n", [MatchList_final]),  %%debug
-	      case replaceData(UserData, MatchList_final, Content) of
-		error -> error;
-		ReplacedString -> 
-		  %%remove slashes if strings like ##name exist in the content
-		  {frame, Arg, [{raw, re:replace(ReplacedString, "##", "#", [global, {return, list}])}]}
-	      end;
-	    nomatch ->     
-	      %%remove slashes if strings like ##name exist in the content
-	      {frame, Arg, [{raw, re:replace(Content, "##", "#", [global, {return, list}])}]}
-	  end;    
-    false ->
-      io:format("Unknow internal error in insertData function~n"),
-      erlang:halt()
+  case re:run(Content, "^@[a-zA-Z0-9_!@#$%^&*()]+") of
+    {match, [{_, _}]} ->
+          {frame, Arg, [{raw, Content}]};
+    nomatch ->
+	  case lists:keysearch("class", 1, Arg) of
+	    {value, {"class", "table"}} ->
+	       TagName = case lists:keysearch("name", 1, Arg) of
+		 {value, {"name", Name}} -> Name;
+		 false -> 
+		   io:format("Unknow internal error in insertData function, search class~n"),
+		   erlang:halt()      
+	       end,
+	       %%io:format("~p~n~p~n", [TagName, UserData]), %% debug
+	       TableData = case lists:keysearch(list_to_atom(TagName), 1, UserData) of
+		 {value, {_, TData}} -> TData;
+		 false ->
+		   io:format("Unknow internal error in insertData function, search ~p~n", [TagName]),
+		   erlang:halt()  
+	       end,
+	       %%io:format("~p~n", [TableData]),  %%debug
+	       MergedTableFormatAndData = Content ++ "@" ++ TableData,
+	       %%io:format("~p~n",[MergedTableFormatAndData]),  %% debug
+	       {frame, Arg, [{raw, MergedTableFormatAndData}]};
+	    {value, {"class", _}} ->
+		  case re:run(Content, "#[a-zA-Z0-9_]+", [global]) of
+		    {match, MatchList} ->
+		      case re:run(Content, "##[a-zA-Z0-9_]+", [global]) of
+			{match, MatchList_filter} ->
+			  M1 = lists:flatten(MatchList),
+			  M2 = lists:flatten(MatchList_filter),
+			  M2_mod = lists:map(fun({S, L})-> {S + 1, L - 1} end, M2),
+			  MatchList_final = lists:subtract(M1, M2_mod);
+			nomatch ->
+			  MatchList_final = lists:flatten(MatchList)
+		      end,
+		      %io:format("~p~n", [MatchList_final]),  %%debug
+		      case replaceData(UserData, MatchList_final, Content) of
+			error -> error;
+			ReplacedString -> 
+			  %%remove slashes if strings like ##name exist in the content
+			  {frame, Arg, [{raw, re:replace(ReplacedString, "##", "#", [global, {return, list}])}]}
+		      end;
+		    nomatch ->     
+		      %%remove slashes if strings like ##name exist in the content
+		      {frame, Arg, [{raw, re:replace(Content, "##", "#", [global, {return, list}])}]}
+		  end;    
+	    false ->
+	      io:format("Unknow internal error in insertData function~n"),
+	      erlang:halt()
+	  end
   end.
 
 replaceData(_, [], Content) ->
@@ -137,90 +261,45 @@ replaceData(UserData, [{Start, Len}|T], Content) ->
     false -> error
   end.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%Above is the merge part%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%Generate PDF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%Functions below deal with the pdf generating part%%%%%%%%%%%%%%%
-extract_and_transform(Merged, Galley_name) ->
-  %io:format("~p~n", [Merged]),  %%debug
-  {Boxes, Galley} = first_parse(Merged, []),
-  Literal = second_parse(Merged, Galley_name, Boxes, []),
-  %io:format("~p~n", [Literal]), %%debug
-  {Literal, Galley}.
-
-first_parse([], Acc) -> 
-  Galley = [{pi,"xml version=\"1.0\" "},
-            {xml,{galley,[],
-                         lists:reverse(Acc) }}],
-  {lists:reverse(Acc), Galley};
-first_parse([H|T], Acc) ->
-  first_parse(T, [pack_box(H)|Acc]).
-
-pack_box({frame, Attr, _}) ->
-  BG = extract_from_attr(bg, Attr),
-  Continue = extract_from_attr(continue, Attr),
-  Fontsize = extract_from_attr(fontsize, Attr),
-  Grid = extract_from_attr(grid, Attr),
-  Lines = extract_from_attr(maxlines, Attr),
-  Width = extract_from_attr(width, Attr),
-  Measure =  integer_to_list(round(list_to_integer(Width) / 12)),   
-  %%Measure = extract_from_attr(measure, Attr),
-  Name = extract_from_attr(name, Attr),
-  X = extract_from_attr(x, Attr),
-  YLiteral = extract_from_attr(y, Attr),
-  Y = integer_to_list(842-list_to_integer(YLiteral)),
-  Class = extract_from_attr(class, Attr),
-
-  Obj_name = "p",
-  Obj_para_ind = extract_from_attr(paraIndent, Attr),
+generatePDF_for_each_page([], _, _) ->
+  ok;
+generatePDF_for_each_page([{Frame_info, Content}|T], Merged, PDF) ->
+  case Frame_info#frame_info.class of
+    "text" ->
+      text_img_table_list:parse_text(Frame_info, Content, Merged, PDF);  
+    "img" ->
+      text_img_table_list:parse_img(Frame_info, Content, Merged, PDF);  
+    "table" ->
+      text_img_table_list:parse_table(Frame_info, Content, Merged, PDF);  
+    "list" ->
+      text_img_table_list:parse_list(Frame_info, Content, Merged, PDF);  
+    false ->
+      io:format("Template error!~n"),
+      halt() 
+  end,  
   
-  Tag_break = extract_from_attr(break, Attr),
-  Tag_font = extract_from_attr(font, Attr),
-  Tag_name = "raw",
+  generatePDF_for_each_page(T, Merged, PDF).
 
-  Box = {box,[{"bg", BG},
-              {"continue", Continue},
-              {"fontSize", Fontsize}, 
-              {"grid", Grid}, 
-              {"lines", Lines},
-              {"measure", Measure},                      % int()  = width of box in picos (1 pico=12 points)
-              {"name", Name},
-              {"x", X},
-              {"y", Y},
-              {"class", Class}],
-             [{obj, [{"name", Obj_name},{"paraIndent", Obj_para_ind}],         % {int,int} = {first,line,...} the first line and every other lines ...
-                    [{tag, [{"break", Tag_break},{"font", Tag_font},{"name", Tag_name}],[]
-                     }
-                    ]
-              }
-             ]
-         },
-  Box.
-  
-extract_from_attr(Atom, Attr) ->
-  case lists:keysearch(atom_to_list(Atom), 1, Attr) of
-    {value, {_, Value}} -> Value;
-    false -> 
-      io:format("Sorry, your template is incomplete, please check again. The \"~p\" field is missing.~n", [Atom]),
-      erlang:halt()
-  end.
+generatePDF_for_pages([], _) ->
+  ok;
+generatePDF_for_pages(Merged, PDF) ->
+  {paper, _, H} = Merged#template_info.front_paper,
+  generatePDF_for_each_page(H, Merged, PDF).
 
-second_parse([], _, _, Acc) -> 
-  Literal = [{pi,"xml version=\"1.0\" "},
-             {xml,{document,[],
-                         lists:reverse(Acc) }}],
-  Literal;
-second_parse([H|T], Galley_name, [Hbox|Tbox], Acc) ->
-  %io:format("~p~n", [H]), %%debug
-  second_parse(T, Galley_name, Tbox, [pack_flow(H, Galley_name, Hbox)|Acc]).
+generatePDF(Merged) ->
+  PDF = pdf:new(),
+  pdf:set_pagesize(PDF,a4),
+  pdf:set_author(PDF,"Klarna"),
+  pdf:set_title(PDF, "Transpromo"),
+  pdf:set_subject(PDF,"Mailmerging project"),
+  pdf:set_keywords(PDF,"Erlang, PDF, Gutenberg, Klarna"),
+  pdf:set_date(PDF,2011,4,7),
 
-pack_flow({frame, _, Content}, Galley_name, 
-          {box,[_,_,_,_,_,_,{"name", Name},_,_,_],
-             [{obj, [{"name", Obj_name},_], 
-                    [{tag, [_,_,{"name", Tag_name}],
-                   []}]}]} ) ->
-  %io:format("~p~n", [Content]), %%debug
-  Flow = {flow, [{"galley", Galley_name}, {"name", Name}], [{list_to_atom(Obj_name), [], [{list_to_atom(Tag_name), [], Content}]}]},
-  Flow.
-  
+  generatePDF_for_pages(Merged, PDF),
 
-  
+  Serialised = pdf:export(PDF),
+  file:write_file("Klarna Invoice With Transpromo.pdf",[Serialised]),
+  pdf:delete(PDF).
+

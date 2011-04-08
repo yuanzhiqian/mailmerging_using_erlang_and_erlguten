@@ -63,8 +63,19 @@ Apr 5. 00:20
 
   Next: Fix the table and list; do the page management; Add GUI
   
-        Goal: 1. Do the page management;
-              2. Fix table and list;
+        Goal: 1. Do the page management;                             Done
+              2. Fix table and list;              Doing
+              3. Add GUI.
+
+Apr 5 11:41
+
+  Finished page management, fixed the bg problem.
+ 
+  Next: Image and GUI.
+
+        Goal: 1. Fix table and list furthermore;
+              2. Do the image part;
+              3. Add GUI.
 
 
 

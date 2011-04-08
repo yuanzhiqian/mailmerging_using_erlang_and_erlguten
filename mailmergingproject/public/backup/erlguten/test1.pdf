@@ -1,0 +1,231 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F3 
+/BaseFont  /Helvetica 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+2 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F5 
+/BaseFont  /Courier 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F1 
+/BaseFont  /Times-Bold 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+4 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F2 
+/BaseFont  /Times-Italic 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+5 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F4 
+/BaseFont  /Times-Roman 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+6 0 obj
+<<
+/F3  1 0 R 
+/F5  2 0 R 
+/F1  3 0 R 
+/F2  4 0 R 
+/F4  5 0 R 
+>>
+endobj
+7 0 obj
+<<
+/Type  /Pages 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  9 0 R  ] 
+/Resources <<
+/Font  6 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+8 0 obj
+<</Length 4865>>
+stream
+BT
+1 0 0 1 100 728 Tm  0 Tw /F1 32 Tf
+0 Tw [ (ErlGuten)0 ] TJ
+ET
+ BT
+1 0 0 1 100 698 Tm  0 Tw /F2 10 Tf
+0 Tw [ (Using Erlang in typo)10 (gr)15 (aphy applications)0 ] TJ
+ET
+ 
+q
+ 0.90 0.80 0.60  rg
+ 101 779 370 22  re f
+ 
+Q
+ BT
+1 0 0 1 106 784 Tm  0 Tw /F3 10 Tf
+0 Tw [ (INTR)20 (ODUCTION)0 ] TJ
+ET
+ BT
+1 0 0 1 100 50 Tm  0 Tw /F2 8 Tf
+0 Tw [ (This is a small footnote set in 8/10 T)55 (imes Italic)0 ] TJ
+ET
+  q  0.4 g 0.4 G 0 w 100 60 m 100 50 l S 460 60 m 460 50 l S 100 60 m 460 60 l S 100 50 m 460 50 l S  Q  BT
+1 0 0 1 100 666 Tm 36 0 Td  0.47 Tw /F2 12 Tf
+0.47 Tw [ (ErlGuten.)0 ] TJ
+/F4 12 Tf
+0.47 Tw [ ( is a system for hiqh quality typesetting, ErlGuten is free)0 ] TJ
+-12 -14 Td  0.48 Tw [ (softw)10 (are. ErlGuten aims to produce typographic quality PDF directly)0 ] TJ
+0 -14 Td  0 Tw [ (from XML or from a program.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 624 Tm 36 0 Td  0.23 Tw /F4 12 Tf
+0.23 Tw [ ( The aim of ErlGuten is to produce high quality PDF from a layout)0 ] TJ
+-12 -14 Td  -0.27 Tw [ (language or from a program. The ErlGuten distrib)20 (ution includes a pro-)0 ] TJ
+0 -14 Td  -0.52 Tw [ (gramming API, so that Erlang programs can produce PDF - and a type-)0 ] TJ
+0 -14 Td  0 Tw [ (setting system for typesetting documents written in XML.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 568 Tm 36 0 Td  -0.01 Tw /F4 12 Tf
+-0.01 Tw [ (The document that you are reading w)10 (as authored in XML and type-)0 ] TJ
+-12 -14 Td  -0.05 Tw [ (set by ErlGuten. The name ErlGuten is chosen because the program is)0 ] TJ
+0 -14 Td  -0.03 Tw [ (written in Erlang - the )0 ] TJ
+/F2 12 Tf
+-0.03 Tw [ (Guten)0 ] TJ
+/F4 12 Tf
+-0.03 Tw [ ( part is a reference to )0 ] TJ
+/F2 12 Tf
+-0.03 Tw [ (Gutenber)37 (g)0 ] TJ
+/F4 12 Tf
+-0.03 Tw [ ( the f)10 (ath-)0 ] TJ
+0 -14 Td  0 Tw [ (er of printing.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 512 Tm 36 0 Td  -0.07 Tw /F4 12 Tf
+-0.07 Tw [ (ErlGuten is a system for high quality typesetting, so we tak)10 (e a great)0 ] TJ
+-12 -14 Td  1.75 Tw [ (deal of care when formatting te)15 (xt, a lar)18 (ge number of optimizations)0 ] TJ
+0 -14 Td  0.37 Tw [ (are performed which impro)15 (v)15 (e the quality of the printed te)15 (xt. Man)15 (y of)0 ] TJ
+0 -14 Td  1.00 Tw [ (these optimizations are usually only found in e)15 (xpensi)25 (v)15 (e professional)0 ] TJ
+0 -14 Td  -0.97 Tw [ (type-setting programs. W)80 (e belie)25 (v)15 (e that WYSIWYG programs ha)20 (v)15 (e des-)0 ] TJ
+0 -14 Td  0.00 Tw [ (tro)10 (yed the f)20 (ine art of typesetting - ErlGuten is a modest attempt to im-)0 ] TJ
+0 -14 Td  0 Tw [ (pro)15 (v)15 (e the situation.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 414 Tm 36 0 Td  1.28 Tw /F4 12 Tf
+1.28 Tw [ (W)80 (e ha)20 (v)15 (e chosen XML as the input language for it')55 (s wide appeal.)0 ] TJ
+-12 -14 Td  -0.54 Tw [ (XML pro)15 (vides only a thin abstraction layer o)15 (v)15 (er the typesetting system)0 ] TJ
+0 -14 Td  1.04 Tw [ (- so the adv)15 (enturous can use the programming interf)10 (ace to ErlGuten)0 ] TJ
+0 -14 Td  0.22 Tw [ (- to directly produce typographic quality PDF in real-time. W)80 (e e)15 (xpect)0 ] TJ
+0 -14 Td  -0.38 Tw [ (this f)10 (acility to be useful for the dynamic generation of documents from)0 ] TJ
+0 -14 Td  0 Tw [ (web-serv)15 (ers.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 330 Tm 36 0 Td  0.14 Tw /F4 12 Tf
+0.14 Tw [ (In ErlGuten we tak)10 (e the vie)25 (w that the highest le)25 (v)15 (el of abstraction is)0 ] TJ
+-12 -14 Td  1.33 Tw [ (the )0 ] TJ
+/F2 12 Tf
+1.33 Tw [ (layout)0 ] TJ
+/F4 12 Tf
+1.33 Tw [ ( of a document - we are v)15 (ery concerned that the user can)0 ] TJ
+0 -14 Td  -0.94 Tw [ (specify the )0 ] TJ
+/F2 12 Tf
+-0.94 Tw [ (e)20 (xact)0 ] TJ
+/F4 12 Tf
+-0.94 Tw [ ( position of te)15 (xt on the printed page. At the ne)15 (xt le)25 (v)15 (el of)0 ] TJ
+0 -14 Td  -0.43 Tw [ (abstraction we are concerned with the typef)10 (aces that are used to format)0 ] TJ
+0 -14 Td  0 Tw [ (dif)25 (ferent re)15 (gions of the document.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 260 Tm 36 0 Td  -0.09 Tw /F4 12 Tf
+-0.09 Tw [ (ErlGuten is designed for the production of lar)18 (ge and comple)15 (x docu-)0 ] TJ
+-12 -14 Td  -0.34 Tw [ (ments with comple)15 (x layout requirements, lik)10 (e )0 ] TJ
+/F2 12 Tf
+-0.34 Tw [ (ne)15 (wspaper)10 (s)0 ] TJ
+/F4 12 Tf
+-0.34 Tw [ ( or )0 ] TJ
+/F2 12 Tf
+-0.34 Tw [ (books)0 ] TJ
+/F4 12 Tf
+-0.34 Tw [ (. In)0 ] TJ
+0 -14 Td  1.01 Tw [ (ErlGuten layout, content, and document management are considered)0 ] TJ
+0 -14 Td  0.79 Tw [ (separate issues. Layout is )0 ] TJ
+/F2 12 Tf
+0.79 Tw [ (template based)0 ] TJ
+/F4 12 Tf
+0.79 Tw [ ( - Content is assumed to be)0 ] TJ
+0 -14 Td  -0.89 Tw [ (stored as a lar)18 (ge number of documents in a f)20 (ile system or data base, doc-)0 ] TJ
+0 -14 Td  0.13 Tw [ (ument management is considered as a mapping operation which tak)10 (es)0 ] TJ
+0 -14 Td  0.64 Tw [ (documents in the content data base and maps them onto templates to)0 ] TJ
+0 -14 Td  0 Tw [ (produce hight quality output.)0 ] TJ
+ET
+ 
+endstream
+endobj
+9 0 obj
+<<
+/Type  /Page 
+/Parent  7 0 R 
+/Contents  8 0 R 
+>>
+endobj
+10 0 obj
+<<
+/Type  /Catalog 
+/Pages  7 0 R 
+>>
+endobj
+11 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate  (D:20030215152011) 
+/Producer  (erlguten-2.0) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 12
+0000000000 65535 f 
+0000000009 00000 n 
+0000000127 00000 n 
+0000000243 00000 n 
+0000000362 00000 n 
+0000000483 00000 n 
+0000000603 00000 n 
+0000000684 00000 n 
+0000000845 00000 n 
+0000005760 00000 n 
+0000005829 00000 n 
+0000005883 00000 n 
+trailer
+<<
+/Size 12
+/Root 10 0 R
+/Info 11 0 R
+>>
+startxref
+6054
+%%EOF
