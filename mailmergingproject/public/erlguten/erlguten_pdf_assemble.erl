@@ -261,7 +261,6 @@ add_start_xref(F, XrefStartPos) ->
 %% %%EOF
 
 pdfloop(PDFC, Stream)->
-    %io:format("~p~n", [PDFC]), %%debug
     receive
 	{get_font_alias, Pid, Fontname} ->
 	    {F,FA} = handle_setfont(PDFC#pdfContext.fonts, Fontname),

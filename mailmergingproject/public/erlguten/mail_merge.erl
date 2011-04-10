@@ -13,7 +13,7 @@
 
 -include("mail_merge.hrl").
 
--import(erlguten, [parse_fontSize/1]).
+-import(erlguten, [parse_fontSize/1, to_bool/1, parse_paraIndent/1]).
 
 main(ArgList) ->
   [Template, UserData] =  ArgList, 
@@ -144,14 +144,23 @@ parseMergedData_for_each_frame({frame,  [{"bg",Bg},
 		             y = 842 - list_to_integer(Y),
 		             width = list_to_integer(Width),
 		             height = list_to_integer(Height),
-		             grid = Grid,
+		             grid = to_bool(Grid),
 		             bg = Bg,
 		             font = Font,
 		             fontsize = FontSize,
-		             paraIndent = ParaIndent,
-		             maxlines = MaxLines,
+		             paraIndent = case ParaIndent of
+                               "N/A" -> "N/A";
+                               _ -> parse_paraIndent(ParaIndent)
+                             end,
+		             maxlines = case MaxLines of
+                               "N/A" -> "N/A";
+                               _ -> list_to_integer(MaxLines)
+                             end,
 		             continue = [Continue],
-		             break = Break},
+		             break = case Break of
+                               "N/A" -> "N/A";
+                               _ -> to_bool(Break)
+                             end},
   %%io:format("~p~n", [Frame_info#frame_info.font]),
   {Frame_info, Content}.
 

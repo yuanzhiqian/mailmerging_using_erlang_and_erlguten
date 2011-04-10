@@ -77,7 +77,6 @@ test(8) ->
 parse_file(F) ->
     case file:read_file(F) of
 	{ok, Bin} ->
-            %io:format("~p~n", [Bin]), %%debug
 	    Result = parse_all_forms(binary_to_list(Bin), 1),
 	    %% case Result of
 	    %%   {error, E} -> true;
@@ -94,7 +93,7 @@ xml2bin(In, Out) ->
 	    case parse_all_forms(binary_to_list(Bin), 0) of
 		{ok, Tree, _} ->
 		    file:write_file(Out, term_to_binary(Tree));
-		E = {error, _} ->
+		E = {error, X} ->
 		    E;
 		{more, _} ->
 		    {error, incomplete}
@@ -112,7 +111,7 @@ bin2xml(In, Out) ->
 	    Error
     end.
 
-atomize(A={Atom,_}) when is_atom(Atom) ->
+atomize(A={Atom,_}) when atom(Atom) ->
     A;
 atomize({Str,Args,List}) -> 
     {list_to_atom(Str), Args, map(fun atomize/1, List)}.
@@ -128,16 +127,15 @@ parse_all_forms(Str, Line) -> top_parse_loop(Str, Line, []).
 top_parse_loop(Str, Line, L) ->
     case parse_single_form(Str, Line) of
 	{ok, Form, Str1, Line1} -> 
-            %%io:format("~p~n", [Str1]), %%debug
 	    case all_blanks(Str1) of
 		true ->
 		    reverse([Form|L]);
 		false ->
 		    top_parse_loop(Str1, Line1, [Form|L])
 	    end;
-	E={error, _} ->
+	E={error, Why} ->
 	    E;
-	{more, _} ->
+	{more, Cont} ->
 	    {error, more_data_expected}
     end.
 
@@ -153,15 +151,14 @@ parse(State, Str, Line) ->
 parse_cont(State, Cont, Str) ->
     tokenise_result(erlguten_xml_tokenise:continue(Cont, Str), State).
 
-tokenise_result({error, Line, What}, _) ->
+tokenise_result({error, Line, What}, State) ->
     {error,{errorInLine,Line,What}};
 tokenise_result({done, Token, Str1, Line1}, State) ->
-    %%io:format("Token= ~p Str1=~p Line1=~p~n",[Token, Str1, Line1]),
+    %% io:format("Token= ~p Str1=~p Line1=~p~n",[Token, Str1, Line1]),
     case step_parser(State, Token) of
 	{more, State1} ->
 	    parse(State1, Str1, Line1);
 	{done, Parse} ->
-            %%io:format("~p~n", [Parse]), %% debug
 	    {ok, Parse, Str1, Line1};
 	{error, What} ->
 	    {error, {errorInLine, Line1,What}}
@@ -180,7 +177,7 @@ tokenise_result({more, Cont}, State) ->
 step_parser(Stack, {sTag, _, Tag, Args}) ->
     %% Push new frame onto the stack
     {more, [{Tag, sort(Args), []}|Stack]};
-step_parser([{Tag,Args,C}|L], {Flat, _, D}) when Flat == pi;
+step_parser([{Tag,Args,C}|L], P={Flat, _, D}) when Flat == pi;
 						   Flat == raw;
 						   Flat == cdata;
 						   Flat == comment;
@@ -193,7 +190,7 @@ step_parser([{Tag, Args, C}|L], {eTag, _, Tag}) ->
     %% Now we normalise the arguments that were found
     C1 = deblank(reverse(C)),
     pfinish([{Tag,Args,C1}|L]);
-step_parser([{STag, _, _}|_], {eTag, _, Tag}) ->
+step_parser([{STag, Args, C}|L], {eTag, _, Tag}) ->
     {error,{badendtagfound,Tag,starttagis,STag}};
 step_parser([], {raw, _, S}) ->
     case all_blanks(S) of
@@ -211,7 +208,7 @@ step_parser(S, I) ->
 pfinish([X])                 -> {done, {xml, atomize(X)}};
 pfinish([H1,{Tag,Args,L}|T]) -> {more, [{Tag,Args,[H1|L]}|T]}.
 
-deblank(S=[{raw, _}]) -> S;
+deblank(S=[{raw, C}]) -> S;
 deblank(X) -> deblank1(X).
 
 deblank1([H={raw,X}|T]) ->
@@ -251,7 +248,7 @@ pp({Node,Args,L}, Level) ->
      indent(Level),"</",S,">\n"];
 pp({raw,Str}, Level) ->
     [indent(Level),Str,"/n"];
-pp(X, _) ->
+pp(X, Level) ->
     io:format("How do I pp:~p~n",[X]),
     ["oops"].
     
@@ -272,7 +269,7 @@ name(X) ->
 indent(0) -> [];
 indent(N) -> [$ |indent(N-1)].
 
-reent_test(_)->a.
+reent_test(O)->a.
 
     
 

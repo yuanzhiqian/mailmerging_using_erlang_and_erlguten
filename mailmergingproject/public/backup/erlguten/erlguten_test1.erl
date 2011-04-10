@@ -46,7 +46,6 @@ test()->
     draft(PDF),
 
     pdf:set_page(PDF,1),
-    pdf:image(PDF, "img/bullet_dot.jpg"),
     pdf:begin_text(PDF),
     pdf:set_font(PDF, "Times-Italic", 240),
     pdf:set_text_pos(PDF, 60,600),

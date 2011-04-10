@@ -67,7 +67,7 @@ endobj
 >>
 endobj
 8 0 obj
-<</Length 4865>>
+<</Length 5942>>
 stream
 BT
 1 0 0 1 100 728 Tm  0 Tw /F1 32 Tf
@@ -92,92 +92,114 @@ ET
 0 Tw [ (This is a small footnote set in 8/10 T)55 (imes Italic)0 ] TJ
 ET
   q  0.4 g 0.4 G 0 w 100 60 m 100 50 l S 460 60 m 460 50 l S 100 60 m 460 60 l S 100 50 m 460 50 l S  Q  BT
-1 0 0 1 100 666 Tm 36 0 Td  0.47 Tw /F2 12 Tf
-0.47 Tw [ (ErlGuten.)0 ] TJ
+1 0 0 1 100 666 Tm 12 0 Td  0.34 Tw /F2 12 Tf
+0.34 Tw [ (ErlGuten.)0 ] TJ
 /F4 12 Tf
-0.47 Tw [ ( is a system for hiqh quality typesetting, ErlGuten is free)0 ] TJ
--12 -14 Td  0.48 Tw [ (softw)10 (are. ErlGuten aims to produce typographic quality PDF directly)0 ] TJ
-0 -14 Td  0 Tw [ (from XML or from a program.)0 ] TJ
+0.34 Tw [ ( is a system for hiqh quality typesetting, ErlGuten is free soft-)0 ] TJ
+-12 -14 Td  -1.02 Tw [ (w)10 (are. ErlGuten aims to produce typographic quality PDF directly from XML)0 ] TJ
+0 -14 Td  0 Tw [ (or from a program.)0 ] TJ
 ET
  BT
-1 0 0 1 100 624 Tm 36 0 Td  0.23 Tw /F4 12 Tf
-0.23 Tw [ ( The aim of ErlGuten is to produce high quality PDF from a layout)0 ] TJ
--12 -14 Td  -0.27 Tw [ (language or from a program. The ErlGuten distrib)20 (ution includes a pro-)0 ] TJ
-0 -14 Td  -0.52 Tw [ (gramming API, so that Erlang programs can produce PDF - and a type-)0 ] TJ
-0 -14 Td  0 Tw [ (setting system for typesetting documents written in XML.)0 ] TJ
+1 0 0 1 100 624 Tm 12 0 Td  0.38 Tw /F4 12 Tf
+0.38 Tw [ ( The aim of ErlGuten is to produce high quality PDF from a layout lan-)0 ] TJ
+-12 -14 Td  -0.94 Tw [ (guage or from a program. The ErlGuten distrib)20 (ution includes a programming)0 ] TJ
+0 -14 Td  0.48 Tw [ (API, so that Erlang programs can produce PDF - and a typesetting system)0 ] TJ
+0 -14 Td  0 Tw [ (for typesetting documents written in XML.)0 ] TJ
 ET
  BT
-1 0 0 1 100 568 Tm 36 0 Td  -0.01 Tw /F4 12 Tf
--0.01 Tw [ (The document that you are reading w)10 (as authored in XML and type-)0 ] TJ
--12 -14 Td  -0.05 Tw [ (set by ErlGuten. The name ErlGuten is chosen because the program is)0 ] TJ
-0 -14 Td  -0.03 Tw [ (written in Erlang - the )0 ] TJ
+1 0 0 1 100 568 Tm 12 0 Td  -0.04 Tw /F4 12 Tf
+-0.04 Tw [ (The document that you are reading w)10 (as authored in XML and typeset by)0 ] TJ
+-12 -14 Td  0.49 Tw [ (ErlGuten. The name ErlGuten is chosen because the program is written in)0 ] TJ
+0 -14 Td  0 Tw [ (Erlang - the )0 ] TJ
 /F2 12 Tf
--0.03 Tw [ (Guten)0 ] TJ
+0 Tw [ (Guten)0 ] TJ
 /F4 12 Tf
--0.03 Tw [ ( part is a reference to )0 ] TJ
+0 Tw [ ( part is a reference to )0 ] TJ
 /F2 12 Tf
--0.03 Tw [ (Gutenber)37 (g)0 ] TJ
+0 Tw [ (Gutenber)37 (g)0 ] TJ
 /F4 12 Tf
--0.03 Tw [ ( the f)10 (ath-)0 ] TJ
-0 -14 Td  0 Tw [ (er of printing.)0 ] TJ
+0 Tw [ ( the f)10 (ather of printing.)0 ] TJ
 ET
  BT
-1 0 0 1 100 512 Tm 36 0 Td  -0.07 Tw /F4 12 Tf
--0.07 Tw [ (ErlGuten is a system for high quality typesetting, so we tak)10 (e a great)0 ] TJ
--12 -14 Td  1.75 Tw [ (deal of care when formatting te)15 (xt, a lar)18 (ge number of optimizations)0 ] TJ
-0 -14 Td  0.37 Tw [ (are performed which impro)15 (v)15 (e the quality of the printed te)15 (xt. Man)15 (y of)0 ] TJ
-0 -14 Td  1.00 Tw [ (these optimizations are usually only found in e)15 (xpensi)25 (v)15 (e professional)0 ] TJ
-0 -14 Td  -0.97 Tw [ (type-setting programs. W)80 (e belie)25 (v)15 (e that WYSIWYG programs ha)20 (v)15 (e des-)0 ] TJ
-0 -14 Td  0.00 Tw [ (tro)10 (yed the f)20 (ine art of typesetting - ErlGuten is a modest attempt to im-)0 ] TJ
-0 -14 Td  0 Tw [ (pro)15 (v)15 (e the situation.)0 ] TJ
+1 0 0 1 100 526 Tm 12 0 Td  0.01 Tw /F4 12 Tf
+0.01 Tw [ (ErlGuten is a system for high quality typesetting, so we tak)10 (e a great deal)0 ] TJ
+-12 -14 Td  -0.56 Tw [ (of care when formatting te)15 (xt, a lar)18 (ge number of optimizations are performed)0 ] TJ
+0 -14 Td  0.25 Tw [ (which impro)15 (v)15 (e the quality of the printed te)15 (xt. Man)15 (y of these optimizations)0 ] TJ
+0 -14 Td  -0.18 Tw [ (are usually only found in e)15 (xpensi)25 (v)15 (e professional type-setting programs. W)80 (e)0 ] TJ
+0 -14 Td  -0.40 Tw [ (belie)25 (v)15 (e that WYSIWYG programs ha)20 (v)15 (e destro)10 (yed the f)20 (ine art of typesetting)0 ] TJ
+0 -14 Td  0 Tw [ (- ErlGuten is a modest attempt to impro)15 (v)15 (e the situation.)0 ] TJ
 ET
  BT
-1 0 0 1 100 414 Tm 36 0 Td  1.28 Tw /F4 12 Tf
-1.28 Tw [ (W)80 (e ha)20 (v)15 (e chosen XML as the input language for it')55 (s wide appeal.)0 ] TJ
--12 -14 Td  -0.54 Tw [ (XML pro)15 (vides only a thin abstraction layer o)15 (v)15 (er the typesetting system)0 ] TJ
-0 -14 Td  1.04 Tw [ (- so the adv)15 (enturous can use the programming interf)10 (ace to ErlGuten)0 ] TJ
-0 -14 Td  0.22 Tw [ (- to directly produce typographic quality PDF in real-time. W)80 (e e)15 (xpect)0 ] TJ
-0 -14 Td  -0.38 Tw [ (this f)10 (acility to be useful for the dynamic generation of documents from)0 ] TJ
-0 -14 Td  0 Tw [ (web-serv)15 (ers.)0 ] TJ
+1 0 0 1 100 442 Tm 12 0 Td  0.70 Tw /F4 12 Tf
+0.70 Tw [ (W)80 (e ha)20 (v)15 (e chosen XML as the input language for it')55 (s wide appeal. XML)0 ] TJ
+-12 -14 Td  -0.65 Tw [ (pro)15 (vides only a thin abstraction layer o)15 (v)15 (er the typesetting system - so the ad-)0 ] TJ
+0 -14 Td  0.19 Tw [ (v)15 (enturous can use the programming interf)10 (ace to ErlGuten - to directly pro-)0 ] TJ
+0 -14 Td  -0.47 Tw [ (duce typographic quality PDF in real-time. W)80 (e e)15 (xpect this f)10 (acility to be use-)0 ] TJ
+0 -14 Td  0 Tw [ (ful for the dynamic generation of documents from web-serv)15 (ers.)0 ] TJ
 ET
  BT
-1 0 0 1 100 330 Tm 36 0 Td  0.14 Tw /F4 12 Tf
-0.14 Tw [ (In ErlGuten we tak)10 (e the vie)25 (w that the highest le)25 (v)15 (el of abstraction is)0 ] TJ
--12 -14 Td  1.33 Tw [ (the )0 ] TJ
-/F2 12 Tf
-1.33 Tw [ (layout)0 ] TJ
+1 0 0 1 100 372 Tm 12 0 Td  0.61 Tw /F4 12 Tf
+0.61 Tw [ (In ErlGuten we tak)10 (e the vie)25 (w that the highest le)25 (v)15 (el of abstraction is the)0 ] TJ
+-12 -14 Td  0.26 Tw /F2 12 Tf
+0.26 Tw [ (layout)0 ] TJ
 /F4 12 Tf
-1.33 Tw [ ( of a document - we are v)15 (ery concerned that the user can)0 ] TJ
-0 -14 Td  -0.94 Tw [ (specify the )0 ] TJ
-/F2 12 Tf
--0.94 Tw [ (e)20 (xact)0 ] TJ
+0.26 Tw [ ( of a document - we are v)15 (ery concerned that the user can specify the)0 ] TJ
+0 -14 Td  -0.47 Tw /F2 12 Tf
+-0.47 Tw [ (e)20 (xact)0 ] TJ
 /F4 12 Tf
--0.94 Tw [ ( position of te)15 (xt on the printed page. At the ne)15 (xt le)25 (v)15 (el of)0 ] TJ
-0 -14 Td  -0.43 Tw [ (abstraction we are concerned with the typef)10 (aces that are used to format)0 ] TJ
-0 -14 Td  0 Tw [ (dif)25 (ferent re)15 (gions of the document.)0 ] TJ
+-0.47 Tw [ ( position of te)15 (xt on the printed page. At the ne)15 (xt le)25 (v)15 (el of abstraction we)0 ] TJ
+0 -14 Td  -0.27 Tw [ (are concerned with the typef)10 (aces that are used to format dif)25 (ferent re)15 (gions of)0 ] TJ
+0 -14 Td  0 Tw [ (the document.)0 ] TJ
 ET
  BT
-1 0 0 1 100 260 Tm 36 0 Td  -0.09 Tw /F4 12 Tf
--0.09 Tw [ (ErlGuten is designed for the production of lar)18 (ge and comple)15 (x docu-)0 ] TJ
--12 -14 Td  -0.34 Tw [ (ments with comple)15 (x layout requirements, lik)10 (e )0 ] TJ
+1 0 0 1 100 302 Tm 12 0 Td  -0.15 Tw /F4 12 Tf
+-0.15 Tw [ (ErlGuten is designed for the production of lar)18 (ge and comple)15 (x documents)0 ] TJ
+-12 -14 Td  0.63 Tw [ (with comple)15 (x layout requirements, lik)10 (e )0 ] TJ
 /F2 12 Tf
--0.34 Tw [ (ne)15 (wspaper)10 (s)0 ] TJ
+0.63 Tw [ (ne)15 (wspaper)10 (s)0 ] TJ
 /F4 12 Tf
--0.34 Tw [ ( or )0 ] TJ
+0.63 Tw [ ( or )0 ] TJ
 /F2 12 Tf
--0.34 Tw [ (books)0 ] TJ
+0.63 Tw [ (books)0 ] TJ
 /F4 12 Tf
--0.34 Tw [ (. In)0 ] TJ
-0 -14 Td  1.01 Tw [ (ErlGuten layout, content, and document management are considered)0 ] TJ
-0 -14 Td  0.79 Tw [ (separate issues. Layout is )0 ] TJ
+0.63 Tw [ (. In ErlGuten)0 ] TJ
+0 -14 Td  0.13 Tw [ (layout, content, and document management are considered separate issues.)0 ] TJ
+0 -14 Td  0.07 Tw [ (Layout is )0 ] TJ
 /F2 12 Tf
-0.79 Tw [ (template based)0 ] TJ
+0.07 Tw [ (template based)0 ] TJ
 /F4 12 Tf
-0.79 Tw [ ( - Content is assumed to be)0 ] TJ
-0 -14 Td  -0.89 Tw [ (stored as a lar)18 (ge number of documents in a f)20 (ile system or data base, doc-)0 ] TJ
-0 -14 Td  0.13 Tw [ (ument management is considered as a mapping operation which tak)10 (es)0 ] TJ
-0 -14 Td  0.64 Tw [ (documents in the content data base and maps them onto templates to)0 ] TJ
-0 -14 Td  0 Tw [ (produce hight quality output.)0 ] TJ
+0.07 Tw [ ( - Content is assumed to be stored as a lar)18 (ge num-)0 ] TJ
+0 -14 Td  -0.95 Tw [ (ber of documents in a f)20 (ile system or data base, document management is con-)0 ] TJ
+0 -14 Td  0.41 Tw [ (sidered as a mapping operation which tak)10 (es documents in the content data)0 ] TJ
+0 -14 Td  0 Tw [ (base and maps them onto templates to produce hight quality output.)0 ] TJ
+ET
+ BT
+1 0 0 1 100 204 Tm 12 0 Td  0.50 Tw /F4 12 Tf
+0.50 Tw [ (This is normal te)15 (xt, set 30 picas wide in 12/14 T)35 (imes Roman. Man)15 (y di-)0 ] TJ
+-12 -14 Td  0.37 Tw [ (f)25 (ferent typef)10 (aces can be used within a paragraph. )0 ] TJ
+/F2 12 Tf
+0.37 Tw [ (Emphasized te)20 (xt)0 ] TJ
+/F4 12 Tf
+0.37 Tw [ ( is set in)0 ] TJ
+0 -14 Td  -0.01 Tw [ (T)35 (imes-Italic. Hyphenation uses the T)70 (eX h)5 (yphenation algorithm. An)15 (y of the)0 ] TJ
+0 -14 Td  1.40 Tw [ (35 b)20 (uilt-in PDF typef)10 (aces with the same point size can be mix)15 (ed with a)0 ] TJ
+0 -14 Td  -0.37 Tw [ (paragraph. The term )0 ] TJ
+/F5 12 Tf
+0 Tw [ ({person,"Joe"})0 ] TJ
+/F4 12 Tf
+-0.37 Tw [ ( is an Erlang term which has been)0 ] TJ
+0 -14 Td  -0.67 Tw [ (typeset in 12 point )0 ] TJ
+/F2 12 Tf
+-0.67 Tw [ (courier)0 ] TJ
+/F4 12 Tf
+-0.67 Tw [ (. The paragraph justif)20 (ication algorithm does prop-)0 ] TJ
+0 -14 Td  -0.71 Tw [ (er )0 ] TJ
+/F2 12 Tf
+-0.71 Tw [ (k)10 (erning)0 ] TJ
+/F4 12 Tf
+-0.71 Tw [ ( so, for e)15 (xample, the w)10 (ord A)90 (W)120 (A)105 (Y is correctly k)10 (erned! - line breaks)0 ] TJ
+0 -14 Td  -0.19 Tw [ (within a paragraph are selected by a sophisticated global optimization tech-)0 ] TJ
+0 -14 Td  0 Tw [ (nique.)0 ] TJ
 ET
  
 endstream
@@ -217,9 +239,9 @@ xref
 0000000603 00000 n 
 0000000684 00000 n 
 0000000845 00000 n 
-0000005760 00000 n 
-0000005829 00000 n 
-0000005883 00000 n 
+0000006837 00000 n 
+0000006906 00000 n 
+0000006960 00000 n 
 trailer
 <<
 /Size 12
@@ -227,5 +249,5 @@ trailer
 /Info 11 0 R
 >>
 startxref
-6054
+7131
 %%EOF

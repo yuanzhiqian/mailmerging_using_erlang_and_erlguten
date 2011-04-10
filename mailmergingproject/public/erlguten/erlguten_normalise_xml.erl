@@ -57,7 +57,6 @@ normalise(Z, _, L) ->
     io:format("I cannot normalise:~p~n",[Z]).
 
 normalise_para(Items, FontMap, L) ->
-    %io:format("~p~n", [Items]), %%debug
     foldl(fun(I, L0) ->
 		  normalise_para_item(I, FontMap, L0)
 	  end, L, Items).

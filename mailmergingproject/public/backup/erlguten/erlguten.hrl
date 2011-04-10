@@ -41,29 +41,6 @@
 %%           These will turn into F1 F2 F3 in the PDF
 %%           FontName = name of font (these are standard names in Acrobat)
 
--record(box, {continue,  % str()  = name of the continuation frame 
-	      free=1,    % int()  = first free line in the box
-	      grid,      % bool   = show a grid
-	      bg,        % no | {yes,R,G,B} background color
-	      pointSize, % int()  = size in points of the main text in
-	                 %          the box
-              fontSize,  % str() "pt/leading" Added by Yuan, for table and list
-	      leading,   % int()  = gap between lines in points
-	      maxLines,  % int()  = max lines in the box
-	      measure,   % int()  = width of box in picos (1 pico=12 points)
-	      name,      % str()  = name of box
-	      objs,      % [#obj] = objects
-	      x,         % int()  = X coord of top left hand corner of box
-	      y,         % int()  = Y coord of top left hand corner of box
-              width,     % int()  added by Yuan, to fix the bg problem
-              height,    % int()  added by Yuan, to fix the bg problem
-              class}).   % str() Added by Yuan, to determine a table or list frame  
-
--record(obj,{
-	  name,          % atom() = tag name
-	  paraIndent,    % {int,int} = {first,line,...}
-	  tags}).        % [#tag]
-
 
 
 

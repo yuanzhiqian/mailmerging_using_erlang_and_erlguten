@@ -2,8 +2,8 @@
 
 -compile(export_all).
 
--import(erlguten, [get_tag_schema/2, parse_fontSize/1]).
--import(lists, [map/2]).
+-import(erlguten, [parse_color/1, parse_fontSize/1, zip1/2]).
+-import(lists, [map/2, flatten/1]).
 -include("mail_merge.hrl").
 
 %% Something about table: currently the format info are either hard coded or ignored. But they can all be easily added into the template and later parsed with the functions in this module, so we don't need to worry that we might have to modify the erlguten module.
@@ -12,35 +12,83 @@
 %%text
 
 parse_text(Frame_info, Content, _Merged, PDF) ->      %% Merged |   #template_info{  counts, {paper, Attr, [{frame_info, Content}| ... ]}  }
+  Page_No = pdf:get_page_no(PDF),                            %%save the current page number
+
   X = Frame_info#frame_info.x,
   Y = Frame_info#frame_info.y,
-  Font = case Frame_info#frame_info.font of
-    "N/A" -> "Times-Roman";
-    Real_Font -> Real_Font
-  end,
+  Height = Frame_info#frame_info.height,
+  Width = Frame_info#frame_info.width,
 
-  {Pt, _} = 
+  case parse_color(Frame_info#frame_info.bg) of
+	no ->
+	    void;
+	{yes,{R,G,B}} ->            
+	    pdf:save_state(PDF),
+	    pdf:set_fill_color_RGB(PDF,R, G, B),
+	    pdf:rectangle(PDF, X-5,Y-Height-12,10+Width,15 + Height, fill),
+	    pdf:restore_state(PDF)
+  end,
+  {_, Leading} = drawText(Frame_info, Content, PDF),
+  case Frame_info#frame_info.grid of
+	true ->
+            %%io:format("~p~n~p~n~p~n~p~n~p~n",[X,Y,round(Width/12),Leading,Frame_info#frame_info.maxlines]),
+	    P = erlguten_geometry:draw_box(X,Y,round(Width/12),Leading,Frame_info#frame_info.maxlines),
+	    pdf:append_stream(PDF, P);
+	false ->
+	    void
+  end,
+  
+  pdf:set_page(PDF, Page_No).                                %%restore the former page number
+
+%%%%%%%% In this function, I reuse the codes from erlguten to print texts
+drawText(Frame_info, Content, PDF) ->
+  TagMap = [{raw, Frame_info#frame_info.font, Frame_info#frame_info.break}],
+  {Pt, Leading} = 
   case Frame_info#frame_info.fontsize of
     "N/A" -> parse_fontSize("12/24");  %% temprarily
     FontSize_Value ->
       parse_fontSize(FontSize_Value)    
   end,
+  FontMap = map(fun({Tg,Name,Bool}) ->
+			  {Tg,pdf:get_font_alias(PDF, Name),Bool,Name}
+		  end, TagMap),
+  P1 = Frame_info#frame_info.paraIndent,
+  Measure = round (Frame_info#frame_info.width / 12),
+  ParaShape = map(fun(I) -> Measure-I end, P1),
+  PointSize = Pt,
+  Xml = {p,[], [{raw, Content}]},               %% In order to be able to use the functions, I need to construct the data structure needed
+  Toks  = erlguten_normalise_xml:normalise_xml(Xml, FontMap),
+  Lines = erlguten_para_break:break_para(Toks, PointSize, ParaShape, FontMap),
+  PdfLines = erlguten_lines2pdf:lines2pdf(Lines, PointSize, ParaShape, FontMap),
 
-  Text = Content,
-
-  pdf:save_state(PDF),
-  pdf:begin_text(PDF),
-  pdf:set_font(PDF,Font, Pt),
-  pdf:set_text_rendering(PDF, fill),
-  pdf:set_text_pos(PDF, X, Y),  
-  pdf:textbr(PDF, Text),
-  pdf:end_text(PDF),
-  pdf:restore_state(PDF).
+  Need = length(Lines),
+  Free = 1,
+  Max  = Frame_info#frame_info.maxlines,
+  Available = Max - Free + 1,
+ 
+  case Need =< Available of 
+    true ->
+	    %% io:format("Good no worries~n"),
+	    X = Frame_info#frame_info.x,
+            Y = Frame_info#frame_info.y,
+	    Y1 = Y-Leading - (Free-1)*Leading,
+	    Geom = erlguten_geometry:mk_line_headers(X, Y1, Measure, 
+						Leading, ParaShape, Need),
+	    Pdf1 = ["BT\n", zip1(Geom, PdfLines), "ET\n"],
+            
+	    Pdf2 = flatten(Pdf1),
+	    pdf:append_stream(PDF, Pdf2);
+    false ->
+	    %% io:format("Oh dear~n")
+	    void
+  end,
+  {Pt, Leading}.
 
 
 %%Images
 parse_img(Frame_info, Content, Merged, PDF) ->              %% Temparily 
-  parse_text(Frame_info, Content, Merged, PDF).
+  %%parse_text(Frame_info, Content, Merged, PDF).
+  ok.
 
 %%Table
 parse_table(Frame_info, Content, Merged, PDF) ->
