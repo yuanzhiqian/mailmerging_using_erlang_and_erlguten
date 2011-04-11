@@ -1,0 +1,103 @@
+Mar 4.
+  The cappuccino part: can display graphics
+  Next: complete create, translation, resize part
+
+Mar 4. 10:08
+  The cappuccino part: can create and resize graphics
+  Next: finish other parts and try to add xml file generating function!!!
+
+Mar 4. 21:46
+
+  The creation, resizing, selection/deselection and translation of text frames are done.
+  Next: Hard code the fields and generate xml files, try to combine the two components using nitrogen.
+
+        Goal: 1. Try to run the GUI from nitrogen;                                    Done
+              2. Hard code the fields and generate xml files;                         Done
+              3. Try to insert erlguten component into a nitrogen project;            Done
+              4. Try to combine the whole system.                                     Done
+
+Mar 21. 18:15
+
+  mailmergingproject is everything we need, including erlguten, cappuccino and rubyonrails codes
+
+Mar 26. 12:20
+
+  mailmergingproject is everything we need, including erlguten which is in public/erlguten, the data files which are in public/data, and the cappuccino and rubyonrails codes. Now the hierachy is tidy, and some temporary files and the final ouput are generated to the root path.
+ 
+  Next: Implement the requirement Erik prompted.
+ 
+        Goal: 1. Hard code the template and userdata files;                                                  Done
+              2. Modify erlguten so that it can process the dynamic texts fiels in the static ones.          Done
+
+Mar 27. 19:57
+  
+  Dynamic text fields part finished. However the table and list are still left to be discussed with Erik. And I haven't dealed with the # mark problem, I think I may put that part away for a while, and deal with the xml file generation with new format issue and the GUI part.
+
+  Next: Combine with GUI
+     
+        Goal: 1. Hard code from GUI to make the whole process go on well;           Done
+              2. Try to add dynamic fields from GUI;                                Done
+              3. Add more properties' typing from GUI;
+              4. Do research on editing view;
+              5. (optional) Deal with the # mark problem.                           Done
+
+Mar 29. 22:28
+
+  Modified some orginally hard coded fields including bg field. Modified one bug in erlguten module.
+
+Mar 31. 15:36
+  
+  Combined with GUI, modified some hard coded fields in GUI. Now the whole process is nearly done. What's left?
+  
+       1. Table and list. (Would be small amount of work.)
+       2. The editing view. (Would be huge.)
+
+  Next: Finish the things left
+    
+        Goal: 1. Table and list. (Small amount of work) (It proves to be a huge amount of work, but I have almost finished!)  Done!
+              2. The editing view. (Huge)
+
+Apr 5. 00:20
+
+  Finished Table and List, the only thing left is to make it more advanced, and try to add the GUI part. Now everything works fine. Oh... There's still one main task left -- adding the page management functionality.
+
+  Next: Fix the table and list; do the page management; Add GUI
+  
+        Goal: 1. Do the page management;                             Done
+              2. Fix table and list;              Doing
+              3. Add GUI.
+
+Apr 5 11:41
+
+  Finished page management, fixed the bg problem.
+ 
+  Next: Image and GUI.
+
+        Goal: 1. Fix table and list furthermore;          Done       
+              2. Do the image part;                       Doing
+              3. Add GUI.
+
+Apr 10 19:51
+
+  Table and list rewritten.
+  Text fixed, using erlguten functions to print text. Next, image and table length detecting.
+
+  Next: Image and table and list.
+
+        Goal: 1. Add image function;                                 Done
+              2. Do the table length detecting;                      Doing
+              3. (optional) Do the list length problem.              To be done
+
+Apr 11 16:32
+
+  Image now works! I combined the Carl's version with the original one. This erlguten version is unique, another version may not work for my project.
+
+  Next: Table length.
+
+        Goal: 1. Table length.
+
+
+
+
+
+ 

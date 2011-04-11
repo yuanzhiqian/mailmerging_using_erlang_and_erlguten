@@ -1,0 +1,7 @@
+1. table and list;                                                                    big issue.        Done
+2. the mailmerging try to retain redundant spaces, but they are fixed later by erlguten. Ask Erik if we need to retain spaces;           Not a problem.
+3. can not deal with # mark yet, try to find a way to make it possible.               Done
+4. how about the \ mark issue?                                                        Half solved. Need more discussion
+5. bug in erlguten, the "bg" field only works in one line!!! fix it later!            Not needed. Kind of fixed
+
+

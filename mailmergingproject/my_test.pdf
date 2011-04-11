@@ -1,0 +1,84 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type  /Font 
+/Subtype  /Type1 
+/Name  /F1 
+/BaseFont  /Times-Roman 
+/Encoding  /MacRomanEncoding 
+>>
+endobj
+2 0 obj
+<<
+/F1  1 0 R 
+>>
+endobj
+3 0 obj
+<<
+/Type  /Pages 
+/Count  1 
+/MediaBox  [  0  0  595  842  ] 
+/Kids  [  5 0 R  ] 
+/Resources <<
+/Font  2 0 R 
+/ProcSet  [  /PDF  /Text  ] 
+>>
+
+>>
+endobj
+4 0 obj
+<</Length 403>>
+stream
+BT
+1 0 0 1 214 661 Tm  20.45 Tw /F1 32 Tf
+20.45 Tw [ (Hello John,)0 ] TJ
+0 -32 Td  9.34 Tw [ (you need to)0 ] TJ
+0 -32 Td  [ (pay)0 ] TJ
+0 -32 Td  0 Tw [ (150.00Kr)55 (.)0 ] TJ
+ET
+  q  0.4 g 0.4 G 0 w 214 693 m 214 501 l S 382 693 m 382 501 l S 214 693 m 382 693 l S 214 661 m 382 661 l S 214 629 m 382 629 l S 214 597 m 382 597 l S 214 565 m 382 565 l S 214 533 m 382 533 l S 214 501 m 382 501 l S  Q  
+endstream
+endobj
+5 0 obj
+<<
+/Type  /Page 
+/Parent  3 0 R 
+/Contents  4 0 R 
+>>
+endobj
+6 0 obj
+<<
+/Type  /Catalog 
+/Pages  3 0 R 
+>>
+endobj
+7 0 obj
+<<
+/Creator  (Erlang) 
+/CreationDate  (D:20030215152011) 
+/Producer  (erlguten-2.0) 
+/Author  () 
+/Title  () 
+/Subject  () 
+/Keywords  (ErlangKeyword) 
+>>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000129 00000 n 
+0000000162 00000 n 
+0000000323 00000 n 
+0000000775 00000 n 
+0000000844 00000 n 
+0000000897 00000 n 
+trailer
+<<
+/Size 8
+/Root 6 0 R
+/Info 7 0 R
+>>
+startxref
+1067
+%%EOF
