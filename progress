@@ -84,9 +84,17 @@ Apr 10 19:51
 
   Next: Image and table and list.
 
-        Goal: 1. Add image function;
-              2. Do the table length detecting;
-              3. (optional) Do the list length problem.
+        Goal: 1. Add image function;                                 Done
+              2. Do the table length detecting;                      Doing
+              3. (optional) Do the list length problem.              To be done
+
+Apr 11 16:32
+
+  Image now works! I combined the Carl's version with the original one. This erlguten version is unique, another version may not work for my project.
+
+  Next: Table length.
+
+        Goal: 1. Table length.
 
 
 
