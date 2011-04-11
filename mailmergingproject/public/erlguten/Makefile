@@ -22,14 +22,19 @@ MODS= 	erlguten\
 	erlguten_pdf_assemble\
 	erlguten_pdf_export\
 	erlguten_test1\
-	erlguten_test2\
-	erlguten_test3\
 	erlguten_test4\
 	erlguten_xml_lite\
 	erlguten_xml_tokenise\
+        mail_merge\
+        deparse_xml\
+        text_img_table_list\
+        test_img\
+        eg_pdf_image\
+        eg_pdf_op\
+        eg_pdf_lib\
 	pdf
 
-all: erlguten_test1.pdf erlguten_test2.pdf erlguten_test3.pdf\
+all: erlguten_test1.pdf \
 	erlguten_test4.pdf test1.pdf test2.pdf\
 	${MODS:%=%.beam}
 
@@ -54,12 +59,6 @@ test2.pdf: test2.xml galley_002.gal ${MODS:%=%.beam}
 
 erlguten_test1.pdf: erlguten_test1.beam  ${MODS:%=%.beam}
 	erl -pa `pwd` -s erlguten_test1 test -s erlang halt
-
-erlguten_test2.pdf: erlguten_test2.beam ${MODS:%=%.beam}
-	erl -pa `pwd` -s erlguten_test2 test -s erlang halt
-
-erlguten_test3.pdf: erlguten_test3.beam  ${MODS:%=%.beam}
-	erl -pa `pwd` -s erlguten_test3 test -s erlang halt
 
 erlguten_test4.pdf: erlguten_test4.beam  ${MODS:%=%.beam}
 	erl -pa `pwd` -s erlguten_test4 test -s erlang halt

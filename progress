@@ -73,9 +73,22 @@ Apr 5 11:41
  
   Next: Image and GUI.
 
-        Goal: 1. Fix table and list furthermore;
-              2. Do the image part;
+        Goal: 1. Fix table and list furthermore;          Done       
+              2. Do the image part;                       Doing
               3. Add GUI.
+
+Apr 10 19:51
+
+  Table and list rewritten.
+  Text fixed, using erlguten functions to print text. Next, image and table length detecting.
+
+  Next: Image and table and list.
+
+        Goal: 1. Add image function;
+              2. Do the table length detecting;
+              3. (optional) Do the list length problem.
+
+
 
 
 

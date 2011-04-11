@@ -348,10 +348,45 @@ set_stroke_gray(PDF, Gray)->
     append_stream(PDF, [n2s(Gray)," G\n"]).
     
 %% Images
-image(PDF, "http:" ++ URL)->
-    tobedone;
-image(PDF, FilePath)->
-    PDF ! {image,FilePath}.
+%% image(PID, FilePath )
+%% image(PID, FilePath, Size)
+%% image(PID, FilePath, Pos, Size)
+%% Pos is {X,Y}
+%% Size is {width, W} | {height, H} | {W,H} | {max, W, H} 
+%% The max Size version can be used to set a max limit on width, height or both
+%% dimensions (undefined is a valid value for at most 1 W or H value)
+
+image(PID, FilePath)->
+    save_state(PID),
+    image1(PID, FilePath, {size,{undefined,undefined}}),
+    restore_state(PID).
+    
+image(PID, FilePath,Size)->
+    save_state(PID),
+    image1(PID, FilePath, Size),
+    restore_state(PID).
+    
+image(PID, FilePath, {X,Y}, Size)  ->
+    save_state(PID),
+    translate(PID,X,Y),
+    image1(PID, FilePath, Size),
+    restore_state(PID).
+
+image1(PID, FilePath, {max, undefined, H})->
+    image1(PID, FilePath, {height, H});
+image1(PID, FilePath, {max, W, undefined})->
+    image1(PID, FilePath, {width, W});
+image1(PID, FilePath, {max, W, H})->
+    image1(PID, FilePath, {size, {max, W, H}});
+image1(PID, FilePath, {width, W})->
+    image1(PID, FilePath, {size,{W,undefined}});
+image1(PID, FilePath, {height, H}) ->
+    image1(PID, FilePath, {size,{undefined,H}});
+image1(PID, FilePath, {W, H}) when is_integer(W), is_integer(H)->
+    image1(PID, FilePath, {size,{W,H}});
+image1(PID, FilePath, {size,Size})->
+    PID ! {image, FilePath, Size}.
+
 
 
 %% Internals

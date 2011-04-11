@@ -86,9 +86,12 @@ drawText(Frame_info, Content, PDF) ->
 
 
 %%Images
-parse_img(Frame_info, Content, Merged, PDF) ->              %% Temparily 
-  %%parse_text(Frame_info, Content, Merged, PDF).
-  ok.
+parse_img(Frame_info, Content, Merged, PDF) ->              
+  X = Frame_info#frame_info.x,
+  Y = Frame_info#frame_info.y,
+  Width = Frame_info#frame_info.width,
+  Height = Frame_info#frame_info.height,
+  pdf:image(PDF, Content, {X,Y}, {size, {Width, Height}}).
 
 %%Table
 parse_table(Frame_info, Content, Merged, PDF) ->
@@ -314,21 +317,23 @@ printList(Frame_info, [H|T], PDF) ->
   case H of
     [] ->printList(Frame_info, T, PDF);
     Str ->
-      Font = Frame_info#frame_info.font,
+      %%Font = Frame_info#frame_info.font,
       FontSize = Frame_info#frame_info.fontsize,
-      {Pt,Leading} = parse_fontSize(FontSize),
-      X = Frame_info#frame_info.x,
-      Y = Frame_info#frame_info.y,
-      
-      pdf:save_state(PDF),   
-      pdf:begin_text(PDF),
-      pdf:set_font(PDF,Font, Pt),
-      pdf:set_text_rendering(PDF, fill),
-      pdf:set_text_pos(PDF, X, Y),
+      {_Pt,Leading} = parse_fontSize(FontSize),
+      %%X = Frame_info#frame_info.x,
+      %%Y = Frame_info#frame_info.y,     
+
+      %%pdf:save_state(PDF),   
+      %%pdf:begin_text(PDF),
+      %%pdf:set_font(PDF,Font, Pt),
+      %%pdf:set_text_rendering(PDF, fill),
+      %%%pdf:set_text_pos(PDF, X, Y),
       %%pdf:image(PDF, "img/bullet_dot.gif"),           %%deal with this later
-      pdf:textbr(PDF, Str),
-      pdf:end_text(PDF),
-      pdf:restore_state(PDF), 
+      %%pdf:textbr(PDF, Str),
+      %%pdf:end_text(PDF),
+      %%pdf:restore_state(PDF), 
+
+      drawText(Frame_info, Str, PDF),  %% using erlguten functions to draw text, instead of directly using pdf module
       
       Y1 = Frame_info#frame_info.y - Leading,  
       if 

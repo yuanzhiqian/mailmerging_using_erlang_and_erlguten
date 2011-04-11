@@ -36,38 +36,21 @@
 -import(lists, [map/2, mapfoldl/3, member/2, reverse/1]).
 -import(pdf, [f2s/1, i2s/1]).
 
-make_pdf_file(OutFile, Info, Fonts, Pages, MediaBox) ->
-    {Root, Ninfo, Os} = build_pdf(Info, Fonts, Pages, MediaBox),
-    {ok, F} = file:open(OutFile, [binary,raw,write]),
-    file:write(F, header()),
-    {ok, Pos0} = file:position(F, cur),
-    %% io:format("Os=~p~n", [Os]),
-    {Posns, _} = mapfoldl(fun(I, Pos) -> 
-				  {{obj,Index,_},_} = I,
-				  Data = serialise(I),
-				  file:write(F, Data),
-				  {ok, Pos1} = file:position(F, cur),
-				  {{Index,Pos}, Pos1}
-			  end, Pos0, Os),
-    %% io:format("Posn=~p~n",[Posns]),
-    XrefStartPos = add_xref(F, Posns),
-    add_trailer(F, Posns, Root, Ninfo),
-    add_start_xref(F, XrefStartPos),
-    file:close(F).
-
-build_pdf(Info, Fonts, Pages, MediaBox) ->
-    {Free,Fonts1,O1s}  = mk_fonts(Fonts, 1, [], []),
-    %% io:format("here1:~p~n",[O1s]),
+build_pdf(Info, Fonts, Images, Pages, MediaBox, ProcSet) ->
+    %% io:format("build pdf Fonts=~p~n",[Fonts]),
+    {Free0,XObjects,O0s}  = eg_pdf_image:mk_images(Images, 1, [], []),
+    {Free,Fonts1,O1s}  = mk_fonts(Fonts, Free0, [], []),
     PageTree = Free,
     {Free1,Ps,O3s} = mk_pages(Pages, PageTree, Free+1,[],[]),
     %% io:format("here2:~p~n",[O3s]),
-    O2 = {{obj,PageTree,0}, mkPageTree(Ps, Fonts1, MediaBox)},
+    O2 = {{obj,PageTree,0},
+          mkPageTree(Ps, Fonts1, XObjects, MediaBox, ProcSet)},
     Root = Free1,
     O4 = {{obj,Root,0}, mkCatalogue(PageTree)},
     %% io:format("Free1=~p~n",[Free1]),
     NInfo = Free1 + 1,
     O5 = {{obj,NInfo,0}, mkInfo(Info)},
-    {Root, NInfo, O1s ++ [O2|O3s] ++ [O4,O5]}.
+    {Root, NInfo, O0s ++ O1s ++ [O2|O3s] ++ [O4,O5]}.
     
 mk_fonts([], I, Fs, Os) -> 
     A = {{obj,I,0},{dict,map(fun({Alias, FontObj}) ->
@@ -159,14 +142,21 @@ mkInfo(I) ->
 
 %% L = [int()] = list of objects representing pages
 
-mkPageTree(L, Fonts, MediaBox = {A,B,C,D} ) ->
-    {dict,[{"Type",{name,"Pages"}},
+mkPageTree(L, Fonts, XObjects, MediaBox = {A,B,C,D}, ProcSet ) ->
+    ImProcSet = case ProcSet of
+		    {imageb,imagec} -> [{name, "ImageB"},{name, "ImageC"}];
+		    {imageb,_} -> [{name, "ImageB"}];
+		    {_,imagec} -> [{name, "ImageC"}];
+		    _ -> []
+		end,
+    {dict,[{"Type",{name,"Page"}},
 	   {"Count",length(L)},
 	   {"MediaBox", {array,[A,B,C,D]}},
-	   {"Kids",{array,map(fun(I) ->{ptr,I,0} end,L)}},
+	   {"Kids",{array,lists:map(fun(I) ->{ptr,I,0} end,L)}},
 	   {"Resources",
-	    {dict,[{"Font", Fonts },
-		   {"ProcSet", {array,[{name,"PDF"},{name,"Text"}]}}]}}]}.
+	    {dict,[{"Font", Fonts },{"XObject", XObjects },
+		   {"ProcSet",
+                    {array,[{name,"PDF"},{name,"Text"}|ImProcSet]}}]}}]}.
 
 %% Fonts = [{Name,PageNo}]
 %%   example [{"F1",12},{"F7",15}]
@@ -275,10 +265,12 @@ pdfloop(PDFC, Stream)->
 	    {F,FA} = handle_setfont(PDFC#pdfContext.fonts, Fontname),
 	    S = ["/", FA, " ",i2s(Size)," Tf "],
 	    pdfloop(PDFC#pdfContext{fonts=F}, [Stream,S]);
-	{image, FilePath}->
-	    {I,IMG} = handle_image(PDFC#pdfContext.images, FilePath),
-	    S = ["/", IMG, " Do\n"],
-	    pdfloop(PDFC#pdfContext{images=I}, [Stream,S]);
+	{image, FilePath, Size} ->
+            {I,IMG,{W,H},ProcSet} = handle_image(PDFC#pdfContext.images, 
+						 FilePath, Size, 
+						 PDFC#pdfContext.procset),
+	    S = list_to_binary(eg_pdf_op:set_image(W,H, IMG)),
+	    pdfloop(PDFC#pdfContext{images=I,procset=ProcSet}, [Stream,S]);
 	{page,{new, PID}}->
 	    {Add, PageNo} = 
 		handle_newpage(PDFC#pdfContext.pages,
@@ -338,11 +330,12 @@ handle_export(PDFC)->
     {Root, Ninfo, Os} = 
 	build_pdf(PDFC#pdfContext.info, 
 		  dict:to_list(PDFC#pdfContext.fonts),
+		  dict:to_list(PDFC#pdfContext.images),
 		  lists:map(fun({Key,Val}) -> {page,Val} end,
 			    orddict:to_list(PDFC#pdfContext.pages)),
-		  PDFC#pdfContext.mediabox),
-    Objs = lists:map(fun(I) -> serialise2bin(I) end , Os),
-    erlguten_pdf_export:mkdoc(Objs, Root, Ninfo).
+		  PDFC#pdfContext.mediabox,
+		  PDFC#pdfContext.procset),
+    eg_pdf_lib:export(Ninfo, Os).
 
 handle_setfont(FontDict, FontName)->
     %% If font already in Dictionary return Alias
@@ -366,16 +359,63 @@ handle_setfont(FontDict, FontName)->
 		end	    
     end.
 
-handle_image(ImageDict, FilePath)->
+%% @doc  This updates the image dictionary from the pdfContext.images with this new image if
+%% it's not already present. It also scales the image information to to fit the maximum
+%% sizes received in the Size parameter. This may be {undefined,Height}, {Width, undefined} or {max, width, height}.
+%% Filepath is the key into the dictionary. If a dictionary entry already exists for the FIlepath
+%% it doesn't put it into the dictionary again, but it does calculate the bounding box for the image.
+%% When the number of color components is less than or equal to 2, the Procset has a tuple value
+%% of {A,B} where A can be undefined or imageb and B can be undefined or imagec. These cause the 
+%% listing of these procedure set in the PDf so that the related procedure set can be loaded in 
+%% the Postscript printing device. This is suppoed to be obsolete as of v. 1.4 PDFs. 
+
+handle_image(ImageDict, FilePath, Size, ProcSet)->
     case dict:find(FilePath, ImageDict) of
-	{ok, Value} ->
-	    {ImageDict, Value};
+	{ok, #image{alias=Alias, width=W, height=H}} ->
+	    {ImageDict, Alias, set_size(Size,{W,H}), ProcSet };
 	error ->
-	    Alias = "Im" ++ 
-		i2s(length(dict:to_list(ImageDict)) + 1),
-	    NewDict = dict:store(FilePath,Alias,ImageDict),
-	    {NewDict, Alias}
+	    Alias = "Im" ++ eg_pdf_op:i2s(dict:size(ImageDict) + 1),
+	    case eg_pdf_image:get_head_info(FilePath) of
+		{jpeg_head,{W1, H1, Ncomponents, Data_precision}} ->
+		    NewDict =dict:store(FilePath,
+					#image{alias  = Alias,
+                                               width  = W1,
+                                               height = H1},
+					ImageDict),
+		    {NewDict, Alias, set_size(Size, {W1,H1}),
+		     imageBC(Ncomponents, ProcSet) };
+		{png_head,{W1, H1, Ncomponents, Data_precision}} ->
+		    NewDict =dict:store(FilePath,
+					#image{alias  = Alias,
+                                               width  = W1,
+                                               height = H1},
+					ImageDict),
+		    {NewDict, Alias, set_size(Size, {W1,H1}),
+		     imageBC(Ncomponents, ProcSet) };
+		
+		A -> 
+		    {error_not_yet_implemented_image_format,A}
+	    end
     end.
+
+%% Function to scale the image properly if only width or height
+%% is set.
+set_size({max, W1, H1}, {W2,H2}) -> 
+    H3 = trunc(W1*H2/W2),
+    W3 = trunc(H1*W2/H2),
+    if H3 > H1 ->
+	    {W3, H1};
+       true ->
+	    {W1, H3}
+    end;
+set_size({undefined,undefined},Size2) -> Size2;
+set_size({W1,undefined},{W2,H2}) -> {W1,trunc(W1*H2/W2)};
+set_size({undefined,H1},{W2,H2}) -> {trunc(H1*W2/H2),H1};
+set_size(Size1,_) -> Size1.
+
+%% @doc Set the image types for ProcSet. If we have black/white image we set imageb; color then imagec. Both can be set.
+imageBC(Ncomp,{B,C}) when Ncomp =< 2 -> {imageb,C};
+imageBC(Ncomp,{B,C}) when Ncomp > 2 -> {B,imagec}.
 
 handle_info(I,{author,Author})->
     I#info{author=Author};

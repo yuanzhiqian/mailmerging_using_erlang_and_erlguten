@@ -21,8 +21,11 @@
 	  images=[], 
 	  currentpage,
 	  pages=[],
-	  mediabox
+	  mediabox,
+          procset={undefined,undefined}  %% { imageb,imagec }
 	 }).
+
+-record(image,{alias,width,height}).
 
 -record(paraBox,{x,y,measure,ptSize,leading,nl,fontMap}).
 
