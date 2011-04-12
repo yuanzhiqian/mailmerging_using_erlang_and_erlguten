@@ -2,7 +2,7 @@
 <template count = "2" alt2 = "N/A" alt3 = "template_3.xml">
 <paper name = "first" class = "front">
 
-  <frame name = "trademark" class = "img" x = "48" y = "50" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>
+  <frame name = "trademark" class = "img" x = "48" y = "30" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>
 
   <frame name = "hello" class = "text" x = "48" y = "140" width = "177" height = "127" grid = "true" bg = "default" font = "Times-Roman" fontsize = "15/20" paraIndent = "0" maxlines = "2" continue = "none" break = "true">Hello #name, here is your invoice, this is a new version of template, and new version of mail-merging, test to see if it works all fine.</frame>
 
@@ -13,11 +13,11 @@
 
 <paper name = "third" class = "end">
   
-  <frame name = "trademark" class = "img" x = "48" y = "50" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>
+  <frame name = "trademark" class = "img" x = "48" y = "30" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>
 
   <frame name = "shoppingtable2" class = "table" x = "48" y = "140" width = "177" height = "400" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/24" paraIndent="0" maxlines = "30" continue="none" break="true">@shoppingtable</frame>
 
-  <frame name = "slip" class = "img" x = "0" y = "800" width = "600" height = "250" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#slip</frame>
+  <frame name = "slip" class = "img" x = "0" y = "550" width = "600" height = "250" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#slip</frame>
 
 </paper>
 

@@ -88,9 +88,11 @@ drawText(Frame_info, Content, PDF) ->
 %%Images
 parse_img(Frame_info, Content, Merged, PDF) ->              
   X = Frame_info#frame_info.x,
-  Y = Frame_info#frame_info.y,
+  Original_Y = Frame_info#frame_info.y,
   Width = Frame_info#frame_info.width,
   Height = Frame_info#frame_info.height,
+
+  Y = Original_Y - Height,                  %% Convert coordinate to the one which image system accepts
   pdf:image(PDF, Content, {X,Y}, {size, {Width, Height}}).
 
 %%Table
