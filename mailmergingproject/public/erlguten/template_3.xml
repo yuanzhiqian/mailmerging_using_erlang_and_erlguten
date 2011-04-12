@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<template count = "2" alt2 = "N/A" alt3 = "template_3.xml">
+<template count = "3" alt2 = "N/A" alt3 = "N/A">
 <paper name = "first" class = "front">
 
   <frame name = "trademark" class = "img" x = "48" y = "50" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>

@@ -95,6 +95,7 @@ parse_img(Frame_info, Content, Merged, PDF) ->
 
 %%Table
 parse_table(Frame_info, Content, Merged, PDF) ->
+  %%io:format("~p~n~p~n", [Merged#template_info.counts, Merged#template_info.page_amount_needed]),
   Page_No = pdf:get_page_no(PDF),                            %%save the current page number
   parse_and_print_table(Frame_info, Content, Merged, PDF),
   pdf:set_page(PDF, Page_No).                                %%restore the former page number
