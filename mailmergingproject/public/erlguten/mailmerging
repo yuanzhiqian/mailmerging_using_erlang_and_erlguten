@@ -1,0 +1,3 @@
+#!/bin/sh
+erl -pa `pwd` -pa "ebin" -s mail_merge main $1 $2 -s erlang halt
+
