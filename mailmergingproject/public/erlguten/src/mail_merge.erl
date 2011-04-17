@@ -15,6 +15,8 @@
 
 -import(functions_from_old_erlguten, [parse_fontSize/1, to_bool/1, parse_paraIndent/1]).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%% Parameter server
+
 parameters(Dict) ->
   receive
     {append, {Key, Value}} ->
@@ -49,6 +51,8 @@ getPara(Key) ->
 
 stopPara() ->
   para ! {stop}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 main(ArgList) ->
   startPara(),
