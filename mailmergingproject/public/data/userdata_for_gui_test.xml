@@ -18,6 +18,11 @@
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
+                   
+                   [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
+                   [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
+                   [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
+                   [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
                    [{"goods", "apple"}, {"count", "4"}, {"place", "Willy:s"}, {"price", "60.00Kr"}, {"name", "Miller"}, {"number", "53472"}],
@@ -122,8 +127,8 @@
                    [{"goods", "mp3"}, {"count", "3"}, {"place", "coop"}, {"price", "100.00Kr"}, {"name", "Bob"}, {"number", "92139"}],
                    [{"goods", "xbox"}, {"count", "5"}, {"place", "7Eleven"}, {"price", "9.00Kr"}, {"name", "Vivian"}, {"number", "57883"}]].</shoppingtable>
 
-  <tm>trademark.jpg</tm>
-  <slip>slip.jpg</slip>
+  <tm>img/trademark.jpg</tm>
+  <slip>img/slip.jpg</slip>
   <text>Some questions to be added.</text>
   
 </user>

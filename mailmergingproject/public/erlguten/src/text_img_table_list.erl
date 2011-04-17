@@ -97,7 +97,10 @@ parse_img(Frame_info, Content, _Merged, PDF) ->
 
   %%io:format("~p~n~p~n", [X, Y]),
   %%io:format("~p~n", [Content]),
-  eg_pdf:image(PDF, list_to_atom(Content), {X,Y}, {size, {Width, Height}}).
+  Dir = atom_to_list(mail_merge:getPara(dir)),
+  Path = Dir ++ Content,
+  %%io:format("~p~n", [Path]),
+  eg_pdf:image(PDF, list_to_atom(Path), {X,Y}, {size, {Width, Height}}).
 
 %%Table
 parse_table(Frame_info, Content, Merged, PDF) ->

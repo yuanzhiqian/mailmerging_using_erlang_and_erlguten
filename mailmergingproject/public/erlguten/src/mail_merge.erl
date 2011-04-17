@@ -15,10 +15,47 @@
 
 -import(functions_from_old_erlguten, [parse_fontSize/1, to_bool/1, parse_paraIndent/1]).
 
+parameters(Dict) ->
+  receive
+    {append, {Key, Value}} ->
+      parameters(dict:append(Key, Value, Dict));
+    {retrieve, Key, Pid} ->
+      case dict:find(Key, Dict) of
+        {ok, Value} -> Pid ! {ok, Value};
+        error -> Pid ! {error, parameterNotFound}
+      end,      
+      parameters(Dict);
+    {stop} ->
+      done
+  end.
+
+startPara() -> 
+  Pid = spawn(mail_merge, parameters, [dict:new()]),
+  register(para, Pid).
+
+storePara({Key, Value}) ->
+  para ! {append, {Key, Value}}.
+
+getPara(Key) ->
+  para ! {retrieve, Key, self()},
+  Return =
+  receive
+    {ok, [Value]} -> Value;
+    {error, Reason} ->
+      io:format("Error:", [Reason]),
+      halt()
+  end,
+  Return.
+
+stopPara() ->
+  para ! {stop}.
+
 main(ArgList) ->
-  [Template, UserData] =  ArgList, 
-  T = eg_xml_lite:parse_file(Template),
-  U = eg_xml_lite:parse_file(UserData),
+  startPara(),
+  [Dir, Template, UserData] =  ArgList, 
+  storePara({dir, Dir}),
+  T = eg_xml_lite:parse_file(atom_to_list(Dir) ++ atom_to_list(Template)),
+  U = eg_xml_lite:parse_file(atom_to_list(Dir) ++ atom_to_list(UserData)),
   
   T_Data = deShell(T),  
   U_Data = deShell(U),
@@ -27,7 +64,7 @@ main(ArgList) ->
   %%     shows the template to use if current template can't hold all the contents
   {template, [{"alt2",Alt2}, {"alt3",Alt3},{"count",Count}], T_Papers} = T_Data, 
   
-  {Pages, Template_chosen} = preprocess(Count, Alt2, Alt3, T_Papers, U_Data),
+  {Pages, Template_chosen} = preprocess(Count, atom_to_list(Dir) ++ Alt2, atom_to_list(Dir) ++ Alt3, T_Papers, U_Data),
   %%io:format("Pages:~p~n", [Pages]),
   
   [F|FT] = Template_chosen,
@@ -691,5 +728,6 @@ generatePDF(Merged) ->
 
   {Serialised, _PageNo} = eg_pdf:export(PDF),
   file:write_file("Klarna Invoice With Transpromo.pdf",[Serialised]),
-  eg_pdf:delete(PDF).
+  eg_pdf:delete(PDF),
+  stopPara().
 
