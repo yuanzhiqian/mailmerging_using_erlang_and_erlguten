@@ -1,6 +1,7 @@
 Mailmergingproject::Application.routes.draw do
   get "backend/saveXml"
-  match ":filename" => "Backend#saveXml"
+  match "genPdf/:filename" => "Backend#generatePdf"
+  match "saveXml/:filename" => "Backend#saveXml"  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -11,7 +11,7 @@
 
 @implementation MMGTextFrame : MMGGraphic
 {
-    CPString _name;
+    
     BOOL     _hasGrid;
     CPString _bg;
     CPString _textFont;
@@ -29,8 +29,9 @@
 -(void) test
 {
     [self setName: "Frame"];
+    [self setClass: "text"];
     [self setHasGrid: YES];
-    [self setBg: "0.9,0,0"];
+    [self setBg: "0.9,0.0,0.0"];
     [self setTextFont: "Times-Roman"];
     [self setFontSize: "32/32"];
     [self setParaIndent: "0"];        
@@ -50,14 +51,6 @@
 }
 
 //getters and setters
-
-- (CPString)name {
-    return _name;
-}
-
-- (void)setName:(CPString)name {
-    _name = name;
-}
 
 - (BOOL)hasGrid {
     return _hasGrid;

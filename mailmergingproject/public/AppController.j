@@ -14,10 +14,11 @@
 @import "MMGToolPaletteController.j"
 
 //The xml packing function
-function packXml(xmlDoc, graphic)
+function packXml(xmlDoc, paperNode, graphic)
 { 
   //Set attributes
   var attr_name = xmlDoc.createAttribute("name");
+  var attr_class = xmlDoc.createAttribute("class");
   var attr_x = xmlDoc.createAttribute("x");
   var attr_y = xmlDoc.createAttribute("y");
   var attr_width = xmlDoc.createAttribute("width");
@@ -33,6 +34,7 @@ function packXml(xmlDoc, graphic)
 
   attr_name.nodeValue = [graphic name];
   var bounds = [graphic bounds];
+  attr_class.nodeValue = [graphic class];
   attr_x.nodeValue = CGRectGetMinX(bounds);
   attr_y.nodeValue = CGRectGetMinY(bounds);
   attr_width.nodeValue = CGRectGetWidth(bounds);
@@ -51,6 +53,7 @@ function packXml(xmlDoc, graphic)
 
   //Add Attributes to frame
   frameNode.setAttributeNode(attr_name);
+  frameNode.setAttributeNode(attr_class);
   frameNode.setAttributeNode(attr_x);
   frameNode.setAttributeNode(attr_y);
   frameNode.setAttributeNode(attr_width);
@@ -72,8 +75,7 @@ function packXml(xmlDoc, graphic)
   frameNode.appendChild(textNode);
 
   //Add frame nodes
-  var x = xmlDoc.getElementsByTagName("paper")[0];
-  x.appendChild(frameNode);
+  paperNode.appendChild(frameNode);
 
   return xmlDoc;
 }
@@ -112,8 +114,15 @@ function packXml(xmlDoc, graphic)
     [contentView addSubview:button];
 
     button = [[CPButton alloc] initWithFrame:CGRectMake(10, 110, 200, 24)];
-    [button setTitle:@"Generate Template"];
-    [button setAction:@selector(generateTemplate:)];
+    [button setTitle:@"Save Templates"];
+    [button setAction:@selector(saveTemplates:)];
+    [button setTarget:self];
+    [button setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
+    [contentView addSubview:button];
+
+    button = [[CPButton alloc] initWithFrame:CGRectMake(10, 140, 200, 24)];
+    [button setTitle:@"Generate pdf"];
+    [button setAction:@selector(generatePdf:)];
     [button setTarget:self];
     [button setAutoresizingMask:CPViewMinXMargin | CPViewMaxXMargin | CPViewMinYMargin | CPViewMaxYMargin];
     [contentView addSubview:button];
@@ -150,18 +159,22 @@ function packXml(xmlDoc, graphic)
     // [sharedDocumentController openUntitledDocumentOfType:@"MyBundle" display:YES];
 }
 
--(IBAction)generateTemplate:(id)sender
+-(IBAction)generatePdf:(id)sender
 {
-    var sharedDocumentController = [CPDocumentController sharedDocumentController];
-    var theDocuments = [sharedDocumentController documents];
-    
-    //We assume that we only have one document at present
-    //console.log([documents count]);
-    var theDocument = [theDocuments objectAtIndex: 0];
-    var graphics = [theDocument graphics];
-    //console.log([graphics count]);
-    var graphicCount = [graphics count];
-    var xmlString = '<?xml version="1.0" ?><paper></paper>';
+    var httpBody = "";
+    var filename = "template_1";
+    var urlString = @"http://localhost:3000/genPdf/" + filename;
+    var request = [CPURLRequest requestWithURL: urlString];
+    [request setHTTPMethod: @"POST"];
+    [request setHTTPBody: httpBody];
+    //[request setValue:[httpBody length] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [CPURLConnection connectionWithRequest:request delegate:self];   
+}
+
+-(IBAction)saveTemplates:(id)sender
+{
+    var xmlString = '<?xml version="1.0" ?><template></template>';
     // Create DOM
     if (window.DOMParser)
     {
@@ -174,13 +187,35 @@ function packXml(xmlDoc, graphic)
       xmlDoc.async = "false";
       xmlDoc.loadXML(txt);
     }
-    //Modify the DOM
-    for (var index = 0; index<graphicCount; index++) 
+
+    // Set template attr
+    var sharedDocumentController = [CPDocumentController sharedDocumentController];
+    var theDocuments = [sharedDocumentController documents];
+    DocCount = [theDocuments count];
+    Alt2 = "template_2.xml";
+    Alt3 = "template_3.xml";
+
+    var t = xmlDoc.getElementsByTagName("template")[0];
+    var attr_count = xmlDoc.createAttribute("count");
+    attr_count.nodeValue = DocCount;
+    var attr_alt2 = xmlDoc.createAttribute("alt2");
+    attr_alt2.nodeValue = Alt2;
+    var attr_alt3 = xmlDoc.createAttribute("alt3");
+    attr_alt3.nodeValue = Alt3;
+     
+    t.setAttributeNode(attr_count);
+    t.setAttributeNode(attr_alt2);
+    t.setAttributeNode(attr_alt3);
+
+    // Add papers
+
+    for (var index = 0; index<DocCount; index++)
     {
-        var graphic = [graphics objectAtIndex:index]
-        xmlDoc = packXml(xmlDoc, graphic);
-        //console.log(xmlDoc);        
+        var theDocument = [theDocuments objectAtIndex: index];
+        [self generatePaper: theDocument forXml: xmlDoc];
     }
+
+    // Convert xmlDom to xmlString
 
     xmlString = (new XMLSerializer()).serializeToString(xmlDoc);
 
@@ -189,13 +224,41 @@ function packXml(xmlDoc, graphic)
     console.log(xmlString); 
     //Sending xml back to the server
     var httpBody = xmlString;
-    var urlString = @"http://localhost:3000/template";
+    var filename = "template_1";
+    var urlString = @"http://localhost:3000/saveXml/" + filename;
     var request = [CPURLRequest requestWithURL: urlString];
     [request setHTTPMethod: @"POST"];
     [request setHTTPBody: httpBody];
     //[request setValue:[httpBody length] forHTTPHeaderField:@"Content-Length"];
     [request setValue:"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [CPURLConnection connectionWithRequest:request delegate:self];   
+}
+
+-(IBAction)generatePaper:(CPDocument)theDocument forXml:xmlDoc
+{
+    var paperNode = xmlDoc.createElement("paper"); 
+    var attr_name = xmlDoc.createAttribute("name");
+    attr_name.nodeValue = "first";
+    var attr_class = xmlDoc.createAttribute("class");
+    attr_class.nodeValue = "front";
+
+    paperNode.setAttributeNode(attr_name);
+    paperNode.setAttributeNode(attr_class);
+
+    var x = xmlDoc.getElementsByTagName("template")[0];
+    x.appendChild(paperNode);
+
+    var graphics = [theDocument graphics];
+    //console.log([graphics count]);
+    var graphicCount = [graphics count];
+    
+    //Modify the DOM
+    for (var index = 0; index<graphicCount; index++) 
+    {
+        var graphic = [graphics objectAtIndex:index]
+        xmlDoc = packXml(xmlDoc, paperNode, graphic);
+        //console.log(xmlDoc);        
+    }    
 }
 
 - (void)connection:(CPURLConnection) connection didReceiveData:(CPString)data

@@ -62,18 +62,29 @@ main(ArgList) ->
   U = eg_xml_lite:parse_file(atom_to_list(Dir) ++ atom_to_list(UserData)),
   
   T_Data = deShell(T),  
-  U_Data = deShell(U),
+  U_Data = deShell(U),  
   
   %% The count indicates the number of papers defined, i.e. whether all front, middle and end are defined or only some of them are defined. And the alt2 ,alt3 
   %%     shows the template to use if current template can't hold all the contents
   {template, [{"alt2",Alt2}, {"alt3",Alt3},{"count",Count}], T_Papers} = T_Data, 
   
   {Pages, Template_chosen} = preprocess(Count, atom_to_list(Dir) ++ Alt2, atom_to_list(Dir) ++ Alt3, T_Papers, U_Data),
-  %%io:format("Pages:~p~n", [Pages]),
-  
-  [F|FT] = Template_chosen,
-  [M|MT] = FT,
-  [E|[]] = MT,
+  %%io:format("Pages:~p~n", [Pages]),  
+
+  case length(Template_chosen) of
+    3 ->
+      [F|FT] = Template_chosen,
+      [M|MT] = FT,
+      [E|[]] = MT;
+    2 ->
+      [F|FT] = Template_chosen,
+      [M|MT] = FT,
+      E = MT;
+    1 ->
+      [F|FT] = Template_chosen,
+      M = FT,
+      E = FT
+  end,
   
   Template_info = #template_info{ counts = length(Template_chosen),
                                   page_amount_needed = Pages, 

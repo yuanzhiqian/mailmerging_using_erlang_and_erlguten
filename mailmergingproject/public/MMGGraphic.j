@@ -39,6 +39,9 @@ var verticalFlippings;
     BOOL _isDrawingStroke;
     CPColor _strokeColor;
     float _strokeWidth;
+
+    CPString _name;
+    CPString _class;
 }
 
 
@@ -86,6 +89,22 @@ var verticalFlippings;
 
 
 // Accessors
+- (CPString)name {
+    return _name;
+}
+
+- (void)setName:(CPString)name {
+    _name = name;
+}
+
+- (CPString)class {
+    return _class;
+}
+
+- (void)setClass:(CPString)class {
+    _class = class;
+}
+
 - (CPRect)bounds {
     return _bounds;
 }
