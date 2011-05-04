@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.4.20)  28 APR 2011 20:59
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.4.20)  4 MAY 2011 12:05
 entering extended mode
  %&-line parsing enabled.
-**report_ZhiqianYuan
+**report_ZhiqianYuan.tex
 (./report_ZhiqianYuan.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
@@ -48,27 +48,34 @@ File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
+(/usr/share/texmf-texlive/tex/latex/natbib/natbib.sty
+Package: natbib 2009/07/16 8.31 (PWD, AO)
+\bibhang=\skip43
+\bibsep=\skip44
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count88
+)
 (./report_ZhiqianYuan.aux)
 \openout1 = `report_ZhiqianYuan.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 3.
-LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 4.
+LaTeX Font Info:    ... okay on input line 4.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 7.
+(Font)              <12> on input line 8.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 7.
+(Font)              <8> on input line 8.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 7.
+(Font)              <6> on input line 8.
  [1
 
 ]
@@ -90,34 +97,76 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 Chapter 1.
 [2
 
-]
+] [3]
+Overfull \hbox (15.72285pt too wide) in paragraph at lines 73--74
+[]\OT1/cmr/m/n/10 Cappuccino is im-ple-mented us-ing a new pro-gram-ming lan-gu
+age called Objective-
+ []
+
+[4] [5]
 Chapter 2.
-[3
-
-]
-Chapter 3.
-[4
-
-]
-Chapter 4.
-[5
-
-]
-Chapter 5.
 [6
 
 ]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 101.
+
+ (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 101.
+
+Overfull \hbox (0.94508pt too wide) in paragraph at lines 101--102
+[]\OT1/cmr/m/n/10 Implement the mail-merging func-tion-al-ity which can re-plac
+e dy-namic fields
+ []
+
+[7] [8]
+Chapter 3.
+File: systemstructure.eps Graphic file (type eps)
+<systemstructure.eps> [9
+
+] [10]
+Overfull \hbox (13.55624pt too wide) in paragraph at lines 175--176
+\OT1/cmr/m/n/10 tinue = "none" break = "true"$\OML/cmm/m/it/10 >$\OT1/cmr/m/n/1
+0 Question and An-swer: #text$\OML/cmm/m/it/10 <$\OT1/cmr/m/n/10 /frame$\OML/cm
+m/m/it/10 >$ 
+ []
+
+[11]
+Overfull \hbox (22.41747pt too wide) in paragraph at lines 183--184
+\OT1/cmr/m/n/10 lines = "30" con-tinue="none" break="true"$\OML/cmm/m/it/10 >$\
+OT1/cmr/m/n/10 @shoppingtable2$\OML/cmm/m/it/10 <$\OT1/cmr/m/n/10 /frame$\OML/c
+mm/m/it/10 >$ 
+ []
+
+[12] [13] [14]
+Chapter 4.
+[15
+
+]
+Chapter 5.
+[16
+
+]
 Chapter 6.
-[7
+[17
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+[]\OT1/cmr/m/n/10 Erlguten repo, 2003. Erlguten repos-i-tory on google code.
+ []
+
+[18
 
 ] (./report_ZhiqianYuan.aux) ) 
 Here is how much of TeX's memory you used:
- 567 strings out of 495062
- 6752 string characters out of 1182644
- 56885 words of memory out of 3000000
- 3797 multiletter control sequences out of 15000+50000
+ 928 strings out of 495062
+ 11130 string characters out of 1182644
+ 62374 words of memory out of 3000000
+ 4149 multiletter control sequences out of 15000+50000
  9107 words of font info for 32 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 25i,6n,19p,408b,179s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,6n,28p,1184b,248s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on report_ZhiqianYuan.dvi (9 pages, 10644 bytes).
+Output written on report_ZhiqianYuan.dvi (20 pages, 40600 bytes).

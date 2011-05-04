@@ -1,28 +1,32 @@
 \contentsline {chapter}{\numberline {1}Introduction}{2}
 \contentsline {section}{\numberline {1.1}Project Overview}{2}
-\contentsline {section}{\numberline {1.2}Background}{2}
-\contentsline {section}{\numberline {1.3}Report structure}{2}
-\contentsline {chapter}{\numberline {2}Problem Description}{3}
-\contentsline {section}{\numberline {2.1}Issues}{3}
-\contentsline {section}{\numberline {2.2}Goals and motivation}{3}
-\contentsline {chapter}{\numberline {3}Implementation}{4}
-\contentsline {section}{\numberline {3.1}System Evironment}{4}
-\contentsline {section}{\numberline {3.2}Techniques Involved}{4}
-\contentsline {section}{\numberline {3.3}System Structure}{4}
-\contentsline {section}{\numberline {3.4}Implementation for each part}{4}
-\contentsline {subsection}{\numberline {3.4.1}Template Format}{4}
-\contentsline {subsection}{\numberline {3.4.2}Mail-merging algorithm}{4}
-\contentsline {subsection}{\numberline {3.4.3}GUI Implementation}{4}
-\contentsline {subsubsection}{Template Generating}{4}
-\contentsline {subsection}{\numberline {3.4.4}Combination of GUI and backend system}{4}
-\contentsline {chapter}{\numberline {4}Evaluation}{5}
-\contentsline {section}{\numberline {4.1}Mail-merging}{5}
-\contentsline {subsection}{\numberline {4.1.1}Text}{5}
-\contentsline {subsection}{\numberline {4.1.2}Image}{5}
-\contentsline {subsection}{\numberline {4.1.3}Table}{5}
-\contentsline {subsection}{\numberline {4.1.4}List}{5}
-\contentsline {section}{\numberline {4.2}GUI}{5}
-\contentsline {chapter}{\numberline {5}Future work}{6}
-\contentsline {section}{\numberline {5.1}Mail-merging part}{6}
-\contentsline {section}{\numberline {5.2}GUI part}{6}
-\contentsline {chapter}{\numberline {6}Summary and Conclusions}{7}
+\contentsline {section}{\numberline {1.2}Background}{3}
+\contentsline {subsection}{\numberline {1.2.1}Thesis Background}{3}
+\contentsline {subsection}{\numberline {1.2.2}Technical Background}{3}
+\contentsline {subsubsection}{Erlguten}{3}
+\contentsline {subsubsection}{Cappuccino Framework and Objective-J}{4}
+\contentsline {section}{\numberline {1.3}Report structure}{4}
+\contentsline {chapter}{\numberline {2}Problem Description}{6}
+\contentsline {section}{\numberline {2.1}Issues}{6}
+\contentsline {section}{\numberline {2.2}Goals and motivation}{7}
+\contentsline {section}{\numberline {2.3}Method Used}{7}
+\contentsline {chapter}{\numberline {3}Implementation}{9}
+\contentsline {section}{\numberline {3.1}System Environment}{9}
+\contentsline {section}{\numberline {3.2}System Structure}{9}
+\contentsline {section}{\numberline {3.3}Implementation for each part}{11}
+\contentsline {subsection}{\numberline {3.3.1}Template Format}{11}
+\contentsline {subsection}{\numberline {3.3.2}Mail-merging algorithm}{14}
+\contentsline {subsection}{\numberline {3.3.3}GUI Implementation}{14}
+\contentsline {subsubsection}{Template Generating}{14}
+\contentsline {subsection}{\numberline {3.3.4}Combination of GUI and back-end system}{14}
+\contentsline {chapter}{\numberline {4}Evaluation}{15}
+\contentsline {section}{\numberline {4.1}Mail-merging}{15}
+\contentsline {subsection}{\numberline {4.1.1}Text}{15}
+\contentsline {subsection}{\numberline {4.1.2}Image}{15}
+\contentsline {subsection}{\numberline {4.1.3}Table}{15}
+\contentsline {subsection}{\numberline {4.1.4}List}{15}
+\contentsline {section}{\numberline {4.2}GUI}{15}
+\contentsline {chapter}{\numberline {5}Future work}{16}
+\contentsline {section}{\numberline {5.1}Mail-merging part}{16}
+\contentsline {section}{\numberline {5.2}GUI part}{16}
+\contentsline {chapter}{\numberline {6}Summary and Conclusions}{17}
