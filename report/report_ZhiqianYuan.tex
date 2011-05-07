@@ -240,8 +240,17 @@ $<$/template$>$
   The format of list definition is also borrowed from HTML language, just using different marks. The content of list is also dynamic texts, its substitution method is the same as described above. 
   
 \subsection{Mail-merging and pdf generating algorithm}
+\subsubsection{Overview}
 
-  The mail-merge and pdf generating functionality is the main component in this system, figure \ref{fig2} shows the flow of this process. 
+  The mail-merge and pdf generating functionality is the main component in this system, figure \ref{fig2} shows the flow of this process. As is shown in the figure, the system first read in template file and user data file, and transform them into erlang term form, then the system call the preprocess function to calculate the number of pages needed and chose the proper template. The rule is, if more than 3 pages are needed, then a 3-page template, which includes front, middle and end page template, is chosen; if 2 pages are needed, then a 2-page template, which contains front and end page template, is chosen; if only one page is needed, then a 1-page template, which only has front page template, is chosen. I need to point out that the current template has a higher priority, which means if the current template is proper, then it is selected. For example, if a 3-page template is used, but the total pages needed are 2, then this 3-page template is still chosen. 
+
+  There are two internal records defined to store the template information, after the preprocessing, these internal data structures are created, then the mail-merge procedure is started. After the mail-merging, the data is parsed once again to generate internal data structure for frames. Then the generatePDF function is called. 
+
+  During the pdf generating part, the system first examine each frame's type, and then call the corresponding function in the text_img_table_list module to generate pdf stream for them. The table and list may expand up to many pages, that's why we do the preprocess to determine the number of pages needed. If a table occupies many pages, then a 3-page template is used, and usually there would be some texts and images in the middle pages as well, so after print out each page, the system will examine that page again to print other frames in that page. 
+
+  When it comes to the final page, the end-page template is used and invoice slip is printed.
+
+  This is the general workflow of the system, next I will describe each part in detail.
 
 \begin{figure}[p]
 \centering
@@ -249,6 +258,10 @@ $<$/template$>$
 \caption{Flow chart of mail-merge process}
 \label{fig2}
 \end{figure}
+
+\subsubsection{Preprocess}
+
+  During the preprocess part, 
 
 \subsection{GUI Implementation}
 \subsubsection{Template Generating}
