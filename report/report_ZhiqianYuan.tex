@@ -261,7 +261,7 @@ $<$/template$>$
 
 \subsubsection{Preprocess}
 
-  During the preprocess part, 
+  During the preprocess part, the proper template is chosen and the number of papers needed is calculated. The template chosen algorithm is, first check the current template, if it is a 3-page template, then it is selected directly; else if it is a 2-page template, then check if the number of pages exceeds 2 -- which is done by calling overThreshold2. The algorithm of overThreshold2 is, check each tables in the "front page" template, calculate the length of them and calculate the "bottom limit" as well, the "bottom limit" 
 
 \subsection{GUI Implementation}
 \subsubsection{Template Generating}
