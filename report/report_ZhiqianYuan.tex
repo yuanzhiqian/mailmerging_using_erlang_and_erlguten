@@ -87,6 +87,8 @@ base and maps them onto templates to produce hight quality output.\cite{erlguten
 
   First, the company uses mail-merging to achieve automation, that means it's hard to use erlguten's original pdf-generating method, because they follow different logics. Second, I need to define the format of templates by myself, and I also need to consider the conversion from GUI elements to xml-based template files. The third, as the company requires, a GUI is preferred, but because of the limitation of time, it is hardly possible to build such a sophisticated GUI from scratch. So what I need to do is to try to find a framework to facilitate the work. 
 
+  The mail-merge and pdf generating is the main functionality of this project. And there're many fractions needed to be considered too. One of the tricky issues is the calculation of page count. Because there are tables and lists in the invoices, and their length is expanding according to the user data, so we need to determine the page count so as to chose correct template for them. 
+
   Besides of these, I also need to think about how to combine every components and make the whole system run on good condition -- if everything works perfect, the end user should see nothing more than the GUI itself, so they may not expect something like a exclamation saying that "an error occurred, templates are not in the right directory", those confusing internal errors do exist when trying to make every individual components cooperate with each other.
 
   Moreover, how to make the GUI intuitive and convenient to use is also a big issue, although it is not mandatory to provide a fully-functioning GUI, but it is always good to at least bring up some good ideas in the prototype. 
@@ -277,6 +279,10 @@ $<$/template$>$
 
   But the addition described in the last paragraph is not the actual "total length", because the continue tables in the middle page and end page don't always start from 0. So we need to add the "height of blanks" as well. That's why I calculate the temporary page count first, we need to update the table bottom by adding the "height of blanks", so we have another expression: NewTableBottom = TableBottom + (NewMaxPages_Temp - 2) * Y_con1  + Y_con2. Y_con1 is the top position of continue table in the middle page, and Y_con2 is the one in the end page. And now we can calculate the real page count by calling the function realMaxPages, it first update the page count with this expression NewMaxPages = ceiling(((842 - BottomLimit1) + (842 - BottomLimit2) + TableBottom) / 842), but this is not the final result, why? Because if the NewMaxPages is larger than the original one, that means more pages are needed than expected just now, if so, we need to add the "height of blanks" of those new pages as well, and update the table bottom once again, then re-calculate the page count. Thus this is an iteration: calculate the page count -- compare with the original page count -- update the new table bottom -- re-calculate the page count. Finally, the page count doesn't increase any more, that's the final result. 
 
+
+\subsubsection{mail-merge}
+
+  
   
 
 \subsection{GUI Implementation}
