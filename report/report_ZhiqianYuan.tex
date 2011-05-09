@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[12pt,twoside,a4paper]{report}
 \usepackage{graphicx}
 \usepackage[numbers]{natbib}
 \begin{document}
@@ -6,6 +6,7 @@
 \author{Yuan Zhiqian}
 \date{April 2011}
 \maketitle
+\cleardoublepage
 \begin{abstract}
   Klarna AB is a financial company which provides payment solutions for the e-commerce sector, and they need to generate a lot of invoices everyday, which involves a large amount of tedious work, so they need a tool to facilitate this task. The new method of invoice generating consists of two sub-process, i.e. designing templates and make mail-merging between templates and userdata。
 
@@ -14,6 +15,10 @@
   This system involves many technique areas, the techniques mainly used are Erlang, Erlguten, Cappuccino framework, javascript, rubyonrails etc.
 \end{abstract}
 
+\cleardoublepage
+
+\listoffigures
+\cleardoublepage
 \tableofcontents
 
 \chapter{Introduction}
@@ -114,7 +119,7 @@ base and maps them onto templates to produce hight quality output.\cite{erlguten
 
   The list is easier to process, because no dynamic-length lists are required, we just need to define the items of lists in the template file, and replace those items in the same way as dynamic texts.
 
-  The GUI is implemented based on cappuccino framework, it is a outstanding tool to design web applications. The GUI is built from a tutorial provided by the website "http://www.nice-panorama.com/Programmation/cappuccino/", so it inherits a lot of the original layouts of the tutorial. The GUI allow users to create as many templates as they want(but due to some restrictions, the amount of templates may be limited below three. This will be explained in the next chapter), the users edit the template as if they are using painting board, now the GUI allows the users to draw frames to indicate the boundaries of items, if time allows, I may add the functions of editing view so that the user can type in contents and attributes in the frame, in the future's work, some auxiliary tools like rulers and coordination tags may be provided to aid the alignments. When the users finish editing, they can generate xml files for the templates by pressing the corresponding button, when everything is ready, the user can press the generate pdf button to export pdf files. This function is done by making a call to the back-end modules, i.e. the parts described above.
+  The GUI is implemented based on cappuccino framework, it is a outstanding tool to design web applications. The GUI is built from a tutorial provided by a website\cite{tut}, so it inherits a lot of the original layouts of the tutorial. The GUI allow users to create as many templates as they want(but due to some restrictions, the amount of templates may be limited below three. This will be explained in the next chapter), the users edit the template as if they are using painting board, now the GUI allows the users to draw frames to indicate the boundaries of items, if time allows, I may add the functions of editing view so that the user can type in contents and attributes in the frame, in the future's work, some auxiliary tools like rulers and coordination tags may be provided to aid the alignments. When the users finish editing, they can generate xml files for the templates by pressing the corresponding button, when everything is ready, the user can press the generate pdf button to export pdf files. This function is done by making a call to the back-end modules, i.e. the parts described above.
 
 \chapter{Implementation}
   This chapter describes the technical solution of this system. 
@@ -153,7 +158,9 @@ $<$paper name = "first" class = "front"$>$
 
   $<$frame name = "shoppinglist" class = "list" x = "48" y = "280" width = "177" height = "140" grid = "true" bg="default" font = "Times-Roman" fontsize = "14/20" paraIndent="0" maxlines = "30" continue="none" break="true"$>$
 
-\{ul\}\{li\}\#first\{/li\}\{li\}\#second\{/li\}\{li\}\#third\{/li\}\{/ul\}$<$/frame$>$
+\{ul\}\{li\}\#first\{/li\}\{li\}\#second
+
+\{/li\}\{li\}\#third\{/li\}\{/ul\}$<$/frame$>$
 
 
   $<$frame name = "shoppingtable" class = "table" x = "48" y = "450" width = "177" height = "100" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/24" paraIndent="0" maxlines = "30" continue="shoppingtable2" break="true"$>$
@@ -182,7 +189,9 @@ $<$paper name = "third" class = "end"$>$
   
   $<$frame name = "trademark" class = "img" x = "48" y = "30" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A"$>$\#tm$<$/frame$>$
 
-  $<$frame name = "shoppingtable3" class = "table" x = "48" y = "140" width = "177" height = "400" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/24" paraIndent="0" maxlines = "30" continue="none" break="true"$>$@shoppingtable2$<$/frame$>$
+  $<$frame name = "shoppingtable3" class = "table" x = "48" y = "140" width = "177" height = "400" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/24" paraIndent="0" maxlines = "30" continue="none" break="true"$>$
+
+  @shoppingtable2$<$/frame$>$
 
   $<$frame name = "slip" class = "img" x = "0" y = "550" width = "600" height = "250" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A"$>$\#slip$<$/frame$>$
 
@@ -279,7 +288,6 @@ $<$/template$>$
 
   But the addition described in the last paragraph is not the actual "total length", because the continue tables in the middle page and end page don't always start from 0. So we need to add the "height of blanks" as well. That's why I calculate the temporary page count first, we need to update the table bottom by adding the "height of blanks", so we have another expression: NewTableBottom = TableBottom + (NewMaxPages\_Temp - 2) * Y\_con1  + Y\_con2. Y\_con1 is the top position of continue table in the middle page, and Y\_con2 is the one in the end page. And now we can calculate the real page count by calling the function realMaxPages, it first update the page count with this expression NewMaxPages = ceiling(((842 - BottomLimit1) + (842 - BottomLimit2) + TableBottom) / 842), but this is not the final result, why? Because if the NewMaxPages is larger than the original one, that means more pages are needed than expected just now, if so, we need to add the "height of blanks" of those new pages as well, and update the table bottom once again, then re-calculate the page count. Thus this is an iteration: calculate the page count -- compare with the original page count -- update the new table bottom -- re-calculate the page count. Finally, the page count doesn't increase any more, that's the final result. 
 
-
 \subsubsection{mail-merge}
 
   Before the mail-merge starts, the system checks the template type, and then make mail-merge for each page in the template. The mail-merge is done frame by frame, if there's any frame in the template containing fields which don't exist in the data file, the system will print out a error message. The mail-merge is processed differently on the four type of frames, for text, image and list frames, the system substitute the dynamic fields with the data found in the data file; for table frames, the system attach user data with the table format information in the template. The substitution of dynamic fields is like this: first the system check the fields beginning with a hash (\#) mark, using a regular expression "\#[a-zA-Z0-9\_]+", then the system finds out all the fields beginning with two hash marks -- which means a normal string with a hash mark, and those normal strings are removed from the match list, so that the dynamic fields are filtered, then the system looks up those fields in user data file, and replace them with the real data. 
@@ -288,9 +296,41 @@ $<$/template$>$
 
 \subsubsection{pdf Generating}
   
+  The process of pdf generating is like this: first the system examine the frames in the front page, and call the corresponding functions to print them, if there're table frames in the front page, the system will automatically add pages if the tables require more pages to display. And the system also print out the other frames in those pages every time it about the change pages, when it comes to the end page, the system will check the end page template, and print out necessary slip etc on the page. 
+
+  The project borrows some concept as well as functions from erlguten, because its functionalities of typesetting is quite sophisticated. Proper adjustments are done to make sure the system can work well with those erlguten functions.
+
+  Some tables have headers, so the first task of table printing is to process the headers, and after the headers are printed, we should consider whether the next row runs onto the next page, in order to do so, we check the space left on the page to see if it is enough for another line, if no, a new page is added. And on the new page, the table is positioned according to the attributes of "continue table" frame in middle/end page template. 
+
+  Then the content of tables are printed, when it comes to the bottom of page, a new page is added and the table is positioned according to the corresponding "continue table" frames, which is the same as described above.  
 
 \subsection{GUI Implementation}
+
+  The GUI is implemented using Cappuccino framework\cite{capp}. I have reused the codes from a tutorial provided by a cappuccino tutorial website\cite{tut}, so the GUI inherits its layout and looks like a painting board. The GUI allows the end users to design templates without using any erlang code, the WYSIWYG characteristic of the GUI makes the template design much more convenient and intuitive. However, due to the limited time, this GUI is temporarily a prototype, but it can be easily extended without needing to make too much effort. 
+
+  Cappuccino framework allow programmers to make MAC OS-like web applications, and its programming language, objective-j, inherits much of the concepts from Cocoa. 
+
+  There's not too much needed to explain on the implementation details, but I'd like to illustrate the infrastructure of this GUI, so that people who wants to extend this prototype can get a clear clue. 
+
+\begin{figure}[p]
+\centering
+\includegraphics[scale=0.5]{GUIInfrastructure.eps}
+\caption{The infrastructure of GUI}
+\label{fig3}
+\end{figure}
+
+  As the figure \ref{fig3} shows, the GUI starts from AppController, which initializes a CPWindow -- in Cappuccino framework, such a window is the browser window itself, which is analogous to the screen in a desktop application. The GUI starts with one MMGDocument object, which inherits the CPDocument class, it is the "model" in MVC design pattern. By pressing the buttons in the window, users can create more MMGDocument object, which stands for the pages in a template, and are presented as separate floating windows. According the the current specification of template, only up to 3 MMGDocuments are allowed, and they stands for the front, middle and end page templates respectively. 
+
+  A CPDocument initializes a MMGWindowController, which controls a bunch of window -- this window is different with the window mentioned above, it is actually analogous to the windows in a desktop application. And the window contains a content view, which contains more views. I add a scroll view to show the full content of the page, and then add a page view into the scroll view. In the page view, mouse events are captured and processed, so that users can draw frames and move them around. Users can also edit the frames and delete them -- which is not currently available and is to be done as the future work.
+
+  Frames inherits the MMGGraphic class, which is borrowed from the original tutorial. It is just a general data model, and is extended into different frame types, with more information added.
+
+  This is basically how the GUI works. In the next sub section, I will describe how the GUI is connected and communicate with the other components in the system.
+
 \subsubsection{Template Generating}
+ 
+  
+
 \subsection{Combination of GUI and back-end system}
 
 \chapter{Evaluation}
@@ -308,8 +348,15 @@ $<$/template$>$
 \chapter{Summary and Conclusions}
 
 \begin{thebibliography}{9}
-\bibitem{erlguten03}Erlguten repo, 2003. Erlguten repository on google code. http://code.google.com/p/erlguten/
-\bibitem{capp} Cappuccino website. http://cappuccino.org/
+\bibitem{erlguten03}Erlguten repo, 2003. Erlguten repository on google code. 
+
+http://code.google.com/p/erlguten/
+\bibitem{capp} Cappuccino website. 
+
+http://cappuccino.org/
+\bibitem{tut} Cappuccino tutorial website. 
+
+http://www.nice-panorama.com/Programmation/cappuccino/
 \end{thebibliography}
 
 \end{document}
