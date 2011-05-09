@@ -282,7 +282,11 @@ $<$/template$>$
 
 \subsubsection{mail-merge}
 
-  
+  Before the mail-merge starts, the system checks the template type, and then make mail-merge for each page in the template. The mail-merge is done frame by frame, if there's any frame in the template containing fields which don't exist in the data file, the system will print out a error message. The mail-merge is processed differently on the four type of frames, for text, image and list frames, the system substitute the dynamic fields with the data found in the data file; for table frames, the system attach user data with the table format information in the template. The substitution of dynamic fields is like this: first the system check the fields beginning with a hash (\#) mark, using a regular expression "\#[a-zA-Z0-9\_]+", then the system finds out all the fields beginning with two hash marks -- which means a normal string with a hash mark, and those normal strings are removed from the match list, so that the dynamic fields are filtered, then the system looks up those fields in user data file, and replace them with the real data. 
+
+  There's one special type of frame, which is the so-called "continue table" frame. Its usage is describe the position of the "continue table", which is the extension of the tables in prior pages. Those frames' content is a table name beginning with a "@" mark, which indicates the table it succeeds to. Meanwhile, this "continue table" is also referred to in the "continue" attribute of the original table. During the mail-merging process, there's nothing happening on this kind of frames.
+
+\subsubsection{pdf Generating}
   
 
 \subsection{GUI Implementation}
