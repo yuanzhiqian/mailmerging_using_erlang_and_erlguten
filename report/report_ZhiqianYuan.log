@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.5.9)  10 MAY 2011 01:27
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.5.9)  10 MAY 2011 17:47
 entering extended mode
  %&-line parsing enabled.
 **report_ZhiqianYuan
@@ -136,28 +136,32 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [23]
 File: GUIInfrastructure.eps Graphic file (type eps)
 
-<GUIInfrastructure.eps> [24] [25] [26]
-Chapter 4.
-[27
+<GUIInfrastructure.eps> [24] [25]
+Underfull \vbox (badness 6063) has occurred while \output is active []
 
-]
-Chapter 5.
+ [26]
+[27]
+Chapter 4.
 [28
 
-]
-Chapter 6.
-[29
+] [29] [30]
+Chapter 5.
+[31
 
-] [30
+] [32] [33]
+Chapter 6.
+[34
+
+] [35
 
 ] (./report_ZhiqianYuan.aux) ) 
 Here is how much of TeX's memory you used:
- 940 strings out of 495062
- 11323 string characters out of 1182645
+ 949 strings out of 495062
+ 11443 string characters out of 1182645
  62462 words of memory out of 3000000
- 4157 multiletter control sequences out of 15000+50000
+ 4166 multiletter control sequences out of 15000+50000
  9414 words of font info for 33 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  25i,6n,28p,1403b,248s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on report_ZhiqianYuan.dvi (32 pages, 59616 bytes).
+Output written on report_ZhiqianYuan.dvi (37 pages, 76108 bytes).

@@ -43,7 +43,7 @@
 \subsection{Thesis Background}
   This thesis is initiated and sponsored by Klarna AB.
 
-  Klarna AB is a fanancial company which provides payment solutions for the e-commerce sector, during the daily transaction, invoice generating appears to be a heavy task so it is good to make this process automated. The company is using "Klarna Online", an in-house developed system written in Erlang, to generate transaction documents. The origianl system let the marketing people manually write Erlang codes to design the layout of invoices, with the help of erlguten, which is very incovenient and what is worse is that the end users have to know a lot of technical details to be qualified for this work. Besides, according to their plan, in the invoices, transpromos need to be added as well, so now they want an improved system to replace the old one, so as to alleviate the burden of invoice generating and realize the transpromo functionality. The following goals are supposed to be achieved by the new system:
+  Klarna AB is a fanancial company which provides payment solutions for the e-commerce sector, during the daily transaction, invoice generating appears to be a heavy task so it is good to make this process automated. The company is using "Klarna Online", an in-house developed system written in Erlang, to generate transaction documents. The origianl system let the marketing people manually write Erlang codes to design the layout of invoices, with the help of erlguten, which is very incovenient and what is worse is that the end users have to know a lot of technical details to be qualified for this work. Besides, according to their plan, in the invoices, transpromos\cite{transpromo} need to be added as well, so now they want an improved system to replace the old one, so as to alleviate the burden of invoice generating and realize the transpromo functionality. The following goals are supposed to be achieved by the new system:
 
 \begin{enumerate}
 \item The marketing and product development departments should be able to do most of the maintenance of the document templates. (i.e. The invoice generating task is divided into two parts -- templates maintenance, and the batch of mail-merging and pdf generating, the latter is supposed to be fully automated and the former is supposed to be facilitated by providing intuitive GUI for template designing and maintaining. )
@@ -133,7 +133,7 @@ base and maps them onto templates to produce hight quality output.\cite{erlguten
 \item RubyonRails 3.0.7
 \end{itemize}
 \section{System Structure}
-  Figure \ref{fig1} illustrates the system structure in graphics. As described in figure \ref{fig1}, the user data are first retrieved from database and automatically converted into XML files, but this process is done outside of the system. Then the marketing people design templates according to the requirements using the GUI running in the web browser. By pressing the "save templates" button, the templates will be sent to the server by making an XMLHttpRequest, which will be processed by the web service written in rubyonrails. When this is done, the user would like to generate pdfs, and he will press "generate pdf" button to send another XMLHttpRequest, when the server receive the request, it will execute the script to call the mail-merge functions and do the mail-merge, generating invoices as pdf files. 
+  Figure \ref{fig1} illustrates the system structure in graphics. As described in figure \ref{fig1}, the user data are first retrieved from database and automatically converted into XML files, but this process is done outside of the system. Then the marketing people design templates according to the requirements using the GUI running in the web browser. By pressing the "save templates" button, the templates will be sent to the server by making an XMLHttpRequest\cite{XHR}, which will be processed by the web service written in rubyonrails. When this is done, the user would like to generate pdfs, and he will press "generate pdf" button to send another XMLHttpRequest, when the server receive the request, it will execute the script to call the mail-merge functions and do the mail-merge, generating invoices as pdf files. 
 
 \begin{figure}[p]
 \centering
@@ -329,34 +329,144 @@ $<$/template$>$
 
 \subsubsection{Template Generating}
  
-  
+  When the user press the "save templates" button, the saveTemplates function is called. And the template generating process is started. The template is stored in xml format, so we need to convert the internal representation of template data into DOM\cite{dom}. This process is done in the packXml function. The system process every document object and generate one "paper" node for each document object. The final template will be made up of several "paper" nodes, in those nodes, frame nodes are defined -- following the same structure as describe earlier in this report. 
+
+  After the template is translated into DOMs, the system serializes the DOMs into XML string, and send it in the body of an XMLHttpRequest, the XML string will be received and processed at the back end, which will be described later.
 
 \subsection{Combination of GUI and back-end system}
 
+  The system consists of 3 major parts, namely GUI, back end Web service, and the mail-merge module. 
+
+  The GUI is written in Objective-J, and it is a superset of javascript, its communication with web server is through so-called "XMLHttpRequest", which allows a web application to update with web services without needing to refresh the current page. 
+
+  The web server is written in RubyonRails, which is a handy framework that can be used to easily implement a web service. Although currently I just use the very basic functionalities provided by RubyonRails, but its powerful scaffolding can be used in the future to make the system more intact. 
+
+  The mail-merge module is all written in Erlang code, and uses erlguten lib to generate pdf files. This module is connected with the GUI via the web service described above, when the user press "generate pdf" button, another XMLHttpRequest is sent, and when the web server receives the request, it will run the script to call the functions in mail-merge module. 
+
 \chapter{Evaluation}
+  
+  Many tests are made to evaluate how well the system works. During the tests, many problems occurred and were fixed one by one. But at present the tests are still based on some hard coding method, because the editing view of GUI is left for the future work, so it is a pity that we can not show the actual work flow of a complete system. It is still a prototype.
+
+  But the mail-merging module is complete, and it is also the most critical component required by the company. So I made a lot of test on this component.
+  
 \section{Mail-merging}
 \subsection{Text}
+
+  The substitution of dynamic texts works well, the system can extract dynamic fields correctly, and look up those fields in the user data, make proper substitution. The system can also distinguish between dynamic fields and static fields that starts with a hash mark. 
+
+  The system automatically breaks one paragraph of text into several lines, according to the width of the text frame. 
+
+  Besides, the users can also set different background colors, or require to print out grids for the texts. Those functionalities also work fine.
+
+  Users can specify various fonts for the texts as long as the system supports, and they can also specify the size of text, but too large size may cause error during the printing of texts, and may results to a blank frame printed out which can be really confusing. The reason is erlguten examines the boundary of "boxes" (which is converted from frames), if the texts are so large that the boxes can not hold them all, then instead of printing out part of the texts, erlguten simply skips the current frame and does't print out any texts at all. So the users should estimate the potential size of texts, and make proper frames, I should say this is not user-friendly design, maybe in the next version this situation would be changed. 
+
 \subsection{Image}
+
+  The image adding is successful, but the users are required to provide the width and height of images, this may be not so convenient. I think a better solution can be made in the future's work.
+
 \subsection{Table}
+
+  The process of tables is also considered as a big task of this project. Because tables have expanding length, and we need to add pages automatically and put the continue tables in the proper position etc. The test turns out to be very successful, the system can calculate the page count precisely, and the tables are printed normally. The users can also specify which columns are needed to be shown, and this functionality also works fine.
+
 \subsection{List}
+
+  There's not too much to say about the list, although it has a special format, its mechanism is almost the same as dynamic texts. The tests' results look fine, the only flaw is that I haven't found a way to print out bullets for list items, but it is not a big issue.
+
 \section{GUI}
 
+  The GUI is a prototype at present. And I reused the codes from a Cappuccino tutorial to build this GUI, the GUI provides frame drawing and translation functionalities, the XML file generating and client-server communication is also available. The GUI also supports multi-document editing. However more auxiliary tools are expected to make this GUI a convenient tool.
+
+\section{Web service test}
+
+  To make the whole system intact, the web service takes major responsibilities like processing XMLHttpRequests, template file storage, path problems and script executing. 
+
+  During the tests, I realized the prominent issue is the path problems. Because in a system, different components have different environments, and they may all treat its current path as the default path, which may cause the path dis-accord problems. Because those problems are not obvious, it is always frustrating to coordinate the path among various components. So I made a adjustment, instead of using path+filename pattern in the parameters, I manage path separately, this adjustment works perfectly as expected, and the path problems seem to be solved.
+
 \chapter{Future work}
+
+  This project is a master thesis project which is carried out in a few months. Because of the limited time as well as experience and technical limits, there are many flaws and unhumanizing designs to be fixed and improved in this system. Also, as described in earlier chapters, the GUI is implemented as a prototype, so there are surely a lot of extensions that can be made on this GUI.
+
 \section{Mail-merging part}
+
+  There are several inconvenient designs in the mail-merging component, which are listed as follows, together with the modification expected for the future work.
+
+\begin{itemize}
+
+\item As described earlier, the template designers have to estimate the size of potential texts and make proper text frames, and confusing errors may occur if the frames are not large enough for the contents. This is not user-friendly. Because commonly a template is supposed to be used for various of users, and this error may only happen in some of the user files. It is very inconvenient for the template designers to modify the templates just for some specific users. So a more fault-tolerant design may be like this: when the system finds that the current text frame is not large enough, it first calculate the spaces available on the page to see if those spaces can be used to contain the texts, and then gives the template designers a warning of this situation, then make a suggestion to enlarge the frame temporarily to contain the flow of texts; however if the there aren't enough spaces left, then the system may tell the template designers that the error is hard to fix, and suggest he/she to provide a alternative template.
+
+\item At present the lists are printed as rows of items, there are no bullets printed at the beginning of each row because I haven't found a way to do so. This may be fixed in the future as well.
+
+\item Now the height of rows in tables are specified in template files, but the width of columns is temporarily hard coded in the program, this should also be fixed in the future. 
+
+\item The text may also occupy more than one page, but currently this situation is not considered to reduce the complexity. In the future work, this should be fixed as well.
+
+\item It is expected that texts can be added onto images, so that dynamic fields in an invoice can be printed at the blanks of the images. I haven't handle this issue yet, so this is also postponed into the future work.
+
+\end{itemize}
+
 \section{GUI part}
 
+  Since the GUI is now a prototype, so there are a lot of things that can be added and improved.
+
+\begin{itemize}
+
+\item Add editing view functionality, so as to allow the designers to edit frames' content as well as set their attributes. 
+\item Add coordinate displaying functionality, so that designers can estimate the space usage. 
+\item Add alignment lines, this auxiliary tool is very helpful when you want to keep frames aligned in a row or make their center at the same line etc. The idea is show alignment lines when the frames are moved to a position that its top is aligned with other frames' top, etc. And to make it more user-friendly, the frames should be automatically align when users move them to the neighborhood of the position where they are aligned with other frames.
+\item Defined different frame types.
+\item Add rotation functionalities.
+
+\end{itemize}
+
+  Those are what I can image so far, but the future work of this GUI is of course not limited to those ideas. More improvements can be made according to the needs of daily usage.
+
+\section{Others}
+
+\begin{itemize}
+
+\item Some aesthetic works can be done to make the invoice printed look more sophisticated.
+\item The "front page" can have more pages actually, this can be done by pdf merging. 
+\item I haven't check with the transpromo designers, maybe some more functions are required to make it easier to add transpromo functions. 
+
+\end{itemize}
+
 \chapter{Summary and Conclusions}
+
+  This project is dedicated to improve the efficiency of commercial invoice generating by using mail-merge methodology. And it also prompted a way to design templates by implementing a prototype of GUI which can be extended in the future according to the practical requirements. 
+
+  In this project I made research in typesettings and solved problems like table length calculation and table flow arrangement, and good effects are achieved. I also made research on erlguten and get inspired from its design pattern to define the template format that is used in my project. The template format definition experienced many versions, and gradually evolves into the current style. There may still be some defects in the template format definition but it seems to fit most of the cases. 
+
+  I also made research on GUI designing, because this project is supposed to be web-based, so I gave up the idea to use Java. Before I was recommended with the powerful Cappuccino framework, I also made research on the hacking of openoffice using python script, but those methods all proved to be inconvenient. I also checked JQueryUI and Raphael library, but they are for interactive web page implementations instead of web application. Finally I chose Cappuccino framework, and it proves to be very suitable for web applications development.
+
+  Except for the GUI ends up to be a prototype, this project kind of achieved the expected goals. More future works are still needed to make it a useful tool, but since the structure of the system is cleared illustrated, it shouldn't be very hard.
+
+  At the end of this report I would like to express my acknowledgement to the people who helped me a lot during this project once again. 
 
 \begin{thebibliography}{9}
 \bibitem{erlguten03}Erlguten repo, 2003. Erlguten repository on google code. 
 
 http://code.google.com/p/erlguten/
+
+\bibitem{transpromo} Transpromo described in wikipedia.
+
+http://en.wikipedia.org/wiki/Transpromotional
+
+\bibitem{XHR} W3C Candidate Recommendation of XMLHttpRequest
+
+http://www.w3.org/TR/XMLHttpRequest/
+
 \bibitem{capp} Cappuccino website. 
 
 http://cappuccino.org/
+
 \bibitem{tut} Cappuccino tutorial website. 
 
 http://www.nice-panorama.com/Programmation/cappuccino/
+
+\bibitem{dom} W3C Document Object Model.
+
+http://www.w3.org/DOM/
+
 \end{thebibliography}
 
 \end{document}
