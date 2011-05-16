@@ -1,7 +1,7 @@
 /*
  * MMGGraphic.j
  * parent class of text frame and imgaes, modified from tutorial-drawing-part2
- * drawContentsInView function is replaced by another function which can make use of context from layers 
+ * drawContentsInView function is replaced by another function which can make use of context from layers -- not anymore
  *
  * YuanZhiqian
  * 
@@ -42,6 +42,21 @@ var verticalFlippings;
 
     CPString _name;
     CPString _class;
+    CPString _content;
+
+    BOOL     _hasGrid;
+    CPString _bg;
+    CPString _textFont;
+    CPString _fontSize;
+    CPString _paraIndent;
+    CPString _maxLines;
+    CPString _hasContinue;
+    CPString _ifBreak;    
+    
+    CPColor  _textColor;
+    CPFont _fontInfo;
+
+    EditingView _textFieldView;
 }
 
 
@@ -87,6 +102,79 @@ var verticalFlippings;
     return self;
 }
 
+//getters and setters
+
+- (BOOL)hasGrid {
+    return _hasGrid;
+}
+
+- (void)setHasGrid:(BOOL)hasGrid {
+    _hasGrid = hasGrid;
+}
+
+- (CPString)bg {
+    return _bg;
+}
+
+- (void)setBg:(CPString)bg {
+    _bg = bg;
+}
+
+- (CPString)textFont {
+    return _textFont;
+}
+
+- (void)setTextFont:(CPString)textFont {
+    _textFont = textFont;
+}
+
+- (CPString)fontSize {
+    return _fontSize;
+}
+
+- (void)setFontSize:(CPString)fontSize {
+    _fontSize = fontSize;
+}
+
+- (CPString)paraIndent {
+    return _paraIndent;
+}
+
+- (void)setParaIndent:(CPString)paraIndent {
+    _paraIndent = paraIndent;
+}
+
+- (CPString)maxLines {
+    return _maxLines;
+}
+
+- (void)setMaxLines:(CPString)maxLines {
+    _maxLines = maxLines;
+}
+
+- (CPString)hasContinue {
+    return _hasContinue;
+}
+
+- (void)setHasContinue:(CPString)hasContinue {
+    _hasContinue = hasContinue;
+}
+
+- (CPString)ifBreak {
+    return _ifBreak;
+}
+
+- (void)setIfBreak:(CPString)ifBreak {
+    _ifBreak = ifBreak;
+}
+
+- (CPColor)textColor {
+    return _textColor;
+}
+
+- (void)setTextColor:(CPColor)textColor {
+    _textColor = textColor;
+}
 
 // Accessors
 - (CPString)name {
@@ -103,6 +191,14 @@ var verticalFlippings;
 
 - (void)setClass:(CPString)class {
     _class = class;
+}
+
+- (CPString)content {
+    return _content;
+}
+
+- (void)setContent:(CPString)content {
+    _content = content;
 }
 
 - (CPRect)bounds {
@@ -289,27 +385,30 @@ var verticalFlippings;
     return drawingBounds;
 }
 
-//replace the drawContentsInView:isBeingCreateOrEdited: function when using layer to display graphics  -- Yuan Zhiqian
-- (void)drawContentsInLayer:(CALayer)layer withContext:(CGContext)context isBeingCreatedOrEdited:(BOOL)isBeingCreatedOrEditing 
+- (void)drawContentsInView:(CPView)view isBeingCreateOrEdited:(BOOL)isBeingCreatedOrEditing 
 {
+	var context = [[CPGraphicsContext currentContext] graphicsPort];
+	
+    // If the graphic is so simple that it can be boiled down to a bezier path then just draw a bezier path. 
+	// It's -bezierPathForDrawing's responsibility to return a path with the current stroke width.
     var path = [self bezierPathForDrawing];
     if (path)
-    {
-	CGContextBeginPath(context);
-	CGContextAddPath(context, path);
-	CGContextClosePath(context);
-		
-	if ([self isDrawingFill]) 
 	{
-	    CGContextSetFillColor(context, _fillColor);
-            CGContextFillPath(context);
-	}
+		CGContextBeginPath(context);
+		CGContextAddPath(context, path);
+		CGContextClosePath(context);
 		
-	if ([self isDrawingStroke]) 
-	{
-	    CGContextSetStrokeColor(context, _strokeColor);
-	    CGContextStrokePath(context);
-	}
+		if ([self isDrawingFill]) 
+		{
+			CGContextSetFillColor(context, _fillColor);
+		    CGContextFillPath(context);
+		}
+		
+		if ([self isDrawingStroke]) 
+		{
+			CGContextSetStrokeColor(context, _strokeColor);
+		    CGContextStrokePath(context);
+		}
     }
 }
 
@@ -320,24 +419,25 @@ var verticalFlippings;
     return nil;   
 }
 
-//replace the drawContentsInView:isBeingCreateOrEdited: function when using layer to display graphics -- YuanZhiqian
-- (void)drawHandlesInLayer:(CALayer)layer withContext:(CGContext)context
+- (void)drawHandlesInView:(CPView)view 
 {
     // Draw handles at the corners and on the sides.
     var bounds = [self bounds];
 
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMinY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMidY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMidY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMaxY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds))];
-    [self drawHandleInLayer:layer withContext:context atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMinY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMidY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMidY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMinX(bounds), CGRectGetMaxY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds))];
+    [self drawHandleInView:view atPoint:CGPointMake(CGRectGetMaxX(bounds), CGRectGetMaxY(bounds))];
 }
 
-- (void)drawHandleInLayer:(CALayer)Layer withContext:(CGContext)context atPoint:(CPPoint)point 
-{	
+- (void)drawHandleInView:(CPView)view atPoint:(CPPoint)point 
+{
+	var context = [[CPGraphicsContext currentContext] graphicsPort];
+	
     // Figure out a rectangle that's centered on the point but lined up with device pixels.
     var x = point.x - SKTGraphicHandleHalfWidth;
     var y = point.y - SKTGraphicHandleHalfWidth;
@@ -347,11 +447,11 @@ var verticalFlippings;
     
     // Draw the shadow of the handle.
     var handleShadowBounds = CGRectOffset(handleBounds, 1.0, 1.0);
-    CGContextSetFillColor(context, [CPColor shadowColor]);
+	CGContextSetFillColor(context, [CPColor shadowColor]);
     CGContextFillRect(context, handleShadowBounds);
 
     // Draw the handle itself.
-    CGContextSetFillColor(context, [CPColor darkGrayColor]);
+	CGContextSetFillColor(context, [CPColor darkGrayColor]);
     CGContextFillRect(context, handleBounds);
 }
 
@@ -523,17 +623,19 @@ var verticalFlippings;
 }
 
 - (CPView)newEditingViewWithSuperviewBounds:(CPRect)superviewBounds
-{    
-    // Live to be overridden.
-    var tempView = [[EditingView alloc] initWithFrame:CGRectMake(0,0,200,200)];
-    [tempView setNeedsDisplay: YES];
-    return nil;
+{   
+    _textFieldView = [[EditingView alloc] initWithFrame:superviewBounds];
+    [_textFieldView setPlaceholderString: "Double click to edit"];
+    [_textFieldView setObjectValue: [self content]];
+    [_textFieldView setNeedsDisplay: YES];
+    console.log([self content]);
+    return _textFieldView;
 }
 
 
 - (void)finalizeEditingView:(CPView)editingView
-{    
-    // Live to be overridden.   
+{  
+    [self setContent:[_textFieldView objectValue]];
 }
 
 

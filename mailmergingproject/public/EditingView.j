@@ -1,6 +1,6 @@
 @import <AppKit/CPView.j>
 
-@implementation EditingView:CPView
+@implementation EditingView:CPTextField
 {
     
 }
@@ -11,7 +11,9 @@
     
     if (self)
     {
-      [self setBackgroundColor:[CPColor blackColor]];
+      [self setBackgroundColor:[CPColor yellowColor]]
+      [self setEditable: YES]
+      [self setBordered: YES]
     }
     return self;
 }

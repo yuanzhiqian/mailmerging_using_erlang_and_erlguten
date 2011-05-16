@@ -10,126 +10,32 @@
 
 
 @implementation MMGTextFrame : MMGGraphic
-{
+{   
     
-    BOOL     _hasGrid;
-    CPString _bg;
-    CPString _textFont;
-    CPString _fontSize;
-    CPString _paraIndent;
-    CPString _maxLines;
-    CPString _hasContinue;
-    CPString _ifBreak;
-    
-    CPString _content;
-    CPColor  _textColor;
-    CPFont _fontInfo;
 }
 
--(void) test
+-(void) settings
 {
     [self setName: "Frame"];
     [self setClass: "text"];
     [self setHasGrid: YES];
-    [self setBg: "0.9,0.0,0.0"];
+    [self setBg: "default"];
     [self setTextFont: "Times-Roman"];
-    [self setFontSize: "32/32"];
+    [self setFontSize: "14/24"];
     [self setParaIndent: "0"];        
-    [self setMaxLines: "6"];
+    [self setMaxLines: "2"];
     [self setHasContinue: "none"];
     [self setIfBreak: "true"];
-    [self setContent: "Hello #name, you need to pay #price."]
+    [self setContent: ""]
     [self setTextColor: [CPColor blackColor]];
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-      [self test];
+      [self settings];
     }
     return self;
-}
-
-//getters and setters
-
-- (BOOL)hasGrid {
-    return _hasGrid;
-}
-
-- (void)setHasGrid:(BOOL)hasGrid {
-    _hasGrid = hasGrid;
-}
-
-- (CPString)bg {
-    return _bg;
-}
-
-- (void)setBg:(CPString)bg {
-    _bg = bg;
-}
-
-- (CPString)textFont {
-    return _textFont;
-}
-
-- (void)setTextFont:(CPString)textFont {
-    _textFont = textFont;
-}
-
-- (CPString)fontSize {
-    return _fontSize;
-}
-
-- (void)setFontSize:(CPString)fontSize {
-    _fontSize = fontSize;
-}
-
-- (CPString)paraIndent {
-    return _paraIndent;
-}
-
-- (void)setParaIndent:(CPString)paraIndent {
-    _paraIndent = paraIndent;
-}
-
-- (CPString)maxLines {
-    return _maxLines;
-}
-
-- (void)setMaxLines:(CPString)maxLines {
-    _maxLines = maxLines;
-}
-
-- (CPString)hasContinue {
-    return _hasContinue;
-}
-
-- (void)setHasContinue:(CPString)hasContinue {
-    _hasContinue = hasContinue;
-}
-
-- (CPString)ifBreak {
-    return _ifBreak;
-}
-
-- (void)setIfBreak:(CPString)ifBreak {
-    _ifBreak = ifBreak;
-}
-
-- (CPString)content {
-    return _content;
-}
-
-- (void)setContent:(CPString)content {
-    _content = content;
-}
-
-- (CPColor)textColor {
-    return _textColor;
-}
-
-- (void)setTextColor:(CPColor)textColor {
-    _textColor = textColor;
 }
 
 //override the method of parent class

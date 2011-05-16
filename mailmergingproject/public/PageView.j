@@ -1,6 +1,6 @@
 /*
  * PageView.j
- * Contain PaintLayer
+ * Contain PaintLayer -- not anymore
  * I reused some codes to implement the graphic effects
  * 
  * YuanZhiqian
@@ -10,7 +10,6 @@
 @import <AppKit/CPView.j>
 @import <AppKit/CPColor.j>
 @import <AppKit/CPGraphicsContext.j>
-@import "PaintLayer.j"
 @import "MMGGraphic.j"
 @import "MMGToolPaletteController.j"
 @import "MMGGrid.j"
@@ -18,10 +17,7 @@
 SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 
 @implementation PageView:CPView
-{
-    CALayer    _rootLayer;
-    PaintLayer _paintLayer;
-   
+{    
     MMGGrid _grid;
 
     MMGGraphic _creatingGraphic;
@@ -71,30 +67,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
        _pasteboardChangeCount = -1;
        _pasteCascadeNumber = 0;
        _pasteCascadeDelta = CPMakePoint(SKTGraphicViewDefaultPasteCascadeDelta, SKTGraphicViewDefaultPasteCascadeDelta);
-
-       //initialize layers
-       _rootLayer = [CALayer layer];
-        
-       [self setWantsLayer:YES];
-       [self setLayer:_rootLayer];
-        
-       [_rootLayer setBackgroundColor:
-           [CPColor whiteColor]];
-        
-       _paintLayer = [[PaintLayer alloc] 
-            initWithPageView:self];
-        
-        [_paintLayer setBounds:[self bounds]];
-        [_paintLayer setAnchorPoint:CGPointMakeZero()];
-        [_paintLayer setPosition:CGPointMake(0,0)];       
-        //set pageview as paintlayer's delegate so that it can draw things on the layer
-        [_paintLayer setDelegate: self];        
-
-        [_rootLayer addSublayer:_paintLayer];
-
-        [_paintLayer setNeedsDisplay];
-        
-        [_rootLayer setNeedsDisplay];
     }
     
     return self;
@@ -136,17 +108,17 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
     return [[self graphics] objectsAtIndexes:[self selectionIndexes]];
 }
 
-- (void)drawLayer:(CALayer)layer inContext:(CGContext)context 
-{ 
-    var rect = [layer bounds];
-    //var context = [[CPGraphicsContext currentContext] graphicsPort];
+// An override of the NSView method.
+- (void)drawRect:(CPRect)rect 
+{
+    var context = [[CPGraphicsContext currentContext] graphicsPort];
 
     // Draw the background background.
     CGContextSetFillColor(context, [CPColor whiteColor]);
     CGContextFillRect(context, rect);
 
     // Draw the grid.
-    [_grid drawRect:rect inLayer:layer withContext:context];
+    [_grid drawRect:rect inView:self];
 
     // Draw every graphic that intersects the rectangle to be drawn. The frontmost graphics have the lowest indexes.	
     var graphics = [self graphics];
@@ -154,39 +126,38 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 
     var graphicCount = [graphics count];
     for (var index = graphicCount - 1; index>=0; index--) 
-    {
+	{
         var graphic = [graphics objectAtIndex:index];
         var graphicDrawingBounds = [graphic drawingBounds];
         if (CPRectIntersectsRect(rect, graphicDrawingBounds)) 
-	{
-	    // Figure out whether or not to draw selection handles on the graphic. Selection handles are drawn for all selected objects except:
-	    // - While the selected objects are being moved.
-	    // - For the object actually being created or edited, if there is one.
-            var drawSelectionHandles = NO; 
-	    if (!_isHidingHandles && graphic!=_creatingGraphic && graphic!=_editingGraphic) {
-		drawSelectionHandles = [selectionIndexes containsIndex:index];
-            }
+		{
+	    	// Figure out whether or not to draw selection handles on the graphic. Selection handles are drawn for all selected objects except:
+		    // - While the selected objects are being moved.
+		    // - For the object actually being created or edited, if there is one.
+		    var drawSelectionHandles = NO;
+	        if (!_isHidingHandles && graphic!=_creatingGraphic && graphic!=_editingGraphic) {
+				drawSelectionHandles = [selectionIndexes containsIndex:index];
+	        }
 
-	    // Draw the graphic, possibly with selection handles.
-   	    CGContextSaveGState(context);
+		    // Draw the graphic, possibly with selection handles.
+			CGContextSaveGState(context);
 	
-	    // [NSBezierPath clipRect:graphicDrawingBounds];
-	    [graphic drawContentsInLayer:layer withContext:context isBeingCreatedOrEdited:(graphic==_creatingGraphic || graphic==_editingGraphic)];
-	    if (drawSelectionHandles) {
-		[graphic drawHandlesInLayer:layer withContext:context];                
-	    }
+		    // [NSBezierPath clipRect:graphicDrawingBounds];
+		    [graphic drawContentsInView:self isBeingCreateOrEdited:(graphic==_creatingGraphic || graphic==_editingGraphic)];
+		    if (drawSelectionHandles) {
+				[graphic drawHandlesInView:self];
+		    }
 	    
-  	    CGContextRestoreGState(context);
+			CGContextRestoreGState(context);
         }
     }
 
     // If the user is in the middle of selecting draw the selection rectangle.
-    // I don't understand the logic -- Yuan Zhiqian
     if (!CPRectIsEmpty(_marqueeSelectionBounds)) 
-    {
-	CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
-	CGContextStrokeRect(context, _marqueeSelectionBounds);
-	//CGContextStrokeRectWithWidth(context, _marqueeSelectionBounds, 1.0);
+	{
+		CGContextSetStrokeColor(context, [CPColor lightGrayColor]);
+		CGContextStrokeRect(context, _marqueeSelectionBounds);
+		//CGContextStrokeRectWithWidth(context, _marqueeSelectionBounds, 1.0);
     }
 }
 
@@ -259,28 +230,39 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 //adopted from the tutorial, however its funcionality is not fully implemented, it is just a bland left for other people to fill according to their needs -- Yuan Zhiqian
 
 - (void)setNeedsDisplayForEditingViewFrameChangeNotification:(CPNotification)viewFrameDidChangeNotification 
-{    
+{
+    // If the editing view got smaller we have to redraw where it was or cruft will be left on the screen. 
+	// If the editing view got larger we might be doing some redundant invalidation (not a big deal), 
+	// but we're not doing any redundant drawing (which might be a big deal). 
+	// If the editing view actually moved then we might be doing substantial redundant drawing, but so far that wouldn't happen in Sketch.
+    // In Sketch this prevents cruft being left on the screen when the user 
+	// 1) creates a great big text area and fills it up with text, 
+	// 2) sizes the text area so not all of the text fits, 
+	// 3) starts editing the text area but doesn't actually change it, so the text area hasn't been automatically 
+	// resized and the text editing view is actually bigger than the text area, 
+	// and 4) deletes so much text in one motion (Select All, then Cut) that the text editing view suddenly becomes smaller than the text area. 
+	// In every other text editing situation the text editing view's invalidation or the fact that the SKTText's "drawingBounds" 
+	// changes is enough to cause the proper redrawing.
     var newEditingViewFrame = [[viewFrameDidChangeNotification object] frame];
-    [_paintLayer setNeedsDisplayInRect:CPRectUnion(_editingViewFrame, newEditingViewFrame)];
-    [_rootLayer setNeedsDisplayInRect:CPRectUnion(_editingViewFrame, newEditingViewFrame)];
     [self setNeedsDisplayInRect:CPRectUnion(_editingViewFrame, newEditingViewFrame)];
     _editingViewFrame = newEditingViewFrame;
 }
 
 
-- (void)startEditingGraphic:(MMGGraphic)graphic
+- (void)startEditingGraphic:(PLGraphic)graphic
 {
     // It's the responsibility of invokers to not invoke this method when editing has already been started.
     // CPAssert((!_editingGraphic && !_editingView), @"-[SKTGraphicView startEditingGraphic:] is being mis-invoked.");
 
     // Can the graphic even provide an editing view?
-    _editingView = [graphic newEditingViewWithSuperviewBounds:[self bounds]];
-    //console.log("here");
+    _editingView = [graphic newEditingViewWithSuperviewBounds:[graphic bounds]];
     if (_editingView) 
     {
-        //console.log(CGRectGetWidth([_editingView bounds]));
 	// Keep a pointer to the graphic around so we can ask it to draw its "being edited" look, and eventually send it a -finalizeEditingView: message.
 	_editingGraphic = graphic;
+
+	// If the editing view adds a ruler accessory view we're going to remove it when editing is done, so we have to remember the old reserved accessory view thickness so we can restore it. Otherwise there will be a big blank space in the ruler.
+	// _oldReservedThicknessForRulerAccessoryView = [[[self enclosingScrollView] horizontalRulerView] reservedThicknessForAccessoryView];
 
 	// Make the editing view a subview of this one. It was the graphic's job to make sure that it was created with the right frame and bounds.
 	[self addSubview:_editingView];
@@ -293,8 +275,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 	_editingViewFrame = [_editingView frame];
 
 	// Give the graphic being edited a chance to draw one more time. In Sketch, SKTText draws a focus ring.
-        [_paintLayer setNeedsDisplayInRect:[_editingGraphic drawingBounds]];
-        [_rootLayer setNeedsDisplayInRect:[_editingGraphic drawingBounds]];
 	[self setNeedsDisplayInRect:[_editingGraphic drawingBounds]];
     }
 
@@ -384,8 +364,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 		[self startEditingGraphic:_creatingGraphic];		
 	    }
 
-            [_paintLayer setNeedsDisplay];        
-            [_rootLayer setNeedsDisplay];
 	    [self setNeedsDisplay:YES];            
 		
 	    // Done.
@@ -407,8 +385,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
     
 	_resizedHandle = [_resizedGraphic resizeByMovingHandle:_resizedHandle toPoint:handleLocation];
 	
-        [_paintLayer setNeedsDisplay];        
-        [_rootLayer setNeedsDisplay];
 	[self setNeedsDisplay:YES];
     }
 
@@ -426,8 +402,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
         if (_isMoving) 
 	{
 	    _isHidingHandles = NO;
-            [_paintLayer setNeedsDisplayInRect:[MMGGraphic drawingBoundsOfGraphics:_selGraphics]];
-            [_rootLayer setNeedsDisplayInRect:[MMGGraphic drawingBoundsOfGraphics:_selGraphics]];
 	    [self setNeedsDisplayInRect:[MMGGraphic drawingBoundsOfGraphics:_selGraphics]];
 	    if (_didMove) 
 	    {
@@ -480,9 +454,7 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 	    {
 		[[MMGGraphic class] translateGraphics:_selGraphics byX:(curPoint.x - _lastPoint.x) y:(curPoint.y - _lastPoint.y)];
 		_didMove = YES;
-
-	        [_paintLayer setNeedsDisplay];        
-        	[_rootLayer setNeedsDisplay];	
+	
 		[self setNeedsDisplay:YES];				
 			
                 //What for?
@@ -522,8 +494,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
     {        
 	//debugger;
 	 
-        [_paintLayer setNeedsDisplay];        
-        [_rootLayer setNeedsDisplay];
 	[self setNeedsDisplay:YES];
 
 	// Make it not there.
@@ -551,12 +521,10 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 	if (! CPRectEqualToRect(newMarqueeSelectionBounds, _marqueeSelectionBounds))
 	{
 	    // Erase the old selection rectangle and draw the new one.
-            [_paintLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
-            [_rootLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
+
 	    [self setNeedsDisplayInRect:_marqueeSelectionBounds];
 	    _marqueeSelectionBounds = newMarqueeSelectionBounds;
-            [_paintLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
-            [_rootLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
+
 	    [self setNeedsDisplayInRect:_marqueeSelectionBounds];
 
 	    // Either select or deselect all of the graphics that intersect the selection rectangle.
@@ -574,8 +542,7 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 		}
 	    }
             [self changeSelectionIndexes:newSelectionIndexes];
-            [_paintLayer setNeedsDisplay];        
-            [_rootLayer setNeedsDisplay];
+
   	    [self setNeedsDisplay:YES];
 	}
     }
@@ -645,14 +612,10 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 		    
 		}
 				
-		[_paintLayer setNeedsDisplay];        
-        	[_rootLayer setNeedsDisplay];
 		[self setNeedsDisplay:YES];
 	    } 
 	    else 
 	    {
-                [_paintLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
-                [_rootLayer setNeedsDisplayInRect:_marqueeSelectionBounds];
                 [self setNeedsDisplayInRect:_marqueeSelectionBounds];
 
 		// If the graphic wasn't selected before then it is now, and none of the rest are.
@@ -660,8 +623,6 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 		    [self changeSelectionIndexes:[CPIndexSet indexSetWithIndex:clickedGraphicIndex]];
 		    clickedGraphicIsSelected = YES;
 				
-		    [_paintLayer setNeedsDisplay];        
-        	    [_rootLayer setNeedsDisplay];
 	            [self setNeedsDisplay:YES];
 		}
 		

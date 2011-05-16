@@ -38,8 +38,7 @@
 
     [contentView addSubview:_scrollView];
     //[theWindow setTitle: "Template design"]; // not working 
-    [theWindow makeFirstResponder:_scrollView];
-	
+    [theWindow makeFirstResponder:_scrollView];	
 	
     self = [super initWithWindow:theWindow];
     if (self)
