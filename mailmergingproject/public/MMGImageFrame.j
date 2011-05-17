@@ -44,7 +44,16 @@
 	var path = CGPathCreateMutable();
 	var rect = [self bounds];
 
+        var minx = CPRectGetMinX(rect);
+        var miny = CPRectGetMinY(rect);
+        var maxx = CPRectGetMaxX(rect);
+        var maxy = CPRectGetMaxY(rect);
+
 	CGPathAddRect(path, nil, rect);
+        CGPathMoveToPoint(path, nil, minx, miny);
+        CGPathAddLineToPoint(path, nil, maxx, maxy);
+        CGPathMoveToPoint(path, nil, maxx, miny);
+        CGPathAddLineToPoint(path, nil, minx, maxy);
 	CGPathCloseSubpath(path);
 
     return path;

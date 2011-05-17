@@ -304,7 +304,7 @@ SKTGraphicViewDefaultPasteCascadeDelta = 10.0;
 
     }
 }
-////////The functions above is now temporarily useless, they are simply blanks to fill  -- Yuan Zhiqian
+////////The functions above is partly implemented  -- Yuan Zhiqian
 
 - (void)createGraphicOfClass:(Class)graphicClass withEvent:(CPEvent)event 
 {    
