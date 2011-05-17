@@ -1,0 +1,1 @@
+test by executing: ./mailmerging ./ template_1.xml userdata_for_gui_test.xml

@@ -12,12 +12,14 @@
 
 @import "MMGTextFrame.j"
 @import "MMGImageFrame.j"
+@import "MMGTableFrame.j"
 
 @import "ImageCell.j"
 
 MMGArrowToolRow = 0;
 MMGTextToolRow = 1;
 MMGImgToolRow = 2;
+MMGTableToolRow = 3;
 
 MMGSelectedToolDidChangeNotification = @"MMGSelectedToolDidChange";
 
@@ -79,10 +81,11 @@ var sharedToolPaletteController = nil;
     var mainBundle = [CPBundle mainBundle];
     var path1 = [mainBundle pathForResource:@"Arrow.png"];        // the return of pathForResource is still a CPString object
     var path2 = [mainBundle pathForResource:@"TextGraphic.gif"];
-    var path3 = [mainBundle pathForResource:@"ImgGraphic.gif"]
+    var path3 = [mainBundle pathForResource:@"ImgGraphic.gif"];
+    var path4 = [mainBundle pathForResource:@"TableGraphic.gif"]
 	
     // Pas de texte pour le moment
-    return [[CPArray alloc] initWithObjects:path1, path2, path3, nil];
+    return [[CPArray alloc] initWithObjects:path1, path2, path3, path4, nil];
 }
 
 
@@ -103,6 +106,9 @@ var sharedToolPaletteController = nil;
     }
     else if (row == MMGImgToolRow){
         theClass = [MMGImageFrame class];
+    }
+    else if (row == MMGTableToolRow){
+        theClass = [MMGTableFrame class];
     }
 
     return theClass;

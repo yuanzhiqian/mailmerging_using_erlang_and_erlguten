@@ -115,7 +115,13 @@ parse_and_print_table(Frame_info, Content, Merged, PDF) ->
       [Format, TableContent] = string:tokens(Content, "@"),
       [Columns, Headers] = parseFormat(Format),
       RowsInList = parseTableContent(TableContent),
-      [MidPage_ContinueTable, EndPage_ContinueTable] = findContinueTable(Frame_info, Merged),
+      [MidPage_ContinueTable, EndPage_ContinueTable] = 
+      case Merged#template_info.counts of
+        1 ->
+          ["",""];
+        _ ->
+          findContinueTable(Frame_info, Merged)
+      end,
       printTable([Frame_info, MidPage_ContinueTable, EndPage_ContinueTable], Merged, PDF, {Columns, Headers, RowsInList});
     {match, _} ->
       ok

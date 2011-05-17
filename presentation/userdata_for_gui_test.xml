@@ -2,7 +2,6 @@
 <user>
   <name>John</name>
   <price>150.00Kr</price>
-  <address>Kungsgatan 4-220, 75226 Uppsala</address>
   <term>This is a dynamic text, the following is the static text, note the difference between #term and \#term.</term>
   <unused>it is ok for the program to accept a template which doesn't use up the data fields in userdata xml file</unused>
   <first>milk</first>
@@ -128,8 +127,8 @@
                    [{"goods", "mp3"}, {"count", "3"}, {"place", "coop"}, {"price", "100.00Kr"}, {"name", "Bob"}, {"number", "92139"}],
                    [{"goods", "xbox"}, {"count", "5"}, {"place", "7Eleven"}, {"price", "9.00Kr"}, {"name", "Vivian"}, {"number", "57883"}]].</shoppingtable>
 
-  <tm>img/trademark.jpg</tm>
-  <slip>img/slip.jpg</slip>
+  <tm>priv/img/trademark.jpg</tm>
+  <slip>priv/img/slip.jpg</slip>
   <text>Some questions to be added.</text>
   
 </user>
