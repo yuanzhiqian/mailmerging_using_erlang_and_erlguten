@@ -8,9 +8,7 @@
   <first>milk</first>
   <second>apple</second>
   <third>orange</third>
-  <shoppingtable>[[{"goods", "milk"}, {"count", "1"}, {"place", "ICA"}, {"price", "40.00Kr"}, {"name", "Maria"}, {"number", "11020"}],
-                   
-                   
+  <shoppingtable>[[{"goods", "milk"}, {"count", "1"}, {"place", "ICA"}, {"price", "40.00Kr"}, {"name", "Maria"}, {"number", "11020"}],                  
                    [{"goods", "xbox"}, {"count", "5"}, {"place", "7Eleven"}, {"price", "9.00Kr"}, {"name", "Vivian"}, {"number", "57883"}]].</shoppingtable>
 
   <tm>img/trademark.jpg</tm>

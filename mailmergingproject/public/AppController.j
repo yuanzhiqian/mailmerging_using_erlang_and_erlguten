@@ -267,6 +267,7 @@ function packXml(xmlDoc, paperNode, graphic)
     //multi-part request, this method will (eventually) be called multiple times,
     //once for each part in the response.
     console.log("Success!\n"+data);
+    alert("Success!");
 }
 
 - (void)connection:(CPURLConnection)connection didFailWithError:(CPString)error

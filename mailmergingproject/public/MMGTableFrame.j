@@ -26,7 +26,7 @@
     [self setMaxLines: "2"];
     [self setHasContinue: "shoppingtable2"];
     [self setIfBreak: "true"];
-    [self setContent: "{table columns = {goods, count, price, place}}{tr}{th}#goods{/th}{th}count_col?{/th}{th}$price?{/th}{th}place{/th}{/tr}{/table}"]
+    [self setContent: "{table columns = {goods, count, price, place}}{tr}{th}goods{/th}{th}count{/th}{th}price{/th}{th}place{/th}{/tr}{/table}"]
     [self setTextColor: [CPColor blackColor]];
 }
 
