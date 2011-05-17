@@ -5,7 +5,7 @@
 
   <frame name = "trademark" class = "img" x = "48" y = "30" width = "94" height = "20" grid = "true" bg = "default" font = "N/A" fontsize = "N/A" paraIndent = "N/A" maxlines = "N/A" continue = "N/A" break = "N/A">#tm</frame>
 
-  <frame name = "hello" class = "text" x = "48" y = "140" width = "177" height = "127" grid = "true" bg = "default" font = "Times-Roman" fontsize = "15/20" paraIndent = "0" maxlines = "2" continue = "none" break = "true">Hello #name, here is your invoice, this is a new version of template, and new version of mail-merging, test to see if it works all fine.</frame>
+  <frame name = "hello" class = "text" x = "48" y = "140" width = "177" height = "127" grid = "true" bg = "default" font = "Times-Roman" fontsize = "15/20" paraIndent = "0" maxlines = "5" continue = "none" break = "true">Hello #name, here is your invoice, this is a new version of template, and new version of mail-merging, test to see if it works all fine.</frame>
 
   <frame name = "shoppinglist" class = "list" x = "48" y = "280" width = "177" height = "140" grid = "true" bg="default" font = "Times-Roman" fontsize = "14/20" paraIndent="0" maxlines = "30" continue="none" break="true">{ul}{li}#first{/li}{li}#second{/li}{li}#third{/li}{/ul}</frame>
   <frame name = "shoppingtable" class = "table" x = "48" y = "450" width = "177" height = "100" grid = "false" bg="default" font = "Times-Roman" fontsize = "12/24" paraIndent="0" maxlines = "30" continue="none" break="true">{table columns = {goods, count, price, place}}{tr}{th}#goods{/th}{th}count_col?{/th}{th}$price?{/th}{th}place{/th}{/tr}{/table}</frame>

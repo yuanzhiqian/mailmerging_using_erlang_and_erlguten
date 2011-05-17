@@ -235,10 +235,15 @@ printTable([Frame_info, MidPage_ContinueTable, EndPage_ContinueTable], Merged, P
       printTable_aux([Continue_table, MidPage_ContinueTable, EndPage_ContinueTable], Merged, PDF, {Columns, RowsInList})
   end.
 
+printEndPage(undefined, Merged, PDF) ->
+  ok;
 printEndPage({paper, _, Data}, Merged, PDF) ->
   %%io:format("~p~n", [Data]),
   printPage(Data, Merged, PDF).
 
+printMidPage(undefined, Merged, PDF) ->
+  io:format("mid page undefined.~n"),
+  ok;
 printMidPage({paper, _, Data}, Merged, PDF) ->
   printPage(Data, Merged, PDF).
 
@@ -247,20 +252,40 @@ printPage(Data, Merged, PDF) ->
 
 findContinueTable(Frame_info, Merged) ->
   MidPage_ContinueTable = 
+  if 
+  Merged#template_info.counts == 2 -> n_a;
+  Merged#template_info.counts == 3 ->
+
   case Frame_info#frame_info.continue of
     ["none"] -> 
       io:format("No continue table error~n"),
       halt();
     [Mid_name] ->
       findTable(Mid_name, Merged)
+  end
+
   end,
+
   EndPage_ContinueTable = 
+  if 
+  Merged#template_info.counts == 2 -> 
+  case Frame_info#frame_info.continue of
+    ["none"] -> 
+      io:format("No continue table error~n"),
+      halt();
+    [End_name] ->
+      findTable(End_name, Merged)
+  end;
+
+  Merged#template_info.counts == 3 ->
   case MidPage_ContinueTable#frame_info.continue of
     ["none"] -> 
       io:format("No continue table error~n"),
       halt();
     [End_name] ->
       findTable(End_name, Merged)
+  end
+
   end,
   [MidPage_ContinueTable, EndPage_ContinueTable].
 

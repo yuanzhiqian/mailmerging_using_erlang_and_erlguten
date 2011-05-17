@@ -69,7 +69,7 @@ main(ArgList) ->
   {template, [{"alt2",Alt2}, {"alt3",Alt3},{"count",Count}], T_Papers} = T_Data, 
   
   {Pages, Template_chosen} = preprocess(Count, atom_to_list(Dir) ++ Alt2, atom_to_list(Dir) ++ Alt3, T_Papers, U_Data),
-  %%io:format("Pages:~p~n", [Pages]),  
+  io:format("Pages:~p~n", [Pages]),  
 
   case length(Template_chosen) of
     3 ->
@@ -78,8 +78,8 @@ main(ArgList) ->
       [E|[]] = MT;
     2 ->
       [F|FT] = Template_chosen,
-      [M|MT] = FT,
-      E = MT;
+      M = [],
+      [E|[]] = FT;
     1 ->
       [F|FT] = Template_chosen,
       M = FT,
@@ -102,6 +102,7 @@ main(ArgList) ->
  
 
 merge_init(Template_info, U_Data) ->
+  %%io:format("~p~n", [Template_info#template_info.counts]),
   case Template_info#template_info.counts of
     1 ->
       Template_info#template_info{front_paper = merge_init_aux(Template_info#template_info.front_paper, U_Data)};
